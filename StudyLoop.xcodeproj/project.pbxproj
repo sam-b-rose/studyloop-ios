@@ -25,6 +25,9 @@
 		6FE810B81C0B239500B1ABA8 /* NotoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6FE810B41C0B239500B1ABA8 /* NotoSans-Regular.ttf */; };
 		6FE810BA1C0B287E00B1ABA8 /* MaterialButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE810B91C0B287E00B1ABA8 /* MaterialButton.swift */; };
 		6FE810BC1C0B2CB900B1ABA8 /* MaterialTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE810BB1C0B2CB900B1ABA8 /* MaterialTextField.swift */; };
+		6FE810C11C0B3AE300B1ABA8 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FE810BE1C0B3AE300B1ABA8 /* FBSDKCoreKit.framework */; };
+		6FE810C21C0B3AE300B1ABA8 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FE810BF1C0B3AE300B1ABA8 /* FBSDKLoginKit.framework */; };
+		6FE810C31C0B3AE300B1ABA8 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FE810C01C0B3AE300B1ABA8 /* FBSDKShareKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +72,9 @@
 		6FE810B41C0B239500B1ABA8 /* NotoSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Regular.ttf"; sourceTree = "<group>"; };
 		6FE810B91C0B287E00B1ABA8 /* MaterialButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaterialButton.swift; sourceTree = "<group>"; };
 		6FE810BB1C0B2CB900B1ABA8 /* MaterialTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaterialTextField.swift; sourceTree = "<group>"; };
+		6FE810BE1C0B3AE300B1ABA8 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		6FE810BF1C0B3AE300B1ABA8 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		6FE810C01C0B3AE300B1ABA8 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +82,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FE810C21C0B3AE300B1ABA8 /* FBSDKLoginKit.framework in Frameworks */,
+				6FE810C11C0B3AE300B1ABA8 /* FBSDKCoreKit.framework in Frameworks */,
+				6FE810C31C0B3AE300B1ABA8 /* FBSDKShareKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +128,7 @@
 		6FE8106B1C0AA35300B1ABA8 /* StudyLoop */ = {
 			isa = PBXGroup;
 			children = (
+				6FE810BD1C0B3AB400B1ABA8 /* Frameworks */,
 				6FE810AE1C0B21DC00B1ABA8 /* Util */,
 				6FE810A41C0B1E3300B1ABA8 /* Resources */,
 				6FE810A51C0B1E3B00B1ABA8 /* Model */,
@@ -198,6 +208,16 @@
 				6FE810AF1C0B21F100B1ABA8 /* Constants.swift */,
 			);
 			name = Util;
+			sourceTree = "<group>";
+		};
+		6FE810BD1C0B3AB400B1ABA8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6FE810BE1C0B3AE300B1ABA8 /* FBSDKCoreKit.framework */,
+				6FE810BF1C0B3AE300B1ABA8 /* FBSDKLoginKit.framework */,
+				6FE810C01C0B3AE300B1ABA8 /* FBSDKShareKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -483,6 +503,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/StudyLoop",
+				);
 				INFOPLIST_FILE = StudyLoop/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.studyloop.StudyLoop;
@@ -494,6 +518,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/StudyLoop",
+				);
 				INFOPLIST_FILE = StudyLoop/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.studyloop.StudyLoop;
