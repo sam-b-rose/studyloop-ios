@@ -1,0 +1,6 @@
+framework module Pods_StudyLoop {
+  umbrella header "Pods-StudyLoop-umbrella.h"
+
+  export *
+  module * { export * }
+}
