@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		0A12DB4E71DA66C64D6D8C50 /* Pods_StudyLoop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D755C00352E28EAE43CA0CB3 /* Pods_StudyLoop.framework */; };
+		6F1466F61C0B461D00528DE3 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1466F51C0B461D00528DE3 /* DataService.swift */; };
 		6FE8106D1C0AA35300B1ABA8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE8106C1C0AA35300B1ABA8 /* AppDelegate.swift */; };
 		6FE8106F1C0AA35300B1ABA8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE8106E1C0AA35300B1ABA8 /* ViewController.swift */; };
 		6FE810721C0AA35300B1ABA8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FE810701C0AA35300B1ABA8 /* Main.storyboard */; };
-		6FE810751C0AA35300B1ABA8 /* StudyLoop.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6FE810731C0AA35300B1ABA8 /* StudyLoop.xcdatamodeld */; };
 		6FE810771C0AA35300B1ABA8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6FE810761C0AA35300B1ABA8 /* Assets.xcassets */; };
 		6FE8107A1C0AA35300B1ABA8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FE810781C0AA35300B1ABA8 /* LaunchScreen.storyboard */; };
 		6FE810851C0AA35300B1ABA8 /* StudyLoopTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE810841C0AA35300B1ABA8 /* StudyLoopTests.swift */; };
@@ -50,11 +50,11 @@
 
 /* Begin PBXFileReference section */
 		1B2666FF8D7DD041D321A4C1 /* Pods-StudyLoop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StudyLoop.release.xcconfig"; path = "Pods/Target Support Files/Pods-StudyLoop/Pods-StudyLoop.release.xcconfig"; sourceTree = "<group>"; };
+		6F1466F51C0B461D00528DE3 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		6FE810691C0AA35300B1ABA8 /* StudyLoop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StudyLoop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FE8106C1C0AA35300B1ABA8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6FE8106E1C0AA35300B1ABA8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		6FE810711C0AA35300B1ABA8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		6FE810741C0AA35300B1ABA8 /* StudyLoop.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StudyLoop.xcdatamodel; sourceTree = "<group>"; };
 		6FE810761C0AA35300B1ABA8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6FE810791C0AA35300B1ABA8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6FE8107B1C0AA35300B1ABA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -118,6 +118,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		6F1466F41C0B460B00528DE3 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				6F1466F51C0B461D00528DE3 /* DataService.swift */,
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
 		6FE810601C0AA35300B1ABA8 = {
 			isa = PBXGroup;
 			children = (
@@ -143,6 +151,7 @@
 		6FE8106B1C0AA35300B1ABA8 /* StudyLoop */ = {
 			isa = PBXGroup;
 			children = (
+				6F1466F41C0B460B00528DE3 /* Services */,
 				6FE810BD1C0B3AB400B1ABA8 /* Frameworks */,
 				6FE810AE1C0B21DC00B1ABA8 /* Util */,
 				6FE810A41C0B1E3300B1ABA8 /* Resources */,
@@ -155,7 +164,6 @@
 				6FE810761C0AA35300B1ABA8 /* Assets.xcassets */,
 				6FE810781C0AA35300B1ABA8 /* LaunchScreen.storyboard */,
 				6FE8107B1C0AA35300B1ABA8 /* Info.plist */,
-				6FE810731C0AA35300B1ABA8 /* StudyLoop.xcdatamodeld */,
 			);
 			path = StudyLoop;
 			sourceTree = "<group>";
@@ -433,10 +441,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				6FE810B01C0B21F100B1ABA8 /* Constants.swift in Sources */,
+				6F1466F61C0B461D00528DE3 /* DataService.swift in Sources */,
 				6FE8106F1C0AA35300B1ABA8 /* ViewController.swift in Sources */,
 				6FE810BA1C0B287E00B1ABA8 /* MaterialButton.swift in Sources */,
 				6FE8106D1C0AA35300B1ABA8 /* AppDelegate.swift in Sources */,
-				6FE810751C0AA35300B1ABA8 /* StudyLoop.xcdatamodeld in Sources */,
 				6FE810AD1C0B21B500B1ABA8 /* MaterialView.swift in Sources */,
 				6FE810BC1C0B2CB900B1ABA8 /* MaterialTextField.swift in Sources */,
 			);
@@ -694,19 +702,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		6FE810731C0AA35300B1ABA8 /* StudyLoop.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				6FE810741C0AA35300B1ABA8 /* StudyLoop.xcdatamodel */,
-			);
-			currentVersion = 6FE810741C0AA35300B1ABA8 /* StudyLoop.xcdatamodel */;
-			path = StudyLoop.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 6FE810611C0AA35300B1ABA8 /* Project object */;
 }

@@ -75,6 +75,9 @@
                                                 <state key="normal" title="FACEBOOK LOGIN">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="fbBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="knt-zf-jZd"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <animations/>
@@ -132,7 +135,7 @@
                                         </constraints>
                                         <color key="textColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jSV-Jj-lsR" customClass="MaterialButton" customModule="StudyLoop" customModuleProvider="target">
                                         <rect key="frame" x="183" y="204" width="195" height="33"/>
@@ -146,6 +149,9 @@
                                         <state key="normal" title="Login / Signup">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="attempLogin:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NCW-SG-dHh"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <animations/>
@@ -185,10 +191,34 @@
                             <constraint firstAttribute="trailing" secondItem="tWa-id-2Iw" secondAttribute="trailing" id="yvW-pf-MSR"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="emailField" destination="htn-MN-gv8" id="yFr-Qk-esk"/>
+                        <outlet property="passwordField" destination="r8e-0o-0uZ" id="zkP-VI-Ozu"/>
+                        <segue destination="oAH-fn-Mry" kind="show" identifier="loggedIn" id="H0r-yk-CFB"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="305" y="429"/>
+            <point key="canvasLocation" x="309" y="429"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="tRA-Mg-FhC">
+            <objects>
+                <viewController id="oAH-fn-Mry" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="vIH-zm-gSw"/>
+                        <viewControllerLayoutGuide type="bottom" id="eIy-Zj-qD9"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="xAJ-sJ-cVh">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" red="0.1137254902" green="0.86274509799999999" blue="0.74117647060000003" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bQf-vE-Nst" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1090" y="435"/>
         </scene>
     </scenes>
     <resources>
