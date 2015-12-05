@@ -8,10 +8,14 @@
 
 import UIKit
 
-class PostCell: UITableViewCell {
+class MessageCell: UITableViewCell {
 
     @IBOutlet weak var profileImg: UIImageView!
     @IBOutlet weak var showcaseImg: UIImageView!
+    @IBOutlet weak var messageText: UITextView!
+    @IBOutlet weak var likesLbl: UILabel!
+    
+    var message: Message!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -29,6 +33,12 @@ class PostCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func configureCell(message: Message) {
+        self.message = message
+        self.messageText.text = message.messageText
+        self.likesLbl.text = "\(message.likes)"
     }
 
 }
