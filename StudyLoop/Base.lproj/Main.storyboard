@@ -222,7 +222,7 @@
                                 <animations/>
                                 <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MessageCell" rowHeight="432" id="vs4-zm-Iqk" userLabel="MessageCell" customClass="MessageCell" customModule="StudyLoop" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="MessageCell" id="vs4-zm-Iqk" userLabel="MessageCell" customClass="MessageCell" customModule="StudyLoop" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="92" width="560" height="432"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vs4-zm-Iqk" id="gOv-Pj-kJ2">

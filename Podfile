@@ -4,6 +4,7 @@ use_frameworks!
 
 target 'StudyLoop' do
 pod 'Firebase', '>= 2.4.3'
+pod 'Alamofire', '~> 3.0'
 end
 
 target 'StudyLoopTests' do
