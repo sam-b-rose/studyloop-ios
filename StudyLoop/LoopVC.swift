@@ -22,7 +22,7 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.delegate = self
         tableView.dataSource = self
         
-        //tableView.estimatedRowHeight = 432
+        tableView.estimatedRowHeight = 432
         
         DataService.ds.REF_SINGLE_LOOP.observeEventType(.Value, withBlock: { snapshot in
             print(snapshot.value)
@@ -74,15 +74,15 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        let message = messages[indexPath.row]
-//        
-//        if message.imageUrl == nil {
-//            return 150
-//        } else {
-//            return tableView.estimatedRowHeight
-//        }
-//    }
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        let message = messages[indexPath.row]
+        
+        if message.imageUrl == nil {
+            return 150
+        } else {
+            return tableView.estimatedRowHeight
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
