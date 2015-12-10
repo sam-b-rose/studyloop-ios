@@ -472,7 +472,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="O0K-8B-fOg"/>
                     <connections>
-                        <outlet property="imageSelectorImage" destination="paJ-x4-yKT" id="cE8-kg-qDb"/>
+                        <outlet property="imageSelectorBtn" destination="paJ-x4-yKT" id="6a1-7V-xjV"/>
                         <outlet property="messageField" destination="ZgF-8j-sJc" id="N5V-n7-R39"/>
                         <outlet property="tableView" destination="dhX-cC-a0J" id="A6C-hm-JvG"/>
                     </connections>

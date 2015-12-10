@@ -74,10 +74,10 @@
 				<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
 				<false/>
 			</dict>
-			<key>www.cobblearning.net</key>
+			<key>imageshack.com</key>
 			<dict>
 				<key>NSIncludesSubdomains</key>
-				<false/>
+				<true/>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 				<key>NSExceptionRequiresForwardSecrecy</key>
