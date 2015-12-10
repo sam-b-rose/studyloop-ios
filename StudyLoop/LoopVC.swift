@@ -9,18 +9,25 @@
 import UIKit
 import Firebase
 
-class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
+class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var messageField: MaterialTextField!
+    @IBOutlet weak var imageSelectorImage: UIImageView!
     
     var messages = [Message]()
     static var imageCache = NSCache()
+    
+    var imagePicker: UIImagePickerController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.delegate = self
         tableView.dataSource = self
+        
+        imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
         
         tableView.estimatedRowHeight = 432
         
@@ -84,6 +91,19 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
 
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        imagePicker.dismissViewControllerAnimated(true, completion: nil)
+        imageSelectorImage.image = image
+    }
+    
+    
+    @IBAction func selectImage(sender: UITapGestureRecognizer) {
+        presentViewController(imagePicker, animated: true, completion: nil)
+    }
+    
+    @IBAction func sendMessage(sender: AnyObject) {
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
