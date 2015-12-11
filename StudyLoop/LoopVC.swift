@@ -33,7 +33,7 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         
         tableView.estimatedRowHeight = 432
         
-        DataService.ds.REF_SINGLE_LOOP.observeEventType(.Value, withBlock: { snapshot in
+        DataService.ds.REF_LOOP.observeEventType(.Value, withBlock: { snapshot in
             print(snapshot.value)
             
             self.messages = []
@@ -98,7 +98,6 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         imageSelected = true
     }
     
-    
     @IBAction func selectImage(sender: UITapGestureRecognizer) {
         presentViewController(imagePicker, animated: true, completion: nil)
     }
@@ -128,7 +127,7 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
                                             if let imgLink = images["direct_link"] as? String {
                                                 let imgDirectLink = "http://\(imgLink)"
                                                 print("LINK: \(imgDirectLink)")
-                                                self.postToFirebase(imgLink)
+                                                self.postToFirebase(imgDirectLink)
                                             }
                                         }
                                     }
@@ -146,11 +145,8 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     
     func postToFirebase(imgUrl: String?) {
         var message: Dictionary<String, AnyObject> = [
-            "createdAt": "time",
-            "createdBy": "Sam Rose",
-            "createdById": "-K4FzP_D7PkMkI3DMQU_",
-            "loopId": "-K4DmNirEdwTR35UrWcM",
-            "textValue": "\(messageField.text!)"
+            "textValue": "\(messageField.text!)",
+            "likes": 0
         ]
         
         if imgUrl != nil {
@@ -158,7 +154,7 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         }
         
         print(message)
-        let firebasePost = DataService.ds.REF_SINGLE_LOOP.childByAutoId()
+        let firebasePost = DataService.ds.REF_LOOP.childByAutoId()
         firebasePost.setValue(message)
         
         messageField.text = ""

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Firebase
 
 class Message {
     private var _messageText: String!
@@ -14,6 +15,7 @@ class Message {
     private var _likes: Int!
     private var _username: String!
     private var _messageKey: String!
+    private var _messageRef: Firebase!
     
     var messageText: String {
         return _messageText
@@ -29,6 +31,10 @@ class Message {
     
     var username: String {
         return _username
+    }
+    
+    var messageKey: String {
+        return _messageKey
     }
     
     init(text: String, imageUrl: String?, username: String) {
@@ -53,5 +59,17 @@ class Message {
         if let messageText = dictionary["textValue"] as? String {
             self._messageText = messageText
         }
+        
+        self._messageRef = DataService.ds.REF_LOOP.childByAppendingPath(self._messageKey)
+    }
+    
+    func adjustLikes (addLike: Bool) {
+        if addLike {
+            _likes = _likes + 1
+        } else {
+            _likes = _likes - 1
+        }
+        
+        _messageRef.childByAppendingPath("likes").setValue(_likes)
     }
 }

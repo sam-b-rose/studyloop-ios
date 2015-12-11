@@ -8,20 +8,27 @@
 
 import UIKit
 import Alamofire
+import Firebase
 
 class MessageCell: UITableViewCell {
 
     @IBOutlet weak var profileImg: UIImageView!
     @IBOutlet weak var messageImg: UIImageView!
-    @IBOutlet weak var messageText: UITextView!
+    @IBOutlet weak var messageText: UILabel!
     @IBOutlet weak var likesLbl: UILabel!
+    @IBOutlet weak var likeImage: UIImageView!
     
     var message: Message!
+    var likeRef: Firebase!
     var request: Request?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        let tap = UITapGestureRecognizer(target: self, action: "likeTapped:")
+        tap.numberOfTapsRequired = 1
+        likeImage.addGestureRecognizer(tap)
+        likeImage.userInteractionEnabled = true
     }
     
     override func drawRect(rect: CGRect) {
@@ -38,9 +45,12 @@ class MessageCell: UITableViewCell {
     }
     
     func configureCell(message: Message, img: UIImage?) {
+        likeRef = DataService.ds.REF_USER_CURRENT.childByAppendingPath("likes").childByAppendingPath(message.messageKey)
+
         self.message = message
         self.messageText.text = message.messageText
         self.likesLbl.text = "\(message.likes)"
+        self.messageImg.hidden = true
         
         if message.imageUrl != nil {
             if img != nil {
@@ -58,9 +68,28 @@ class MessageCell: UITableViewCell {
                     }
                 })
             }
-        } else {
-            self.messageImg.hidden = true
         }
+        
+        likeRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if let doesNotExist = snapshot.value as? NSNull {
+                self.likeImage.image = UIImage(named: "heart-o")
+            } else {
+                self.likeImage.image = UIImage(named: "heart")
+            }
+        })
     }
-
+    
+    func likeTapped(sender: UITapGestureRecognizer) {
+        likeRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if let doesNotExist = snapshot.value as? NSNull {
+                self.likeImage.image = UIImage(named: "heart")
+                self.message.adjustLikes(true)
+                self.likeRef.setValue(true)
+            } else {
+                self.likeImage.image = UIImage(named: "heart-o")
+                self.message.adjustLikes(false)
+                self.likeRef.removeValue()
+            }
+        })
+    }
 }

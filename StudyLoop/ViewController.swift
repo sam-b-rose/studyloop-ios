@@ -53,7 +53,13 @@ class ViewController: UIViewController {
                         print("Logged in! \(authData)")
                         
                         // TODO: should check for provider
-                        let user = ["provider": authData.provider!, "blah": "test"]
+                        let user = [
+                            "provider": authData.provider!,
+                            "name": authData.providerData["displayName"] as! NSString as String,
+                            "email": authData.providerData["email"] as! NSString as String,
+                            "profileImgURL": authData.providerData["profileImageURL"] as! NSString as String
+                        ]
+                        
                         DataService.ds.createFirebaseUser(authData.uid, user: user)
                         
                         NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
@@ -84,7 +90,12 @@ class ViewController: UIViewController {
                                     err, authData in
                                     
                                     // TODO: should check for provider
-                                    let user = ["provider": authData.provider!, "blah": "emailtest"]
+                                    let user = [
+                                        "provider": authData.provider!,
+                                        "email": authData.providerData["email"] as! NSString as String,
+                                        "profileImgURL": authData.providerData["profileImageURL"] as! NSString as String
+                                    ]
+                                    
                                     DataService.ds.createFirebaseUser(authData.uid, user: user)
                                 })
                                 self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)

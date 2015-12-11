@@ -13,7 +13,6 @@
             <string>NotoSans-Bold</string>
             <string>NotoSans-Bold</string>
             <string>NotoSans-Bold</string>
-            <string>NotoSans-Bold</string>
         </mutableArray>
         <mutableArray key="NotoSans-Regular.ttf">
             <string>NotoSans</string>
@@ -38,78 +37,23 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tWa-id-2Iw">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="128"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign In / Sign Up" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eAO-cs-sHR">
-                                        <rect key="frame" x="19" y="35" width="150" height="21"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="studyloop-logo" translatesAutoresizingMaskIntoConstraints="NO" id="sGS-Ud-eJ9">
+                                        <rect key="frame" x="0.0" y="-3" width="600" height="111"/>
                                         <animations/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="150" id="59J-gZ-kBB"/>
-                                            <constraint firstAttribute="height" constant="21" id="Eim-z9-0L3"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="NotoSans-Bold" family="Noto Sans" pointSize="17"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="owl-light-200" translatesAutoresizingMaskIntoConstraints="NO" id="RHF-qR-bTa">
-                                        <rect key="frame" x="500" y="10" width="80" height="60"/>
-                                        <animations/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="80" id="Rzk-t0-vEn"/>
-                                        </constraints>
                                     </imageView>
                                 </subviews>
                                 <animations/>
                                 <color key="backgroundColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="eAO-cs-sHR" firstAttribute="top" secondItem="tWa-id-2Iw" secondAttribute="top" constant="35" id="5GS-rQ-F5f"/>
-                                    <constraint firstItem="eAO-cs-sHR" firstAttribute="leading" secondItem="tWa-id-2Iw" secondAttribute="leading" constant="19" id="Bwn-QE-b7I"/>
-                                    <constraint firstAttribute="trailing" secondItem="RHF-qR-bTa" secondAttribute="trailing" constant="20" id="Mj2-Or-mOg"/>
-                                    <constraint firstItem="RHF-qR-bTa" firstAttribute="top" secondItem="tWa-id-2Iw" secondAttribute="top" constant="8" id="OWB-2E-PCX"/>
+                                    <constraint firstAttribute="trailing" secondItem="sGS-Ud-eJ9" secondAttribute="trailing" id="0Xu-QQ-xQJ"/>
                                     <constraint firstAttribute="height" constant="128" id="Swu-Gp-KdS"/>
-                                    <constraint firstAttribute="bottom" secondItem="RHF-qR-bTa" secondAttribute="bottom" constant="58" id="zeA-i0-DNY"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T8F-Ro-aI5" customClass="MaterialView" customModule="StudyLoop" customModuleProvider="target">
-                                <rect key="frame" x="20" y="74" width="560" height="128"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="CZL-k3-nmV">
-                                        <rect key="frame" x="20" y="10" width="520" height="108"/>
-                                        <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook-icon" translatesAutoresizingMaskIntoConstraints="NO" id="sqf-Bm-KBy">
-                                                <rect key="frame" x="0.0" y="9" width="90" height="90"/>
-                                                <animations/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="90" id="B9C-fq-WSQ"/>
-                                                    <constraint firstAttribute="width" constant="90" id="ejA-vD-Cjv"/>
-                                                </constraints>
-                                            </imageView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xA9-i8-HWB" customClass="MaterialButton" customModule="StudyLoop" customModuleProvider="target">
-                                                <rect key="frame" x="130" y="38" width="390" height="33"/>
-                                                <animations/>
-                                                <color key="backgroundColor" red="0.23137254901960785" green="0.34901960784313724" blue="0.59607843137254901" alpha="1" colorSpace="calibratedRGB"/>
-                                                <fontDescription key="fontDescription" name="NotoSans-Bold" family="Noto Sans" pointSize="15"/>
-                                                <state key="normal" title="FACEBOOK LOGIN">
-                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="fbBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="knt-zf-jZd"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                        <animations/>
-                                    </stackView>
-                                </subviews>
-                                <animations/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="128" id="8YU-kg-3mB"/>
-                                    <constraint firstAttribute="bottom" secondItem="CZL-k3-nmV" secondAttribute="bottom" constant="10" id="JQR-XP-0Ux"/>
-                                    <constraint firstItem="CZL-k3-nmV" firstAttribute="leading" secondItem="T8F-Ro-aI5" secondAttribute="leading" constant="20" id="in6-ch-SN1"/>
-                                    <constraint firstAttribute="trailing" secondItem="CZL-k3-nmV" secondAttribute="trailing" constant="20" id="pCH-5Q-0Se"/>
-                                    <constraint firstItem="CZL-k3-nmV" firstAttribute="top" secondItem="T8F-Ro-aI5" secondAttribute="top" constant="10" id="voy-HB-2eh"/>
+                                    <constraint firstItem="sGS-Ud-eJ9" firstAttribute="top" secondItem="tWa-id-2Iw" secondAttribute="top" id="aCk-P9-d2V"/>
+                                    <constraint firstAttribute="bottom" secondItem="sGS-Ud-eJ9" secondAttribute="bottom" constant="20" id="oRi-Uo-cZp"/>
+                                    <constraint firstItem="sGS-Ud-eJ9" firstAttribute="leading" secondItem="tWa-id-2Iw" secondAttribute="leading" id="sqt-ci-LOw"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NZC-hJ-F2w" customClass="MaterialView" customModule="StudyLoop" customModuleProvider="target">
-                                <rect key="frame" x="20" y="222" width="560" height="378"/>
+                                <rect key="frame" x="20" y="100" width="560" height="500"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email Login / Sign Up" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mwe-6u-a0u">
                                         <rect key="frame" x="20" y="20" width="179" height="24"/>
@@ -168,13 +112,27 @@
                                             <action selector="attempLogin:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NCW-SG-dHh"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xA9-i8-HWB" customClass="MaterialButton" customModule="StudyLoop" customModuleProvider="target">
+                                        <rect key="frame" x="183" y="245" width="195" height="33"/>
+                                        <animations/>
+                                        <color key="backgroundColor" red="0.23137254901960785" green="0.34901960784313724" blue="0.59607843137254901" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" name="NotoSans-Bold" family="Noto Sans" pointSize="15"/>
+                                        <state key="normal" title="FACEBOOK LOGIN">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="fbBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="knt-zf-jZd"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="xA9-i8-HWB" firstAttribute="centerX" secondItem="NZC-hJ-F2w" secondAttribute="centerX" id="3cX-4W-DUA"/>
                                     <constraint firstItem="htn-MN-gv8" firstAttribute="top" secondItem="Mwe-6u-a0u" secondAttribute="bottom" constant="20" id="4ax-D5-3pM"/>
                                     <constraint firstItem="htn-MN-gv8" firstAttribute="leading" secondItem="Mwe-6u-a0u" secondAttribute="leading" id="5cg-FS-sO4"/>
                                     <constraint firstItem="r8e-0o-0uZ" firstAttribute="trailing" secondItem="htn-MN-gv8" secondAttribute="trailing" id="Kxf-z4-He9"/>
+                                    <constraint firstItem="xA9-i8-HWB" firstAttribute="width" secondItem="jSV-Jj-lsR" secondAttribute="width" id="RJf-IW-bnz"/>
                                     <constraint firstItem="r8e-0o-0uZ" firstAttribute="leading" secondItem="htn-MN-gv8" secondAttribute="leading" id="UXf-tr-ekc"/>
                                     <constraint firstItem="jSV-Jj-lsR" firstAttribute="top" secondItem="r8e-0o-0uZ" secondAttribute="bottom" constant="50" id="Uvy-dt-hf2"/>
                                     <constraint firstItem="Mwe-6u-a0u" firstAttribute="top" secondItem="NZC-hJ-F2w" secondAttribute="top" constant="20" id="aNF-ZF-9mg"/>
@@ -182,6 +140,7 @@
                                     <constraint firstItem="jSV-Jj-lsR" firstAttribute="centerX" secondItem="NZC-hJ-F2w" secondAttribute="centerX" id="gVK-ol-viU"/>
                                     <constraint firstAttribute="height" constant="128" id="gjv-Fw-CGc"/>
                                     <constraint firstItem="r8e-0o-0uZ" firstAttribute="top" secondItem="htn-MN-gv8" secondAttribute="bottom" constant="20" id="o0S-xT-OaY"/>
+                                    <constraint firstItem="xA9-i8-HWB" firstAttribute="top" secondItem="jSV-Jj-lsR" secondAttribute="bottom" constant="8" id="rrR-fG-xkb"/>
                                     <constraint firstItem="Mwe-6u-a0u" firstAttribute="leading" secondItem="NZC-hJ-F2w" secondAttribute="leading" constant="20" id="xUC-1h-Isz"/>
                                 </constraints>
                                 <variation key="default">
@@ -196,13 +155,10 @@
                         <constraints>
                             <constraint firstItem="NZC-hJ-F2w" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="I5q-m5-wHY"/>
                             <constraint firstItem="tWa-id-2Iw" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="QPn-cu-g5g"/>
-                            <constraint firstItem="T8F-Ro-aI5" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="54" id="USY-2K-dCI"/>
                             <constraint firstItem="NZC-hJ-F2w" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Y8c-n1-TZ0"/>
                             <constraint firstItem="tWa-id-2Iw" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="YiJ-43-SBL"/>
-                            <constraint firstItem="T8F-Ro-aI5" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="dhZ-yr-s7Z"/>
-                            <constraint firstItem="NZC-hJ-F2w" firstAttribute="top" secondItem="T8F-Ro-aI5" secondAttribute="bottom" constant="20" id="eEt-wK-lJR"/>
+                            <constraint firstItem="NZC-hJ-F2w" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="80" id="cji-mA-OAK"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="NZC-hJ-F2w" secondAttribute="bottom" id="ez1-tZ-cLn"/>
-                            <constraint firstItem="T8F-Ro-aI5" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="gUP-Yp-Hk5"/>
                             <constraint firstAttribute="trailing" secondItem="tWa-id-2Iw" secondAttribute="trailing" id="yvW-pf-MSR"/>
                         </constraints>
                     </view>
@@ -378,26 +334,16 @@
                                                                         <constraint firstAttribute="height" constant="50" id="gV8-ut-Oxw"/>
                                                                     </constraints>
                                                                 </stackView>
-                                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="1ae-qW-ZeX">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolor sit er elit lamet" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="1000" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qSD-RN-uhV">
                                                                     <rect key="frame" x="0.0" y="60" width="544" height="26"/>
                                                                     <animations/>
-                                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="70" id="6a2-1G-zHB"/>
-                                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="70" id="iR8-K6-ORM"/>
-                                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="26" id="oRg-sg-6aC"/>
+                                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="26" id="teR-gL-QY2"/>
                                                                     </constraints>
-                                                                    <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
-                                                                    <color key="textColor" red="0.3921568627" green="0.42352941179999998" blue="0.4941176471" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="14"/>
-                                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                                    <variation key="default">
-                                                                        <mask key="constraints">
-                                                                            <exclude reference="6a2-1G-zHB"/>
-                                                                            <exclude reference="iR8-K6-ORM"/>
-                                                                        </mask>
-                                                                    </variation>
-                                                                </textView>
+                                                                    <color key="textColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ece255-hw7" translatesAutoresizingMaskIntoConstraints="NO" id="s6h-Fg-Kn9">
                                                                     <rect key="frame" x="0.0" y="96" width="544" height="304"/>
                                                                     <animations/>
@@ -435,9 +381,10 @@
                                         <animations/>
                                         <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
+                                            <outlet property="likeImage" destination="PmY-Ac-DQm" id="lmZ-jj-nDO"/>
                                             <outlet property="likesLbl" destination="s9N-LJ-XMw" id="a0Z-Xp-gxi"/>
                                             <outlet property="messageImg" destination="s6h-Fg-Kn9" id="JaI-Un-j5u"/>
-                                            <outlet property="messageText" destination="1ae-qW-ZeX" id="ExE-7z-PL3"/>
+                                            <outlet property="messageText" destination="qSD-RN-uhV" id="hZL-yr-gHP"/>
                                             <outlet property="profileImg" destination="C3k-HR-uRx" id="gqv-9t-SyX"/>
                                         </connections>
                                     </tableViewCell>
@@ -510,9 +457,8 @@
     <resources>
         <image name="camera-light" width="50" height="43"/>
         <image name="ece255-hw7" width="371" height="480"/>
-        <image name="facebook-icon" width="768" height="768"/>
         <image name="heart-o" width="150" height="150"/>
-        <image name="owl-light-200" width="200" height="158"/>
         <image name="profile" width="128" height="128"/>
+        <image name="studyloop-logo" width="521" height="149"/>
     </resources>
 </document>
