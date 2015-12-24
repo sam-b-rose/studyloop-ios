@@ -11,7 +11,7 @@ import Firebase
 
 class User {
     private var _email: String!
-    private var _uid: String!
+    private var _id: String!
     private var _name: String!
     private var _facebookId: String?
     private var _profileImgUrl: String?
@@ -23,8 +23,8 @@ class User {
         return _email
     }
     
-    var uid: String {
-        return _uid
+    var id: String {
+        return _id
     }
     
     var name: String {
@@ -47,19 +47,37 @@ class User {
         return _universityId
     }
     
-    init(uid: String, email: String, name: String) {
-        self._uid = uid
+    init(uid: String, email: String, name: String?, profileImgUrl: String?) {
+        self._id = uid
         self._email = email
-        self._name = name
-    }
-    
-    init(userKey: String, dictionary: Dictionary<String, AnyObject>) {
-        self._uid = userKey
         
-        if let profileImgUrl = dictionary["imageUrl"] as? String {
+        if name != nil {
+            self._name = name
+        }
+        
+        if profileImgUrl != nil {
             self._profileImgUrl = profileImgUrl
         }
         
-        self._userRef = DataService.ds.REF_USERS.childByAppendingPath(self._uid)
+        // initialize to empty
+        self._universityId = nil
+        self._courseIds = nil
+    }
+    
+    init(newUser: Dictionary<String, String?>) {
+        self._id = newUser["id"]!
+        self._email = newUser["email"]!
+
+        if newUser["name"] != nil {
+            self._name = newUser["name"]!
+        }
+        
+        if newUser["profileImgUrl"] != nil {
+            self._profileImgUrl = newUser["profileImgUrl"]!
+        }
+        
+        // initialize to empty
+        self._universityId = nil
+        self._courseIds = nil
     }
 }

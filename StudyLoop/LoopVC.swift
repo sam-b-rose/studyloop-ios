@@ -15,6 +15,7 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageField: MaterialTextField!
     @IBOutlet weak var imageSelectorBtn: UIImageView!
+    @IBOutlet weak var bottomSpacingConstraint: NSLayoutConstraint!
     
     var messages = [Message]()
     var imageSelected = false
@@ -51,6 +52,14 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
             
             self.tableView.reloadData()
         })
+        
+        /* keyboard observers */
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardNotification:"), name:UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardNotification:"), name:UIKeyboardWillHideNotification, object: nil);
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -144,6 +153,7 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     }
     
     func postToFirebase(imgUrl: String?) {
+        
         var message: Dictionary<String, AnyObject> = [
             "textValue": "\(messageField.text!)",
             "likes": 0
@@ -163,10 +173,30 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         
         tableView.reloadData()
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func keyboardNotification(notification: NSNotification) {
+        
+        let isShowing = notification.name == UIKeyboardWillShowNotification
+        
+        if let userInfo = notification.userInfo {
+            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
+            let endFrameHeight = endFrame?.size.height ?? 0.0
+            let duration:NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+            let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
+            let animationCurveRaw = animationCurveRawNSN?.unsignedLongValue ?? UIViewAnimationOptions.CurveEaseInOut.rawValue
+            let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
+            self.bottomSpacingConstraint?.constant = isShowing ? endFrameHeight : 0.0
+            UIView.animateWithDuration(duration,
+                delay: NSTimeInterval(0),
+                options: animationCurve,
+                animations: { self.view.layoutIfNeeded() },
+                completion: nil)
+        }
     }
 
 }

@@ -29,8 +29,38 @@ class ViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
+        // TODO: Remove after done testing auth
+        DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
+            if authData != nil {
+                // user authenticated
+                print(authData.providerData)
+            } else {
+                // No user is signed in
+                print("No User is signed in")
+            }
+        })
+        
         if NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) != nil {
-            self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+            let currentUser = DataService.ds.REF_USER_CURRENT
+            
+            currentUser.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                print(snapshot.value)
+                
+                if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
+                    for snap in snapshots {
+                        print("SNAP: \(snap)")
+                        
+                        if let userDict = snap.value as? Dictionary<String, AnyObject> {
+                            print(userDict)
+                            if let _ = userDict["universityId"] {
+                                self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                            } else {
+                                self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+                            }
+                        }
+                    }
+                }
+            })
         }
     }
     
@@ -89,16 +119,22 @@ class ViewController: UIViewController {
                                 DataService.ds.REF_BASE.authUser(email, password: pwd, withCompletionBlock: {
                                     err, authData in
                                     
+                                    print(authData)
+                                    
                                     // TODO: should check for provider
                                     let user = [
                                         "provider": authData.provider!,
                                         "email": authData.providerData["email"] as! NSString as String,
-                                        "profileImgURL": authData.providerData["profileImageURL"] as! NSString as String
+                                        "profileImgURL": authData.providerData["profileImageURL"] as! NSString as String,
+                                        "name": authData.providerData["email"] as! NSString as String,
+                                        "universityId": ""
                                     ]
                                     
+                                    // let newUser = User(newUser: user)
                                     DataService.ds.createFirebaseUser(authData.uid, user: user)
                                 })
-                                self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                                
+                                self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
                             }
                             
                         })

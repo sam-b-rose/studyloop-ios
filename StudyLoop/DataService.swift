@@ -24,8 +24,10 @@ class DataService {
     // private var _REF_USERS = Firebase(url: "\(URL_BASE)/users")
     
     // for Dev Only
-    private var _REF_LOOP = Firebase(url: "\(URL_BASE)/ios-loop")
+    private var _REF_LOOP = Firebase(url: "\(URL_BASE)/loop-messages/-K6B8Ccm8ST60MX5oN8p")
     private var _REF_USERS = Firebase(url: "\(URL_BASE)/ios-users")
+    
+    
     
     var REF_BASE: Firebase {
         return _REF_BASE
@@ -33,6 +35,10 @@ class DataService {
     
     var REF_LOOP_MESSAGES: Firebase {
         return _REF_LOOP_MESSAGES
+    }
+    
+    var REF_UNIVERSITIES: Firebase {
+        return _REF_UNIVERSITIES
     }
     
     var REF_LOOP: Firebase {
@@ -48,6 +54,8 @@ class DataService {
         let user = Firebase(url: "\(URL_BASE)").childByAppendingPath("ios-users").childByAppendingPath(uid)
         return user!
     }
+    
+    
     
     func createFirebaseUser(uid: String, user: Dictionary<String, String>) {
         REF_USERS.childByAppendingPath(uid).setValue(user)
