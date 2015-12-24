@@ -15,17 +15,17 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -50,15 +50,11 @@ class ViewController: UIViewController {
                     for snap in snapshots {
                         print("SNAP: \(snap)")
                         
-                        if let userDict = snap.value as? Dictionary<String, AnyObject> {
-                            print(userDict)
-                            if let _ = userDict["universityId"] {
-                                self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
-                            } else {
-                                self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
-                            }
+                        if let key = snap.key where key == "universityId" {
+                            self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                         }
                     }
+                    self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
                 }
             })
         }
@@ -101,7 +97,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func attempLogin(sender: UIButton!) {
-    
+        
         if let email = emailField.text where email != "", let pwd = passwordField.text where pwd != "" {
             
             DataService.ds.REF_BASE.authUser(email, password: pwd, withCompletionBlock: { error, authData in

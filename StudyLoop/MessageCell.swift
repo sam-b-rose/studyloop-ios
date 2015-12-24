@@ -1,5 +1,5 @@
 //
-//  PostCell.swift
+//  MessageCell.swift
 //  StudyLoop
 //
 //  Created by Sam Rose on 12/5/15.

@@ -35,7 +35,7 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         tableView.estimatedRowHeight = 432
         
         DataService.ds.REF_LOOP.observeEventType(.Value, withBlock: { snapshot in
-            print(snapshot.value)
+            // print(snapshot.value)
             
             self.messages = []
             if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
@@ -46,6 +46,7 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
                         let key = snap.key
                         let message = Message(messageKey: key, dictionary: messageDict)
                         self.messages.append(message)
+                        print(self.messages)
                     }
                 }
             }
