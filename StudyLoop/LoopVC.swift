@@ -16,6 +16,7 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     @IBOutlet weak var messageField: MaterialTextField!
     @IBOutlet weak var imageSelectorBtn: UIImageView!
     @IBOutlet weak var bottomSpacingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var backButton: UIButton!
     
     var messages = [Message]()
     var imageSelected = false
@@ -46,7 +47,7 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
                         let key = snap.key
                         let message = Message(messageKey: key, dictionary: messageDict)
                         self.messages.append(message)
-                        print(self.messages)
+                        // print(self.messages)
                     }
                 }
             }
@@ -198,6 +199,11 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
                 animations: { self.view.layoutIfNeeded() },
                 completion: nil)
         }
+    }
+    
+    @IBAction func backButtonPressed(sender: AnyObject) {
+        DataService.ds.REF_BASE.unauth()
+        dismissViewControllerAnimated(true, completion: nil)
     }
 
 }

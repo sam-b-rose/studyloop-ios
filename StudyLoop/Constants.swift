@@ -16,6 +16,7 @@ let KEY_UID = "uid"
 
 // Segues
 let SEGUE_LOGGED_IN = "loggedIn"
+let SEGUE_LOGGED_OUT = "loggedOut"
 let SEGUE_SELECT_UNIVERSITY = "selectUniversity"
 
 // Status Codes

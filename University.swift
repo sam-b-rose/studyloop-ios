@@ -60,7 +60,7 @@ class University {
         self._universityRef = DataService.ds.REF_UNIVERSITIES.childByAppendingPath(self._universityKey)
     }
     
-
+    
     
     func addUser (userId: String) {
         _universityRef.childByAppendingPath("userIds").setValue(userId)

@@ -19,6 +19,24 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        if NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) != nil {
+//            let currentUser = DataService.ds.REF_USER_CURRENT
+//            
+//            currentUser.observeSingleEventOfType(.Value, withBlock: { snapshot in
+//                print(snapshot.value)
+//                
+//                if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
+//                    for snap in snapshots {
+//                        print("SNAP: \(snap)")
+//                        
+//                        if let key = snap.key where key == "universityId" {
+//                            self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+//                        }
+//                    }
+//                    self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+//                }
+//            })
+//        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -34,30 +52,30 @@ class ViewController: UIViewController {
             if authData != nil {
                 // user authenticated
                 print(authData.providerData)
+                
+                // check for university
+                let currentUser = DataService.ds.REF_USER_CURRENT
+                
+                currentUser.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                    print(snapshot.value)
+                    
+                    if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
+                        for snap in snapshots {
+                            print("SNAP: \(snap)")
+                            
+                            if let key = snap.key where key == "universityId" {
+                                self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                            }
+                        }
+                        self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+                    }
+                })
+                
             } else {
                 // No user is signed in
                 print("No User is signed in")
             }
         })
-        
-        if NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) != nil {
-            let currentUser = DataService.ds.REF_USER_CURRENT
-            
-            currentUser.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                print(snapshot.value)
-                
-                if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
-                    for snap in snapshots {
-                        print("SNAP: \(snap)")
-                        
-                        if let key = snap.key where key == "universityId" {
-                            self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
-                        }
-                    }
-                    self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
-                }
-            })
-        }
     }
     
     @IBAction func fbBtnPressed(sender: UIButton!) {
@@ -122,8 +140,7 @@ class ViewController: UIViewController {
                                         "provider": authData.provider!,
                                         "email": authData.providerData["email"] as! NSString as String,
                                         "profileImgURL": authData.providerData["profileImageURL"] as! NSString as String,
-                                        "name": authData.providerData["email"] as! NSString as String,
-                                        "universityId": ""
+                                        "name": authData.providerData["email"] as! NSString as String
                                     ]
                                     
                                     // let newUser = User(newUser: user)
@@ -137,9 +154,11 @@ class ViewController: UIViewController {
                     } else {
                         self.showErrorAlert("Could not login", msg: "Please check your username and password")
                     }
-                } else {
-                    self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                 }
+                
+//                else {
+//                    self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+//                }
             })
             
         } else {

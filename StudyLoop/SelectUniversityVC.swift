@@ -12,6 +12,7 @@ import Firebase
 class SelectUniversityVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var backButton: UIButton!
     
     var universities = [University]()
     
@@ -25,11 +26,11 @@ class SelectUniversityVC: UIViewController, UITableViewDelegate, UITableViewData
             self.universities = []
             if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
                 for snap in snapshots {
-                    // print("SNAP: \(snap)")
+                    print("SNAP: \(snap)")
                     
                     if let universitiesDict = snap.value as? Dictionary<String, AnyObject> {
                         let key = snap.key
-                        // print(key, universitiesDict)
+                        print(key, universitiesDict)
                         
                         // Create University Object
                         let university = University(universityKey: key, dictionary: universitiesDict)
@@ -65,9 +66,14 @@ class SelectUniversityVC: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         DataService.ds.REF_USER_CURRENT.childByAppendingPath("universityId").setValue(universities[indexPath.row].universityKey)
-        self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+        //self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+        dismissViewControllerAnimated(true, completion: nil)
     }
-            
+    
+    @IBAction func backButtonPressed(sender: AnyObject) {
+        DataService.ds.REF_BASE.unauth()
+        dismissViewControllerAnimated(true, completion: nil)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
