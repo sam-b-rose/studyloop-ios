@@ -86,8 +86,10 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-StudyLoop/Alamofire.framework"
   install_framework "Pods-StudyLoop/Firebase.framework"
+  install_framework "Pods-StudyLoop/KYDrawerController.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-StudyLoop/Alamofire.framework"
   install_framework "Pods-StudyLoop/Firebase.framework"
+  install_framework "Pods-StudyLoop/KYDrawerController.framework"
 fi
