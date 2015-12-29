@@ -15,6 +15,7 @@ class University {
     private var _userIds: Dictionary<String, AnyObject>?
     private var _universityKey: String!
     private var _universityRef: Firebase!
+    private var _profileImageURL: String?
     
     var shortName: String {
         return _shortName

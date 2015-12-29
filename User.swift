@@ -64,16 +64,16 @@ class User {
         self._courseIds = nil
     }
     
-    init(newUser: Dictionary<String, String?>) {
-        self._id = newUser["id"]!
-        self._email = newUser["email"]!
+    init(dictionary: Dictionary<String, AnyObject?>) {
+        self._id = dictionary["id"] as? String
+        self._email = dictionary["email"] as? String
 
-        if newUser["name"] != nil {
-            self._name = newUser["name"]!
+        if dictionary["name"] != nil {
+            self._name = dictionary["name"] as? String
         }
         
-        if newUser["profileImgUrl"] != nil {
-            self._profileImgUrl = newUser["profileImgUrl"]!
+        if dictionary["profileImgUrl"] != nil {
+            self._profileImgUrl = dictionary["profileImgUrl"] as? String
         }
         
         // initialize to empty
