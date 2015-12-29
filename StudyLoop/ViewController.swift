@@ -101,7 +101,7 @@ class ViewController: UIViewController {
                             "provider": authData.provider!,
                             "name": authData.providerData["displayName"] as! NSString as String,
                             "email": authData.providerData["email"] as! NSString as String,
-                            "profileImgURL": authData.providerData["profileImageURL"] as! NSString as String
+                            "profileImageURL": authData.providerData["profileImageURL"] as! NSString as String
                         ]
                         
                         DataService.ds.createFirebaseUser(authData.uid, user: user)
@@ -139,7 +139,7 @@ class ViewController: UIViewController {
                                     let user = [
                                         "provider": authData.provider!,
                                         "email": authData.providerData["email"] as! NSString as String,
-                                        "profileImgURL": authData.providerData["profileImageURL"] as! NSString as String,
+                                        "profileImageURL": authData.providerData["profileImageURL"] as! NSString as String,
                                         "name": authData.providerData["email"] as! NSString as String
                                     ]
                                     

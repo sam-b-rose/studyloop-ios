@@ -610,13 +610,13 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7fY-dA-lXa">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7fY-dA-lXa" customClass="UserView" customModule="StudyLoop" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="64" width="600" height="80"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="lSl-fN-rMg">
                                         <rect key="frame" x="8" y="15" width="584" height="50"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="owl-light-bg" translatesAutoresizingMaskIntoConstraints="NO" id="xBA-xk-y02" customClass="UserImage" customModule="StudyLoop" customModuleProvider="target">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="owl-light-bg" translatesAutoresizingMaskIntoConstraints="NO" id="xBA-xk-y02">
                                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="Vbp-Aq-Ens"/>
@@ -660,6 +660,11 @@
                                     <constraint firstAttribute="height" constant="80" id="xZ5-3B-ezz"/>
                                     <constraint firstItem="lSl-fN-rMg" firstAttribute="top" secondItem="7fY-dA-lXa" secondAttribute="top" constant="15" id="yfK-lC-cdk"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="emailLabel" destination="XL9-hX-U7L" id="gqv-2n-ViO"/>
+                                    <outlet property="nameLabel" destination="KPW-fV-fWa" id="YLR-o1-jMy"/>
+                                    <outlet property="profileImage" destination="xBA-xk-y02" id="Hgj-gI-dWL"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
@@ -681,9 +686,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="wTz-bR-0wb"/>
                     <connections>
-                        <outlet property="emailLabel" destination="XL9-hX-U7L" id="sU0-tz-eBh"/>
-                        <outlet property="nameLabel" destination="KPW-fV-fWa" id="iY0-Vo-ABt"/>
-                        <outlet property="profileImage" destination="xBA-xk-y02" id="gYs-sa-6p8"/>
                         <outlet property="tableView" destination="rZc-yv-mDH" id="g9U-6Z-7D7"/>
                     </connections>
                 </viewController>
@@ -740,6 +742,6 @@
         <image name="studyloop-logo" width="521" height="149"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="p2V-GG-AyM"/>
+        <segue reference="h0U-HH-vIH"/>
     </inferredMetricsTieBreakers>
 </document>

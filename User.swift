@@ -14,7 +14,7 @@ class User {
     private var _id: String!
     private var _name: String!
     private var _facebookId: String?
-    private var _profileImgUrl: String?
+    private var _profileImageURL: String?
     private var _courseIds: Dictionary<String, Bool>?
     private var _universityId: String?
     private var _userRef: Firebase!
@@ -35,8 +35,8 @@ class User {
         return _facebookId
     }
     
-    var profileImgUrl: String? {
-        return _profileImgUrl
+    var profileImageURL: String? {
+        return _profileImageURL
     }
     
     var courseIds: Dictionary<String, Bool>? {
@@ -47,7 +47,7 @@ class User {
         return _universityId
     }
     
-    init(uid: String, email: String, name: String?, profileImgUrl: String?) {
+    init(uid: String, email: String, name: String?, profileImageURL: String?) {
         self._id = uid
         self._email = email
         
@@ -55,8 +55,8 @@ class User {
             self._name = name
         }
         
-        if profileImgUrl != nil {
-            self._profileImgUrl = profileImgUrl
+        if profileImageURL != nil {
+            self._profileImageURL = profileImageURL
         }
         
         // initialize to empty
@@ -72,8 +72,8 @@ class User {
             self._name = dictionary["name"] as? String
         }
         
-        if dictionary["profileImgUrl"] != nil {
-            self._profileImgUrl = dictionary["profileImgUrl"] as? String
+        if dictionary["profileImageURL"] != nil {
+            self._profileImageURL = dictionary["profileImageURL"] as? String
         }
         
         // initialize to empty
