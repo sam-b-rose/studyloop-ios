@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import Alamofire
+import KYDrawerController
 
 class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -16,7 +17,6 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     @IBOutlet weak var messageField: MaterialTextField!
     @IBOutlet weak var imageSelectorBtn: UIImageView!
     @IBOutlet weak var bottomSpacingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var backButton: UIButton!
     
     var messages = [Message]()
     var imageSelected = false
@@ -196,9 +196,10 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         }
     }
     
-    @IBAction func backButtonPressed(sender: AnyObject) {
-        DataService.ds.REF_BASE.unauth()
-        dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func didTapOpenButton(sender: UIBarButtonItem) {
+        if let drawerController = navigationController?.parentViewController as? KYDrawerController {
+            drawerController.setDrawerState(.Opened, animated: true)
+        }
     }
 
 }

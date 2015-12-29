@@ -15,7 +15,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     
-    var user: User?
+    var items = [MenuItem]()
     var request: Request?
     static var imageCache = NSCache()
     
@@ -24,6 +24,12 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         tableView.delegate = self
         tableView.dataSource = self
+        
+        // Get course Data
+        
+        
+        // Append Defaults
+        items += appendDefaltItems()
     }
     
     
@@ -32,11 +38,18 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return items.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        let item = items[indexPath.row]
+        
+        if let cell = tableView.dequeueReusableCellWithIdentifier("DrawerCell") as? DrawerCell {
+            cell.configureCell(item)
+            return cell
+        } else {
+            return DrawerCell()
+        }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -44,19 +57,21 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         if let drawerController = navigationController?.parentViewController as? KYDrawerController {
             let mainNavigation = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainNavigation") as! UINavigationController
-            let backgroundColor: UIColor
-            switch indexPath.row {
-            case 0:
-                backgroundColor = UIColor.redColor()
-            case 1:
-                backgroundColor = UIColor.blueColor()
-            default:
-                backgroundColor = UIColor.whiteColor()
-            }
-            mainNavigation.topViewController?.view.backgroundColor = backgroundColor
+
+            // send course info
+            mainNavigation.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
             drawerController.mainViewController = mainNavigation
             drawerController.setDrawerState(.Closed, animated: true)
         }
+    }
+    
+    func appendDefaltItems() -> [MenuItem] {
+        let defaults = [
+            MenuItem(title: "Settings"),
+            MenuItem(title: "Logout")
+        ]
+        
+        return defaults
     }
     
 }
