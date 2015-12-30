@@ -19,24 +19,24 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        if NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) != nil {
-//            let currentUser = DataService.ds.REF_USER_CURRENT
-//            
-//            currentUser.observeSingleEventOfType(.Value, withBlock: { snapshot in
-//                print(snapshot.value)
-//                
-//                if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
-//                    for snap in snapshots {
-//                        print("SNAP: \(snap)")
-//                        
-//                        if let key = snap.key where key == "universityId" {
-//                            self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
-//                        }
-//                    }
-//                    self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
-//                }
-//            })
-//        }
+        //        if NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) != nil {
+        //            let currentUser = DataService.ds.REF_USER_CURRENT
+        //
+        //            currentUser.observeSingleEventOfType(.Value, withBlock: { snapshot in
+        //                print(snapshot.value)
+        //
+        //                if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
+        //                    for snap in snapshots {
+        //                        print("SNAP: \(snap)")
+        //
+        //                        if let key = snap.key where key == "universityId" {
+        //                            self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+        //                        }
+        //                    }
+        //                    self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+        //                }
+        //            })
+        //        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -51,7 +51,7 @@ class ViewController: UIViewController {
         DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
             if authData != nil {
                 // user authenticated
-                print(authData.providerData)
+                // print(authData.providerData)
                 
                 // check for university
                 let currentUser = DataService.ds.REF_USER_CURRENT
@@ -59,15 +59,18 @@ class ViewController: UIViewController {
                 currentUser.observeSingleEventOfType(.Value, withBlock: { snapshot in
                     print(snapshot.value)
                     
+                    //self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                    
                     if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
                         for snap in snapshots {
                             print("SNAP: \(snap)")
                             
                             if let key = snap.key where key == "universityId" {
-                                self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                                // self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                                self.dismissViewControllerAnimated(true, completion: nil)
                             }
                         }
-                        self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+                        // self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
                     }
                 })
                 
@@ -87,16 +90,15 @@ class ViewController: UIViewController {
                 print("Facebook login failed. Error \(facebookError)")
             } else {
                 let accessToken = FBSDKAccessToken.currentAccessToken().tokenString
-                print("Successfully logined in with facebook. \(accessToken)")
+                //print("Successfully logined in with facebook. \(accessToken)")
                 
                 DataService.ds.REF_BASE.authWithOAuthProvider("facebook", token: accessToken, withCompletionBlock: { (error, authData) -> Void in
                     if error != nil {
                         print("login failed. \(error)")
                         
                     } else {
-                        print("Logged in! \(authData)")
+                        //print("Logged in! \(authData)")
                         
-                        // TODO: should check for provider
                         let user = [
                             "provider": authData.provider!,
                             "name": authData.providerData["displayName"] as! NSString as String,
@@ -106,8 +108,11 @@ class ViewController: UIViewController {
                         
                         DataService.ds.createFirebaseUser(authData.uid, user: user)
                         
+                        // TODO: Check for University
                         NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
-                        self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                        self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+                        //self.dismissViewControllerAnimated(true, completion: nil)
+                        //self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                     }
                 })
             }
@@ -143,11 +148,12 @@ class ViewController: UIViewController {
                                         "name": authData.providerData["email"] as! NSString as String
                                     ]
                                     
-                                    // let newUser = User(newUser: user)
                                     DataService.ds.createFirebaseUser(authData.uid, user: user)
                                 })
-                                
-                                self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+                                // TODO: Check for University
+                                //self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+                                //self.dismissViewControllerAnimated(true, completion: nil)
+                                //self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                             }
                             
                         })
@@ -156,9 +162,9 @@ class ViewController: UIViewController {
                     }
                 }
                 
-//                else {
-//                    self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
-//                }
+                //                else {
+                //                    self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                //                }
             })
             
         } else {

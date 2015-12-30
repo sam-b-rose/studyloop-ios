@@ -58,20 +58,50 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if let drawerController = navigationController?.parentViewController as? KYDrawerController {
             let mainNavigation = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainNavigation") as! UINavigationController
 
-            // send course info
-            mainNavigation.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
-            drawerController.mainViewController = mainNavigation
+            switch indexPath.row {
+            case (items.count - 3):
+                // Settings
+                print("add course")
+                break
+            case (items.count - 2):
+                // Settings
+                print("settings")
+                mainNavigation.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+                break
+            case (items.count - 1):
+                // Logout
+                print("logout")
+                DataService.ds.REF_BASE.unauth()
+                drawerController.performSegueWithIdentifier(SEGUE_LOGGED_OUT, sender: nil)
+                break
+            default:
+                // go to course
+                mainNavigation.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+            }
+            
+            // drawerController.mainViewController = mainNavigation
             drawerController.setDrawerState(.Closed, animated: true)
         }
     }
     
     func appendDefaltItems() -> [MenuItem] {
         let defaults = [
+            MenuItem(title: "Add Course"),
             MenuItem(title: "Settings"),
             MenuItem(title: "Logout")
         ]
         
         return defaults
+    }
+    
+    func goToProfile() {
+        if let drawerController = navigationController?.parentViewController as? KYDrawerController {
+            let mainNavigation = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainNavigation") as! UINavigationController
+                // go to profile
+                mainNavigation.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+                drawerController.mainViewController = mainNavigation
+                drawerController.setDrawerState(.Closed, animated: true)
+        }
     }
     
 }

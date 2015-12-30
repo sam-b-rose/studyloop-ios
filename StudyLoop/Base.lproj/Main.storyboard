@@ -49,6 +49,7 @@
                     <connections>
                         <segue destination="86i-NW-Qv2" kind="custom" identifier="drawer" customClass="KYEmbedDrawerControllerSegue" customModule="KYDrawerController" id="Ngu-yJ-Q44"/>
                         <segue destination="Gly-6d-ko7" kind="custom" identifier="main" customClass="KYEmbedMainControllerSegue" customModule="KYDrawerController" id="p2V-GG-AyM"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="loggedOut" id="PFu-nr-U0M"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mx1-Ri-LW4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -189,17 +190,17 @@
                     <connections>
                         <outlet property="emailField" destination="htn-MN-gv8" id="yFr-Qk-esk"/>
                         <outlet property="passwordField" destination="r8e-0o-0uZ" id="zkP-VI-Ozu"/>
-                        <segue destination="Gly-6d-ko7" kind="show" identifier="loggedIn" id="h0U-HH-vIH"/>
+                        <segue destination="HHz-C6-cOx" kind="show" identifier="selectUniversity" id="uCU-8h-BCN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="117" y="1107"/>
+            <point key="canvasLocation" x="191" y="1924"/>
         </scene>
         <!--Activity-->
         <scene sceneID="tRA-Mg-FhC">
             <objects>
-                <viewController id="oAH-fn-Mry" customClass="LoopVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoopVC" id="oAH-fn-Mry" customClass="LoopVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="vIH-zm-gSw"/>
                         <viewControllerLayoutGuide type="bottom" id="eIy-Zj-qD9"/>
@@ -459,15 +460,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eQ4-2i-fVe" customClass="MaterialView" customModule="StudyLoop" customModuleProvider="target">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eQ4-2i-fVe" customClass="MaterialView" customModule="StudyLoop" customModuleProvider="target">
                                 <rect key="frame" x="20" y="100" width="560" height="500"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fqT-OQ-BSW">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fqT-OQ-BSW">
                                         <rect key="frame" x="8" y="8" width="544" height="484"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="UniversityCell" rowHeight="60" id="uSv-Lf-x7e" customClass="UniversityCell" customModule="StudyLoop" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="92" width="544" height="60"/>
+                                                <rect key="frame" x="0.0" y="28" width="544" height="60"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uSv-Lf-x7e" id="h0G-fE-ZQ0">
                                                     <rect key="frame" x="0.0" y="0.0" width="544" height="59.5"/>
@@ -533,7 +534,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="L5E-9s-6YK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1886" y="1275"/>
+            <point key="canvasLocation" x="1074" y="1924"/>
         </scene>
         <!--DrawerVC-->
         <scene sceneID="AIb-fo-lSa">
@@ -614,7 +615,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="56"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Menu Item" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Fn-wQ-MwW">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Menu Item" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Fn-wQ-MwW">
                                                     <rect key="frame" x="8" y="15" width="584" height="26"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="26" id="Vje-yl-rFI"/>
@@ -625,6 +626,7 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="1Fn-wQ-MwW" firstAttribute="centerY" secondItem="xsN-Li-91b" secondAttribute="centerY" id="1xz-JP-wkb"/>
                                                 <constraint firstItem="1Fn-wQ-MwW" firstAttribute="leading" secondItem="xsN-Li-91b" secondAttribute="leadingMargin" id="V58-pW-1h2"/>
                                                 <constraint firstItem="1Fn-wQ-MwW" firstAttribute="trailing" secondItem="xsN-Li-91b" secondAttribute="trailingMargin" id="ihh-aV-VGL"/>
                                             </constraints>
@@ -665,7 +667,7 @@
         <!--Navigation Controller-->
         <scene sceneID="et7-k6-0DI">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="86i-NW-Qv2" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="navigationController" automaticallyAdjustsScrollViewInsets="NO" id="86i-NW-Qv2" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="2hR-o1-psZ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -699,7 +701,6 @@
                     <nil name="viewControllers"/>
                     <connections>
                         <segue destination="oAH-fn-Mry" kind="relationship" relationship="rootViewController" id="5pg-q2-3bJ"/>
-                        <segue destination="HHz-C6-cOx" kind="show" identifier="selectUniversity" id="aKd-Ba-NjX"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bHX-Ul-oq2" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -716,7 +717,4 @@
         <image name="profile" width="128" height="128"/>
         <image name="studyloop-logo" width="521" height="149"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="h0U-HH-vIH"/>
-    </inferredMetricsTieBreakers>
 </document>

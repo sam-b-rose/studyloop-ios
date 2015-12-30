@@ -12,7 +12,6 @@ import Firebase
 class SelectUniversityVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var backButton: UIButton!
     
     var universities = [University]()
     
@@ -67,11 +66,6 @@ class SelectUniversityVC: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         DataService.ds.REF_USER_CURRENT.childByAppendingPath("universityId").setValue(universities[indexPath.row].universityKey)
         //self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
-        dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    @IBAction func backButtonPressed(sender: AnyObject) {
-        DataService.ds.REF_BASE.unauth()
         dismissViewControllerAnimated(true, completion: nil)
     }
 

@@ -85,6 +85,7 @@ class UserView: UIView {
     
     func viewTapped(sender: UITapGestureRecognizer) {
         // go to profile
+        print("view tapped: go to profile")
     }
 
 
