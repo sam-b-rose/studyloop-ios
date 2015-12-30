@@ -21,8 +21,6 @@ class DrawerCell: UITableViewCell {
     func configureCell(item: MenuItem) {
         self.item = item
         self.itemLabel.text = item.title
-        
-        print(self.itemLabel.text)
     }
 
 }

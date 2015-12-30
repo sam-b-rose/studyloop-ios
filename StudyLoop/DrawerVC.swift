@@ -15,6 +15,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     
+    
     var items = [MenuItem]()
     var request: Request?
     static var imageCache = NSCache()
@@ -24,6 +25,13 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         tableView.delegate = self
         tableView.dataSource = self
+        
+        // Set Logo
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 210 , height: 60))
+        imageView.contentMode = .ScaleAspectFit
+        let image = UIImage(named: "studyloop-logo.png")
+        imageView.image = image
+        navigationItem.titleView = imageView
         
         // Get course Data
         
@@ -57,16 +65,18 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         if let drawerController = navigationController?.parentViewController as? KYDrawerController {
             let mainNavigation = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainNavigation") as! UINavigationController
-
+            drawerController.mainViewController = mainNavigation
+            
             switch indexPath.row {
             case (items.count - 3):
                 // Settings
                 print("add course")
+                mainNavigation.topViewController?.performSegueWithIdentifier(SEGUE_ADD_COURSE, sender: nil)
                 break
             case (items.count - 2):
                 // Settings
                 print("settings")
-                mainNavigation.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+                mainNavigation.topViewController?.performSegueWithIdentifier(SEGUE_SETTINGS, sender: nil)
                 break
             case (items.count - 1):
                 // Logout
@@ -76,7 +86,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 break
             default:
                 // go to course
-                mainNavigation.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+                mainNavigation.topViewController?.viewDidAppear(false)
             }
             
             // drawerController.mainViewController = mainNavigation
@@ -97,10 +107,10 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func goToProfile() {
         if let drawerController = navigationController?.parentViewController as? KYDrawerController {
             let mainNavigation = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainNavigation") as! UINavigationController
-                // go to profile
-                mainNavigation.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
-                drawerController.mainViewController = mainNavigation
-                drawerController.setDrawerState(.Closed, animated: true)
+            // go to profile
+            mainNavigation.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+            drawerController.mainViewController = mainNavigation
+            drawerController.setDrawerState(.Closed, animated: true)
         }
     }
     

@@ -13,8 +13,15 @@
             <string>NotoSans-Bold</string>
             <string>NotoSans-Bold</string>
             <string>NotoSans-Bold</string>
+            <string>NotoSans-Bold</string>
+            <string>NotoSans-Bold</string>
+            <string>NotoSans-Bold</string>
         </mutableArray>
         <mutableArray key="NotoSans-Regular.ttf">
+            <string>NotoSans</string>
+            <string>NotoSans</string>
+            <string>NotoSans</string>
+            <string>NotoSans</string>
             <string>NotoSans</string>
             <string>NotoSans</string>
             <string>NotoSans</string>
@@ -200,7 +207,7 @@
         <!--Activity-->
         <scene sceneID="tRA-Mg-FhC">
             <objects>
-                <viewController storyboardIdentifier="LoopVC" id="oAH-fn-Mry" customClass="LoopVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="oAH-fn-Mry" customClass="LoopVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="vIH-zm-gSw"/>
                         <viewControllerLayoutGuide type="bottom" id="eIy-Zj-qD9"/>
@@ -437,6 +444,8 @@
                         <outlet property="imageSelectorBtn" destination="paJ-x4-yKT" id="6a1-7V-xjV"/>
                         <outlet property="messageField" destination="ZgF-8j-sJc" id="N5V-n7-R39"/>
                         <outlet property="tableView" destination="dhX-cC-a0J" id="A6C-hm-JvG"/>
+                        <segue destination="m8u-j2-o1x" kind="show" identifier="addCourse" animates="NO" id="fr3-y4-Nlv"/>
+                        <segue destination="V29-VW-8VX" kind="show" identifier="settings" animates="NO" id="dSe-Ke-XCs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bQf-vE-Nst" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -447,6 +456,233 @@
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1886" y="487"/>
+        </scene>
+        <!--SettingsVC-->
+        <scene sceneID="PgW-dy-rXg">
+            <objects>
+                <viewController id="V29-VW-8VX" customClass="SettingsVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="7zq-vK-yx9"/>
+                        <viewControllerLayoutGuide type="bottom" id="HPA-mm-EiK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="jqi-Vo-07G">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R5R-ER-X75">
+                                <rect key="frame" x="268" y="289" width="64" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="R5R-ER-X75" firstAttribute="centerX" secondItem="jqi-Vo-07G" secondAttribute="centerX" id="9pQ-Rp-0af"/>
+                            <constraint firstItem="R5R-ER-X75" firstAttribute="centerY" secondItem="jqi-Vo-07G" secondAttribute="centerY" id="LXl-Do-n8m"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="j05-vj-5Wi"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="T76-aU-6LL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2589" y="1263"/>
+        </scene>
+        <!--Add CourseVC-->
+        <scene sceneID="juf-rE-HOu">
+            <objects>
+                <viewController id="m8u-j2-o1x" customClass="AddCourseVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Y56-eA-ztY"/>
+                        <viewControllerLayoutGuide type="bottom" id="7qt-QM-kHa"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Fcu-e2-Do2">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="93D-dM-S3c">
+                                <rect key="frame" x="20" y="72" width="560" height="121"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="GN1-WR-i1m">
+                                        <rect key="frame" x="0.0" y="0.0" width="560" height="35"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Major" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lo5-9H-0gh">
+                                                <rect key="frame" x="0.0" y="0.0" width="87" height="35"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="150" id="7NC-5P-lci"/>
+                                                    <constraint firstAttribute="height" constant="21" id="9Uh-oO-Jmo"/>
+                                                    <constraint firstAttribute="width" constant="87" id="YkT-dT-JjU"/>
+                                                    <constraint firstAttribute="height" constant="24" id="eI1-KL-IiN"/>
+                                                    <constraint firstAttribute="width" constant="179" id="pMP-Uj-WgF"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="24" id="prj-ZL-FCf"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="uZr-Tb-A6g"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="NotoSans-Bold" family="Noto Sans" pointSize="17"/>
+                                                <color key="textColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="7NC-5P-lci"/>
+                                                        <exclude reference="9Uh-oO-Jmo"/>
+                                                        <exclude reference="eI1-KL-IiN"/>
+                                                        <exclude reference="pMP-Uj-WgF"/>
+                                                        <exclude reference="prj-ZL-FCf"/>
+                                                        <exclude reference="uZr-Tb-A6g"/>
+                                                    </mask>
+                                                </variation>
+                                            </label>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="BIOL" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MLY-9i-jjD" customClass="MaterialTextField" customModule="StudyLoop" customModuleProvider="target">
+                                                <rect key="frame" x="92" y="0.0" width="468" height="35"/>
+                                                <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="35" id="RIe-zj-aOh"/>
+                                                    <constraint firstAttribute="height" constant="35" id="oF7-d8-eNa"/>
+                                                </constraints>
+                                                <color key="textColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="6Yj-f9-D7R">
+                                        <rect key="frame" x="0.0" y="43" width="560" height="35"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mla-Mx-CQz">
+                                                <rect key="frame" x="0.0" y="0.0" width="87" height="35"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="179" id="04O-yi-Kle"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="49g-5c-IFR"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="24" id="ZgV-1O-0hD"/>
+                                                    <constraint firstAttribute="width" constant="150" id="aYd-u8-s7I"/>
+                                                    <constraint firstAttribute="height" constant="21" id="jDn-M0-lV6"/>
+                                                    <constraint firstAttribute="height" constant="24" id="xAa-lu-Wvd"/>
+                                                    <constraint firstAttribute="width" constant="87" id="xVj-aL-8Xr"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="NotoSans-Bold" family="Noto Sans" pointSize="17"/>
+                                                <color key="textColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="04O-yi-Kle"/>
+                                                        <exclude reference="49g-5c-IFR"/>
+                                                        <exclude reference="ZgV-1O-0hD"/>
+                                                        <exclude reference="aYd-u8-s7I"/>
+                                                        <exclude reference="jDn-M0-lV6"/>
+                                                        <exclude reference="xAa-lu-Wvd"/>
+                                                    </mask>
+                                                </variation>
+                                            </label>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="220" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WLk-7K-Gvu" customClass="MaterialTextField" customModule="StudyLoop" customModuleProvider="target">
+                                                <rect key="frame" x="92" y="0.0" width="468" height="35"/>
+                                                <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="35" id="B0g-HH-iPo"/>
+                                                    <constraint firstAttribute="height" constant="35" id="HJD-Y7-Vfn"/>
+                                                </constraints>
+                                                <color key="textColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="ANw-sD-x5A">
+                                        <rect key="frame" x="0.0" y="86" width="560" height="35"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instructor" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dJw-Ok-ht7">
+                                                <rect key="frame" x="0.0" y="0.0" width="87" height="35"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="24" id="9ld-0c-nKu"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="24" id="Ak7-DN-L7h"/>
+                                                    <constraint firstAttribute="width" constant="150" id="HKx-Ti-XXq"/>
+                                                    <constraint firstAttribute="height" constant="21" id="Xkq-Jb-fEt"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="dmX-W1-Nqe"/>
+                                                    <constraint firstAttribute="width" constant="179" id="m0f-yr-U5L"/>
+                                                    <constraint firstAttribute="width" constant="87" id="qt5-8Z-tpK"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="NotoSans-Bold" family="Noto Sans" pointSize="17"/>
+                                                <color key="textColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="9ld-0c-nKu"/>
+                                                        <exclude reference="Ak7-DN-L7h"/>
+                                                        <exclude reference="HKx-Ti-XXq"/>
+                                                        <exclude reference="Xkq-Jb-fEt"/>
+                                                        <exclude reference="dmX-W1-Nqe"/>
+                                                        <exclude reference="m0f-yr-U5L"/>
+                                                    </mask>
+                                                </variation>
+                                            </label>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Larsen" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fzL-Y3-SSb" customClass="MaterialTextField" customModule="StudyLoop" customModuleProvider="target">
+                                                <rect key="frame" x="92" y="0.0" width="468" height="35"/>
+                                                <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="35" id="Hhs-Qw-WIG"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="35" id="SSE-eQ-gXS"/>
+                                                </constraints>
+                                                <color key="textColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zva-Y5-J4y" customClass="MaterialView" customModule="StudyLoop" customModuleProvider="target">
+                                <rect key="frame" x="20" y="201" width="560" height="399"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="55" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8Un-P1-0Hc">
+                                        <rect key="frame" x="0.0" y="0.0" width="560" height="399"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <prototypes>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="DrawerCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="DrawerCell" rowHeight="55" id="Zyf-Lb-090" customClass="DrawerCell" customModule="StudyLoop" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="28" width="560" height="55"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zyf-Lb-090" id="VC0-Lg-an6">
+                                                    <rect key="frame" x="0.0" y="0.0" width="560" height="55"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="BIOL 220" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ue-1m-1jb">
+                                                            <rect key="frame" x="8" y="16" width="544" height="21"/>
+                                                            <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </tableViewCellContentView>
+                                                <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                            </tableViewCell>
+                                        </prototypes>
+                                    </tableView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="8Un-P1-0Hc" secondAttribute="trailing" id="DrN-Cm-A0z"/>
+                                    <constraint firstItem="8Un-P1-0Hc" firstAttribute="leading" secondItem="Zva-Y5-J4y" secondAttribute="leading" id="Sre-v3-gL9"/>
+                                    <constraint firstItem="8Un-P1-0Hc" firstAttribute="top" secondItem="Zva-Y5-J4y" secondAttribute="top" id="d5N-6q-7gO"/>
+                                    <constraint firstAttribute="bottom" secondItem="8Un-P1-0Hc" secondAttribute="bottom" id="taE-CQ-d1S"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="93D-dM-S3c" firstAttribute="top" secondItem="Y56-eA-ztY" secondAttribute="bottom" constant="8" id="3TC-EI-xCK"/>
+                            <constraint firstItem="Zva-Y5-J4y" firstAttribute="leading" secondItem="Fcu-e2-Do2" secondAttribute="leadingMargin" id="DCW-wq-OhT"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="93D-dM-S3c" secondAttribute="trailing" id="FJx-4e-bze"/>
+                            <constraint firstItem="7qt-QM-kHa" firstAttribute="top" secondItem="Zva-Y5-J4y" secondAttribute="bottom" id="JA1-tm-fqz"/>
+                            <constraint firstItem="Zva-Y5-J4y" firstAttribute="trailing" secondItem="Fcu-e2-Do2" secondAttribute="trailingMargin" id="Rlv-k9-X5P"/>
+                            <constraint firstItem="93D-dM-S3c" firstAttribute="leading" secondItem="Fcu-e2-Do2" secondAttribute="leadingMargin" id="TK7-E1-Cjz"/>
+                            <constraint firstItem="Zva-Y5-J4y" firstAttribute="top" secondItem="93D-dM-S3c" secondAttribute="bottom" constant="8" id="yGF-kC-TWE"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="E7z-zn-SmH"/>
+                    <connections>
+                        <outlet property="tableView" destination="8Un-P1-0Hc" id="E8m-7T-Qp9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="c9Z-Yp-3ha" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2589" y="487"/>
         </scene>
         <!--Select University-->
         <scene sceneID="gPb-mY-bYE">
@@ -460,18 +696,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eQ4-2i-fVe" customClass="MaterialView" customModule="StudyLoop" customModuleProvider="target">
-                                <rect key="frame" x="20" y="100" width="560" height="500"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eQ4-2i-fVe" customClass="MaterialView" customModule="StudyLoop" customModuleProvider="target">
+                                <rect key="frame" x="20" y="56" width="560" height="544"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fqT-OQ-BSW">
-                                        <rect key="frame" x="8" y="8" width="544" height="484"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fqT-OQ-BSW">
+                                        <rect key="frame" x="8" y="8" width="544" height="528"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="UniversityCell" rowHeight="60" id="uSv-Lf-x7e" customClass="UniversityCell" customModule="StudyLoop" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="28" width="544" height="60"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uSv-Lf-x7e" id="h0G-fE-ZQ0">
-                                                    <rect key="frame" x="0.0" y="0.0" width="544" height="59.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="544" height="59"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="University of Tennessee" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IhG-xD-cM4">
@@ -534,7 +770,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="L5E-9s-6YK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1074" y="1924"/>
+            <point key="canvasLocation" x="1886" y="1924"/>
         </scene>
         <!--DrawerVC-->
         <scene sceneID="AIb-fo-lSa">
@@ -657,6 +893,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="wTz-bR-0wb"/>
                     <connections>
+                        <outlet property="navigationItem" destination="wTz-bR-0wb" id="sVh-sv-IRZ"/>
                         <outlet property="tableView" destination="rZc-yv-mDH" id="g9U-6Z-7D7"/>
                     </connections>
                 </viewController>

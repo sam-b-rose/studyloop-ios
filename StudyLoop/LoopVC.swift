@@ -60,6 +60,10 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardNotification:"), name:UIKeyboardWillHideNotification, object: nil);
     }
     
+    override func viewDidAppear(animated: Bool) {
+        print("load course loops")
+    }
+    
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
@@ -175,6 +179,7 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         
         tableView.reloadData()
     }
+
     
     func keyboardNotification(notification: NSNotification) {
         
