@@ -15,12 +15,18 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate 
     @IBOutlet weak var tableView: UITableView!
     
     var courses = [MenuItem]()
+    var courseResults = [MenuItem]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.delegate = self
         tableView.dataSource = self
+        
+        // Get Course Data
+        if(StateService.ss.COURSES?.count == 0) {
+            StateService.ss.getCourses()
+        }
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

@@ -1,0 +1,6 @@
+framework module FuzzySearch {
+  umbrella header "FuzzySearch-umbrella.h"
+
+  export *
+  module * { export * }
+}

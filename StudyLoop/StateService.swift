@@ -7,31 +7,53 @@
 //
 
 import Foundation
+import Firebase
 
 class StateService {
     static let ss = StateService()
     
-    private var _CURRENT_STATE: String!
-    private var _STATE_SETTINGS = "settings"
-    private var _STATE_LOOP = "loop"
+    private var _CURRENT_USER: User?
+    private var _CURRENT_UNIVERSITY: University?
+    private var _COURSES = [Course]()
     
-    var CURRENT_STATE: String {
-        return _CURRENT_STATE
+    var CURRENT_USER: User? {
+        return _CURRENT_USER
     }
     
-    var STATE_SETTINGS: String {
-        return _STATE_SETTINGS
+    var CURRENT_UNIVERSITY: University? {
+        return _CURRENT_UNIVERSITY
+    }
+
+    var COURSES: [Course]? {
+        return _COURSES
     }
     
-    var STATE_LOOP: String {
-        return _STATE_LOOP
+    func setUser(user: User) {
+        _CURRENT_USER = user
     }
     
-    init() {
-        _CURRENT_STATE = STATE_LOOP
-    }
-    
-    func setState(state: String) {
-        _CURRENT_STATE = state
+    func getCourses() {
+        _COURSES = []
+        
+        DataService.ds.REF_COURSES
+            .queryOrderedByChild("universityId")
+            .queryStartingAtValue(_CURRENT_UNIVERSITY)
+            .queryEndingAtValue(_CURRENT_UNIVERSITY)
+            .observeSingleEventOfType(.Value, withBlock: {
+                snapshot in
+                
+                if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
+                    for snap in snapshots {
+                        print("SNAP: \(snap)")
+                        
+                        if let courseDict = snap.value as? Dictionary<String, AnyObject> {
+                            // Create Course Object
+                            let course = Course(dictionary: courseDict)
+                            self._COURSES.append(course)
+                            print(self._COURSES)
+                        }
+                    }
+                }
+            })
     }
 }

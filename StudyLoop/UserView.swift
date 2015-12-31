@@ -33,6 +33,7 @@ class UserView: UIView {
             
             let userDict = self.snapshotToDictionary(snapshot)
             self.user = User(dictionary: userDict)
+            StateService.ss.setUser(self.user)
             self.configureView()
         })
     }

@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '7476D1799C8D379E513F5D1F'
-               BlueprintName = 'Pods-StudyLoop'
+               BlueprintIdentifier = 'ECB4B488CA1E0BDBB3C465A0'
+               BlueprintName = 'FuzzySearch'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'Pods_StudyLoop.framework'>
+               BuildableName = 'FuzzySearch.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

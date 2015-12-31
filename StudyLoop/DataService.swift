@@ -33,6 +33,10 @@ class DataService {
         return _REF_BASE
     }
     
+    var REF_COURSES: Firebase {
+        return _REF_COURSES
+    }
+    
     var REF_LOOP_MESSAGES: Firebase {
         return _REF_LOOP_MESSAGES
     }

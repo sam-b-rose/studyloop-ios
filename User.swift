@@ -80,4 +80,8 @@ class User {
         self._universityId = nil
         self._courseIds = nil
     }
+    
+    func setUniversity(universityId: String) {
+        _universityId = universityId
+    }
 }
