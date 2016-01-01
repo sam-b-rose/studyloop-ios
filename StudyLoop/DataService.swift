@@ -28,7 +28,6 @@ class DataService {
     private var _REF_USERS = Firebase(url: "\(URL_BASE)/ios-users")
     
     
-    
     var REF_BASE: Firebase {
         return _REF_BASE
     }

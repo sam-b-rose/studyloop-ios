@@ -11,7 +11,7 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 import Firebase
 
-class ViewController: UIViewController {
+class LoginVC: UIViewController {
     
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
@@ -39,38 +39,29 @@ class ViewController: UIViewController {
         //        }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        // TODO: Remove after done testing auth
         DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
+            print("Check Auth")
             if authData != nil {
                 // user authenticated
-                // print(authData.providerData)
+                print("From LoginVC", authData.providerData)
                 
                 // check for university
                 let currentUser = DataService.ds.REF_USER_CURRENT
-                
                 currentUser.observeSingleEventOfType(.Value, withBlock: { snapshot in
                     print(snapshot.value)
-                    
-                    //self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                     
                     if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
                         for snap in snapshots {
                             print("SNAP: \(snap)")
                             
                             if let key = snap.key where key == "universityId" {
-                                // self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                                 self.dismissViewControllerAnimated(true, completion: nil)
                             }
                         }
-                        // self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+                        self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
                     }
                 })
                 
@@ -79,6 +70,7 @@ class ViewController: UIViewController {
                 print("No User is signed in")
             }
         })
+        
     }
     
     @IBAction func fbBtnPressed(sender: UIButton!) {
@@ -97,7 +89,7 @@ class ViewController: UIViewController {
                         print("login failed. \(error)")
                         
                     } else {
-                        //print("Logged in! \(authData)")
+                        print("Logged in! \(authData)")
                         
                         let user = [
                             "provider": authData.provider!,
@@ -110,7 +102,7 @@ class ViewController: UIViewController {
                         
                         // TODO: Check for University
                         NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
-                        self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+                        //self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
                         //self.dismissViewControllerAnimated(true, completion: nil)
                         //self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                     }
@@ -125,6 +117,7 @@ class ViewController: UIViewController {
             
             DataService.ds.REF_BASE.authUser(email, password: pwd, withCompletionBlock: { error, authData in
                 if error != nil {
+                    print(error)
                     print(error.code)
                     
                     if error.code == STATUS_ACCOUNT_NONEXSIT {
@@ -160,18 +153,16 @@ class ViewController: UIViewController {
                     } else {
                         self.showErrorAlert("Could not login", msg: "Please check your username and password")
                     }
+                } else {
+                    NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
+                    //self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                 }
-                
-                //                else {
-                //                    self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
-                //                }
             })
             
         } else {
             showErrorAlert("Email and Password Required", msg: "You must enter an email and a password")
         }
     }
-    
     
     func showErrorAlert(title: String, msg: String) {
         let alert = UIAlertController(title: title, message: msg, preferredStyle: .Alert)

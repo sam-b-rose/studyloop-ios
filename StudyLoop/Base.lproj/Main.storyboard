@@ -16,6 +16,7 @@
             <string>NotoSans-Bold</string>
             <string>NotoSans-Bold</string>
             <string>NotoSans-Bold</string>
+            <string>NotoSans-Bold</string>
         </mutableArray>
         <mutableArray key="NotoSans-Regular.ttf">
             <string>NotoSans</string>
@@ -63,10 +64,10 @@
             </objects>
             <point key="canvasLocation" x="197" y="44"/>
         </scene>
-        <!--View Controller-->
+        <!--LoginVC-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="LoginVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -204,7 +205,7 @@
             </objects>
             <point key="canvasLocation" x="191" y="1924"/>
         </scene>
-        <!--Activity-->
+        <!--LoopVC-->
         <scene sceneID="tRA-Mg-FhC">
             <objects>
                 <viewController id="oAH-fn-Mry" customClass="LoopVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
@@ -431,7 +432,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" title="Activity" id="byD-FQ-cae">
+                    <navigationItem key="navigationItem" id="byD-FQ-cae">
                         <barButtonItem key="leftBarButtonItem" image="bars" id="39e-XP-zrM">
                             <color key="tintColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
@@ -629,13 +630,13 @@
                                 </subviews>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zva-Y5-J4y" customClass="MaterialView" customModule="StudyLoop" customModuleProvider="target">
-                                <rect key="frame" x="20" y="201" width="560" height="399"/>
+                                <rect key="frame" x="20" y="259" width="560" height="341"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="55" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8Un-P1-0Hc">
-                                        <rect key="frame" x="0.0" y="0.0" width="560" height="399"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="560" height="341"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="DrawerCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="DrawerCell" rowHeight="55" id="Zyf-Lb-090" customClass="DrawerCell" customModule="StudyLoop" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="CourseCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="CourseCell" rowHeight="55" id="Zyf-Lb-090" customClass="CourseCell" customModule="StudyLoop" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="28" width="560" height="55"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zyf-Lb-090" id="VC0-Lg-an6">
@@ -651,6 +652,9 @@
                                                     </subviews>
                                                 </tableViewCellContentView>
                                                 <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                                <connections>
+                                                    <outlet property="courseLabel" destination="3ue-1m-1jb" id="bA0-1i-tdw"/>
+                                                </connections>
                                             </tableViewCell>
                                         </prototypes>
                                     </tableView>
@@ -663,6 +667,22 @@
                                     <constraint firstAttribute="bottom" secondItem="8Un-P1-0Hc" secondAttribute="bottom" id="taE-CQ-d1S"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vd5-2e-KsZ" customClass="MaterialButton" customModule="StudyLoop" customModuleProvider="target">
+                                <rect key="frame" x="203" y="218" width="195" height="33"/>
+                                <color key="backgroundColor" red="0.1137254902" green="0.86274509799999999" blue="0.74117647060000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="33" id="Vmk-gi-yjg"/>
+                                    <constraint firstAttribute="width" constant="195" id="pGx-76-hYw"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="NotoSans-Bold" family="Noto Sans" pointSize="15"/>
+                                <state key="normal" title="Search">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="attempLogin:" destination="BYZ-38-t0r" eventType="touchUpInside" id="WKC-6V-Qpg"/>
+                                    <action selector="searchCourses:" destination="m8u-j2-o1x" eventType="touchUpInside" id="i4j-B9-HQL"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -671,12 +691,24 @@
                             <constraint firstAttribute="trailingMargin" secondItem="93D-dM-S3c" secondAttribute="trailing" id="FJx-4e-bze"/>
                             <constraint firstItem="7qt-QM-kHa" firstAttribute="top" secondItem="Zva-Y5-J4y" secondAttribute="bottom" id="JA1-tm-fqz"/>
                             <constraint firstItem="Zva-Y5-J4y" firstAttribute="trailing" secondItem="Fcu-e2-Do2" secondAttribute="trailingMargin" id="Rlv-k9-X5P"/>
+                            <constraint firstItem="vd5-2e-KsZ" firstAttribute="centerX" secondItem="Fcu-e2-Do2" secondAttribute="centerX" id="Sa6-rQ-ABU"/>
                             <constraint firstItem="93D-dM-S3c" firstAttribute="leading" secondItem="Fcu-e2-Do2" secondAttribute="leadingMargin" id="TK7-E1-Cjz"/>
+                            <constraint firstItem="Zva-Y5-J4y" firstAttribute="top" secondItem="vd5-2e-KsZ" secondAttribute="bottom" constant="8" id="Z3W-uz-31y"/>
+                            <constraint firstItem="vd5-2e-KsZ" firstAttribute="top" secondItem="93D-dM-S3c" secondAttribute="bottom" constant="25" id="sjD-rn-G1M"/>
                             <constraint firstItem="Zva-Y5-J4y" firstAttribute="top" secondItem="93D-dM-S3c" secondAttribute="bottom" constant="8" id="yGF-kC-TWE"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="yGF-kC-TWE"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="E7z-zn-SmH"/>
                     <connections>
+                        <outlet property="instructorInput" destination="fzL-Y3-SSb" id="dAE-QA-o37"/>
+                        <outlet property="majorInput" destination="MLY-9i-jjD" id="Mqj-UU-zos"/>
+                        <outlet property="numberInput" destination="WLk-7K-Gvu" id="h3j-6s-CYl"/>
+                        <outlet property="searchBtn" destination="vd5-2e-KsZ" id="26b-Cj-bqw"/>
                         <outlet property="tableView" destination="8Un-P1-0Hc" id="E8m-7T-Qp9"/>
                     </connections>
                 </viewController>

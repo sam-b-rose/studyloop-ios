@@ -15,7 +15,7 @@ class UserView: UIView {
     @IBOutlet weak var profileImage: UserImage!
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
-
+    
     var user: User!
     var likeRef: Firebase!
     var request: Request?
@@ -29,12 +29,16 @@ class UserView: UIView {
         self.userInteractionEnabled = true
         
         DataService.ds.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            print(snapshot.value)
+            print("UserView snapshot: ", snapshot.value)
             
-            let userDict = self.snapshotToDictionary(snapshot)
-            self.user = User(dictionary: userDict)
-            StateService.ss.setUser(self.user)
-            self.configureView()
+            if let _ = snapshot.value as? NSNull {
+                // no current user
+            } else {
+                let userDict = self.snapshotToDictionary(snapshot)
+                self.user = User(dictionary: userDict)
+                StateService.ss.setUser(self.user)
+                self.configureView()
+            }
         })
     }
     
@@ -68,7 +72,7 @@ class UserView: UIView {
     func configureView() {
         emailLabel.text = user.email
         nameLabel.text = user.name
-
+        
         print("profileImageUrl", user.profileImageURL)
         if let imageUrl = user.profileImageURL {
             print("imgUrl", imageUrl)
@@ -88,6 +92,6 @@ class UserView: UIView {
         // go to profile
         print("view tapped: go to profile")
     }
-
-
+    
+    
 }

@@ -13,17 +13,12 @@ class StateService {
     static let ss = StateService()
     
     private var _CURRENT_USER: User?
-    private var _CURRENT_UNIVERSITY: University?
     private var _COURSES = [Course]()
     
     var CURRENT_USER: User? {
         return _CURRENT_USER
     }
     
-    var CURRENT_UNIVERSITY: University? {
-        return _CURRENT_UNIVERSITY
-    }
-
     var COURSES: [Course]? {
         return _COURSES
     }
@@ -34,11 +29,13 @@ class StateService {
     
     func getCourses() {
         _COURSES = []
+        let universityId = _CURRENT_USER?.universityId
+        print("getting courses from", universityId)
         
         DataService.ds.REF_COURSES
             .queryOrderedByChild("universityId")
-            .queryStartingAtValue(_CURRENT_UNIVERSITY)
-            .queryEndingAtValue(_CURRENT_UNIVERSITY)
+            .queryStartingAtValue(universityId)
+            .queryEndingAtValue(universityId)
             .observeSingleEventOfType(.Value, withBlock: {
                 snapshot in
                 
@@ -54,6 +51,7 @@ class StateService {
                         }
                     }
                 }
+                print("finished")
             })
     }
 }

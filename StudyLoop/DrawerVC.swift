@@ -40,6 +40,26 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         items += appendDefaltItems()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
+            if authData != nil {
+                // user authenticated
+                print("From DrawerVC", authData.providerData)
+                NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
+            } else {
+                // No user is signed in
+                print("No User is signed in")
+                
+                if let drawerController = self.navigationController?.parentViewController as? KYDrawerController {
+                    let mainNavigation = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainNavigation") as! UINavigationController
+                    drawerController.mainViewController = mainNavigation
+                    drawerController.performSegueWithIdentifier(SEGUE_LOGGED_OUT, sender: nil)
+                }
+                
+            }
+        })
+    }
+
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1

@@ -1,19 +1,18 @@
 //
-//  UniversityCell.swift
+//  CourseCell.swift
 //  StudyLoop
 //
-//  Created by Sam Rose on 12/24/15.
+//  Created by Sam Rose on 12/31/15.
 //  Copyright © 2015 StudyLoop. All rights reserved.
 //
 
 import UIKit
-import Firebase
 
-class UniversityCell: UITableViewCell {
+class CourseCell: UITableViewCell {
+
+    @IBOutlet weak var courseLabel: UILabel!
     
-    @IBOutlet weak var universityName: UILabel!
-    
-    var university: University!
+    var course: Course!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -25,8 +24,9 @@ class UniversityCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func configureCell(university: University) {
-        self.university = university
-        self.universityName.text = university.name
+    func configureCell(course: Course) {
+        self.course = course
+        self.courseLabel.text = "\(course.major) \(course.number)"
     }
+
 }
