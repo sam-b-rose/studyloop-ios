@@ -17,6 +17,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     
     var items = [MenuItem]()
+    var courses = [MenuItem]()
     var request: Request?
     static var imageCache = NSCache()
     
@@ -33,33 +34,16 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         imageView.image = image
         navigationItem.titleView = imageView
         
-        // Get course Data
-        
-        
         // Append Defaults
         items += appendDefaltItems()
     }
     
     override func viewDidAppear(animated: Bool) {
-//        DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
-//            if authData != nil {
-//                // user authenticated
-//                print("From DrawerVC", authData.providerData)
-//                NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
-//            } else {
-//                // No user is signed in
-//                print("No User is signed in")
-//                
-//                if let drawerController = self.navigationController?.parentViewController as? KYDrawerController {
-//                    let mainNavigation = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainNavigation") as! UINavigationController
-//                    drawerController.mainViewController = mainNavigation
-//                    drawerController.performSegueWithIdentifier(SEGUE_LOGGED_OUT, sender: nil)
-//                }
-//                
-//            }
-//        })
+        // Get course Data
+        getUsersCourses()
+        tableView.reloadData()
     }
-
+    
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
@@ -120,6 +104,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             MenuItem(title: "Settings"),
             MenuItem(title: "Logout")
         ]
+        print("appended defaults")
         
         return defaults
     }
@@ -131,6 +116,22 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             mainNavigation.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
             drawerController.mainViewController = mainNavigation
             drawerController.setDrawerState(.Closed, animated: true)
+        }
+    }
+    
+    func getUsersCourses() {
+        self.items = []
+        self.courses = []
+        
+        for (courseId, val) in (StateService.ss.CURRENT_USER?.courseIds)! {
+            if val == 1 {
+                DataService.ds.REF_COURSES.childByAppendingPath(courseId).observeSingleEventOfType(.Value, withBlock: { snapshot in
+                    // print(snapshot)
+                    let course = MenuItem(title: "\(snapshot.value.objectForKey("major")!) \(snapshot.value.objectForKey("number")!)")
+                    print(course.title)
+                    self.items.insert(course, atIndex: 0)
+                })
+            }
         }
     }
     

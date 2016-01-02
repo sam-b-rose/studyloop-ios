@@ -43,7 +43,6 @@ class LoginVC: UIViewController {
         super.viewDidAppear(animated)
         
         DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
-            print("Check Auth")
             if authData != nil {
                 // user authenticated
                 print("From LoginVC", authData.providerData)
@@ -51,27 +50,16 @@ class LoginVC: UIViewController {
                 
                 // check for university
                 DataService.ds.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                    print(snapshot.value)
+                    // print(snapshot.value)
                     
                     let userDict = self.snapshotToDictionary(snapshot)
                     let currentUser = User(dictionary: userDict)
                     StateService.ss.setUser(currentUser)
-                    
+
                     if userDict["universityId"] == nil {
                         self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
                     }
                     
-//                    if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
-//                        for snap in snapshots {
-//                            print("SNAP: \(snap)")
-//                            
-//                            if let key = snap.key where key == "universityId" {
-//                                self.dismissViewControllerAnimated(true, completion: nil)
-//                            }
-//                        }
-//
-//                    }
-                    print("performing login")
                     self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                 })
                 
@@ -202,7 +190,7 @@ class LoginVC: UIViewController {
         }
         
         if snapshot.value.objectForKey("courseIds") != nil {
-            d["courseIds"] = snapshot.value.objectForKey("courseIds") as? String
+            d["courseIds"] = snapshot.value.objectForKey("courseIds") as? Dictionary<String, Int>
         } else {
             d["courseIds"] = nil
         }

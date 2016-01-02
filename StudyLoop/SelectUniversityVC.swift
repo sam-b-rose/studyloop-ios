@@ -64,7 +64,6 @@ class SelectUniversityVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        DataService.ds.REF_USER_CURRENT.childByAppendingPath("universityId").setValue(universities[indexPath.row].universityKey)
         StateService.ss.CURRENT_USER?.setUniversity(universities[indexPath.row].universityKey)
         dismissViewControllerAnimated(true, completion: nil)
     }

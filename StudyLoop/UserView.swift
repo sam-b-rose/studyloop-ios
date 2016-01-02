@@ -41,9 +41,7 @@ class UserView: UIView {
         emailLabel.text = user.email
         nameLabel.text = user.name
         
-        print("profileImageUrl", user.profileImageURL)
         if let imageUrl = user.profileImageURL {
-            print("imgUrl", imageUrl)
             self.request = Alamofire.request(.GET, imageUrl).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, err in
                 if err == nil {
                     let img = UIImage(data: data!)!

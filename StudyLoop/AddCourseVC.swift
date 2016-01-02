@@ -59,7 +59,7 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate 
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        // TODO: Add Course to User
+        StateService.ss.CURRENT_USER?.addCourse(courseResults[indexPath.row].uid)
         navigationController?.popToRootViewControllerAnimated(true)
     }
     

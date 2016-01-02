@@ -41,12 +41,10 @@ class StateService {
                 
                 if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
                     for snap in snapshots {
-                        // print("SNAP: \(snap)")
                         
                         if let courseDict = snap.value as? Dictionary<String, AnyObject> {
                             // Create Course Object
                             let course = Course(dictionary: courseDict)
-                            print(course.name)
                             self._COURSES.append(course)
                         }
                     }

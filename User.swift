@@ -15,7 +15,7 @@ class User {
     private var _name: String!
     private var _facebookId: String?
     private var _profileImageURL: String?
-    private var _courseIds: Dictionary<String, Bool>?
+    private var _courseIds: Dictionary<String, Int>?
     private var _universityId: String?
     private var _userRef: Firebase!
     
@@ -39,7 +39,7 @@ class User {
         return _profileImageURL
     }
     
-    var courseIds: Dictionary<String, Bool>? {
+    var courseIds: Dictionary<String, Int>? {
         return _courseIds
     }
     
@@ -61,7 +61,7 @@ class User {
         
         // initialize to empty
         self._universityId = nil
-        self._courseIds = nil
+        self._courseIds = Dictionary<String, Int>()
     }
     
     init(dictionary: Dictionary<String, AnyObject?>) {
@@ -83,13 +83,19 @@ class User {
         }
         
         if dictionary["courseIds"] != nil {
-            self._courseIds = dictionary["courseIds"] as? Dictionary<String, Bool>
+            self._courseIds = dictionary["courseIds"] as? Dictionary<String, Int>
         } else {
-            self._courseIds = nil
+            self._courseIds = Dictionary<String, Int>()
         }
     }
     
     func setUniversity(universityId: String) {
+        DataService.ds.REF_USER_CURRENT.childByAppendingPath("universityId").setValue(universityId)
         _universityId = universityId
+    }
+    
+    func addCourse(courseId: String) {
+        DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").childByAppendingPath(courseId).setValue(true)
+        _courseIds![courseId] = 1
     }
 }
