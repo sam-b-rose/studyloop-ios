@@ -41,23 +41,23 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     override func viewDidAppear(animated: Bool) {
-        DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
-            if authData != nil {
-                // user authenticated
-                print("From DrawerVC", authData.providerData)
-                NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
-            } else {
-                // No user is signed in
-                print("No User is signed in")
-                
-                if let drawerController = self.navigationController?.parentViewController as? KYDrawerController {
-                    let mainNavigation = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainNavigation") as! UINavigationController
-                    drawerController.mainViewController = mainNavigation
-                    drawerController.performSegueWithIdentifier(SEGUE_LOGGED_OUT, sender: nil)
-                }
-                
-            }
-        })
+//        DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
+//            if authData != nil {
+//                // user authenticated
+//                print("From DrawerVC", authData.providerData)
+//                NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
+//            } else {
+//                // No user is signed in
+//                print("No User is signed in")
+//                
+//                if let drawerController = self.navigationController?.parentViewController as? KYDrawerController {
+//                    let mainNavigation = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainNavigation") as! UINavigationController
+//                    drawerController.mainViewController = mainNavigation
+//                    drawerController.performSegueWithIdentifier(SEGUE_LOGGED_OUT, sender: nil)
+//                }
+//                
+//            }
+//        })
     }
 
     
@@ -102,7 +102,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 // Logout
                 print("logout")
                 DataService.ds.REF_BASE.unauth()
-                drawerController.performSegueWithIdentifier(SEGUE_LOGGED_OUT, sender: nil)
+                drawerController.dismissViewControllerAnimated(true, completion: nil)
                 break
             default:
                 // go to course

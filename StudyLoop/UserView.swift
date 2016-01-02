@@ -28,45 +28,13 @@ class UserView: UIView {
         self.addGestureRecognizer(tap)
         self.userInteractionEnabled = true
         
-        DataService.ds.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            print("UserView snapshot: ", snapshot.value)
-            
-            if let _ = snapshot.value as? NSNull {
-                // no current user
-            } else {
-                let userDict = self.snapshotToDictionary(snapshot)
-                self.user = User(dictionary: userDict)
-                StateService.ss.setUser(self.user)
-                self.configureView()
-            }
-        })
+        self.user = StateService.ss.CURRENT_USER
+        self.configureView()
     }
     
     override func drawRect(rect: CGRect) {
         profileImage.layer.cornerRadius = profileImage.frame.width / 2
         profileImage.clipsToBounds = true
-    }
-    
-    func snapshotToDictionary(snapshot: FDataSnapshot) -> Dictionary<String, AnyObject> {
-        var d = Dictionary<String, AnyObject>()
-        
-        if snapshot.value.objectForKey("name") != nil {
-            d["name"] = snapshot.value.objectForKey("name") as? String
-        } else {
-            d["name"] = ""
-        }
-        
-        if snapshot.value.objectForKey("email") != nil {
-            d["email"] = snapshot.value.objectForKey("email") as? String
-        } else {
-            d["email"] = ""
-        }
-        
-        if snapshot.value.objectForKey("profileImageURL") != nil {
-            d["profileImageURL"] = snapshot.value.objectForKey("profileImageURL") as? String
-        }
-        
-        return d
     }
     
     func configureView() {

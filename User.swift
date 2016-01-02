@@ -76,9 +76,17 @@ class User {
             self._profileImageURL = dictionary["profileImageURL"] as? String
         }
         
-        // initialize to empty
-        self._universityId = nil
-        self._courseIds = nil
+        if dictionary["universityId"] != nil {
+            self._universityId = dictionary["universityId"] as? String
+        } else {
+            self._universityId = nil
+        }
+        
+        if dictionary["courseIds"] != nil {
+            self._courseIds = dictionary["courseIds"] as? Dictionary<String, Bool>
+        } else {
+            self._courseIds = nil
+        }
     }
     
     func setUniversity(universityId: String) {

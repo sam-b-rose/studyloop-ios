@@ -35,7 +35,6 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate 
         // Get Course Data
         if(StateService.ss.COURSES?.count == 0) {
             StateService.ss.getCourses()
-            courses = StateService.ss.COURSES!
         }
     }
     
@@ -61,18 +60,16 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate 
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // TODO: Add Course to User
-        dismissViewControllerAnimated(true, completion: nil)
+        navigationController?.popToRootViewControllerAnimated(true)
     }
     
     
     @IBAction func searchCourses(sender: AnyObject) {
-        print("search for :", majorInput.text, numberInput.text, instructorInput.text)
-        print(courses)
+        print("search for :", majorInput.text!, numberInput.text!, instructorInput.text)
         
         if majorInput.text != "" || numberInput.text != "" || instructorInput.text != "" {
             query = [majorInput.text!, numberInput.text!, instructorInput.text!].joinWithSeparator(" ").lowercaseString
-            print(query)
-            let filtered = courses.filter({ course in
+            let filtered = StateService.ss.COURSES!.filter({ course in
                 var comp = [String]()
                 
                 if majorInput.text != "" {
@@ -90,11 +87,18 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate 
                 let compStr = comp.joinWithSeparator(" ").lowercaseString
                 let score = FuzzySearch.score(originalString: query, stringToMatch: compStr)
                 
-                print(query, compStr, score)
+                if score >= threshold {
+                    print(query, compStr, score)
+                }
+                
                 return score >= threshold
             })
             
-            courseResults = (filtered as NSArray).sortedArrayUsingDescriptors([majorSortDescriptor, numberSortDescriptor]) as! [Course]
+            courseResults = filtered.sort {
+                a, b -> Bool in
+                return "\(a.major) \(a.number)" > "\(b.major) \(b.number)"
+            }
+            
             tableView.reloadData()
         }
         

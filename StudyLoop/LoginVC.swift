@@ -19,24 +19,24 @@ class LoginVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //        if NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) != nil {
-        //            let currentUser = DataService.ds.REF_USER_CURRENT
-        //
-        //            currentUser.observeSingleEventOfType(.Value, withBlock: { snapshot in
-        //                print(snapshot.value)
-        //
-        //                if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
-        //                    for snap in snapshots {
-        //                        print("SNAP: \(snap)")
-        //
-        //                        if let key = snap.key where key == "universityId" {
-        //                            self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
-        //                        }
-        //                    }
-        //                    self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
-        //                }
-        //            })
-        //        }
+//                if NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) != nil {
+//                    let currentUser = DataService.ds.REF_USER_CURRENT
+//        
+//                    currentUser.observeSingleEventOfType(.Value, withBlock: { snapshot in
+//                        print(snapshot.value)
+//        
+//                        if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
+//                            for snap in snapshots {
+//                                print("SNAP: \(snap)")
+//        
+//                                if let key = snap.key where key == "universityId" {
+//                                    self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+//                                }
+//                            }
+//                            self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+//                        }
+//                    })
+//                }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -47,22 +47,32 @@ class LoginVC: UIViewController {
             if authData != nil {
                 // user authenticated
                 print("From LoginVC", authData.providerData)
+                NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
                 
                 // check for university
-                let currentUser = DataService.ds.REF_USER_CURRENT
-                currentUser.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                DataService.ds.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: { snapshot in
                     print(snapshot.value)
                     
-                    if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
-                        for snap in snapshots {
-                            print("SNAP: \(snap)")
-                            
-                            if let key = snap.key where key == "universityId" {
-                                self.dismissViewControllerAnimated(true, completion: nil)
-                            }
-                        }
+                    let userDict = self.snapshotToDictionary(snapshot)
+                    let currentUser = User(dictionary: userDict)
+                    StateService.ss.setUser(currentUser)
+                    
+                    if userDict["universityId"] == nil {
                         self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
                     }
+                    
+//                    if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
+//                        for snap in snapshots {
+//                            print("SNAP: \(snap)")
+//                            
+//                            if let key = snap.key where key == "universityId" {
+//                                self.dismissViewControllerAnimated(true, completion: nil)
+//                            }
+//                        }
+//
+//                    }
+                    print("performing login")
+                    self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                 })
                 
             } else {
@@ -162,6 +172,46 @@ class LoginVC: UIViewController {
         } else {
             showErrorAlert("Email and Password Required", msg: "You must enter an email and a password")
         }
+    }
+    
+    func snapshotToDictionary(snapshot: FDataSnapshot) -> Dictionary<String, AnyObject> {
+        var d = Dictionary<String, AnyObject>()
+        
+        if snapshot.value.objectForKey("id") != nil {
+            d["id"] = snapshot.value.objectForKey("id") as? String
+        } else {
+            d["id"] = nil
+        }
+        
+        if snapshot.value.objectForKey("email") != nil {
+            d["email"] = snapshot.value.objectForKey("email") as? String
+        } else {
+            d["email"] = nil
+        }
+        
+        if snapshot.value.objectForKey("name") != nil {
+            d["name"] = snapshot.value.objectForKey("name") as? String
+        } else {
+            d["name"] = nil
+        }
+        
+        if snapshot.value.objectForKey("universityId") != nil {
+            d["universityId"] = snapshot.value.objectForKey("universityId") as? String
+        } else {
+            d["universityId"] = nil
+        }
+        
+        if snapshot.value.objectForKey("courseIds") != nil {
+            d["courseIds"] = snapshot.value.objectForKey("courseIds") as? String
+        } else {
+            d["courseIds"] = nil
+        }
+        
+        if snapshot.value.objectForKey("profileImageURL") != nil {
+            d["profileImageURL"] = snapshot.value.objectForKey("profileImageURL") as? String
+        }
+        
+        return d
     }
     
     func showErrorAlert(title: String, msg: String) {

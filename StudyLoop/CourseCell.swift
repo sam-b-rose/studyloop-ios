@@ -26,7 +26,7 @@ class CourseCell: UITableViewCell {
     
     func configureCell(course: Course) {
         self.course = course
-        self.courseLabel.text = "\(course.major) \(course.number)"
+        self.courseLabel.text = "\(course.major) \(course.number) – \(course.instructor)"
     }
 
 }
