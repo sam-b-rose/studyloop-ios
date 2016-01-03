@@ -19,29 +19,6 @@ class LoginVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//                if NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) != nil {
-//                    let currentUser = DataService.ds.REF_USER_CURRENT
-//        
-//                    currentUser.observeSingleEventOfType(.Value, withBlock: { snapshot in
-//                        print(snapshot.value)
-//        
-//                        if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
-//                            for snap in snapshots {
-//                                print("SNAP: \(snap)")
-//        
-//                                if let key = snap.key where key == "universityId" {
-//                                    self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
-//                                }
-//                            }
-//                            self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
-//                        }
-//                    })
-//                }
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
         DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
             if authData != nil {
                 // user authenticated
@@ -55,7 +32,7 @@ class LoginVC: UIViewController {
                     let userDict = self.snapshotToDictionary(snapshot)
                     let currentUser = User(dictionary: userDict)
                     StateService.ss.setUser(currentUser)
-
+                    
                     if userDict["universityId"] == nil {
                         self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
                     }
@@ -68,6 +45,10 @@ class LoginVC: UIViewController {
                 print("No User is signed in")
             }
         })
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         
     }
     

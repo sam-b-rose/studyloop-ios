@@ -13,6 +13,7 @@ class DrawerCell: UITableViewCell {
     @IBOutlet weak var itemLabel: UILabel!
     
     var item: MenuItem!
+    let border = CALayer()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -21,6 +22,14 @@ class DrawerCell: UITableViewCell {
     func configureCell(item: MenuItem) {
         self.item = item
         self.itemLabel.text = item.title
+        
+        if item.borderTop {
+            // add border
+            border.backgroundColor = UIColor.lightGrayColor().CGColor
+            border.frame = CGRect(x: 0, y: 0, width: layer.frame.width, height: 0.5)
+            layer.addSublayer(border)
+        } else {
+            border.removeFromSuperlayer()
+        }
     }
-
 }

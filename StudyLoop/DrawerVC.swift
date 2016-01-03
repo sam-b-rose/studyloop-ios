@@ -17,7 +17,6 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     
     var items = [MenuItem]()
-    var courses = [MenuItem]()
     var request: Request?
     static var imageCache = NSCache()
     
@@ -34,16 +33,33 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         imageView.image = image
         navigationItem.titleView = imageView
         
-        // Append Defaults
-        items += appendDefaltItems()
+        // NSNotificationCenter.defaultCenter().addObserver(self, selector: "getUsersCourses:",name:"loadCourses", object: nil)
+        
+        DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").observeEventType(.Value, withBlock: { snapshot in
+            print(snapshot.value)
+            
+            self.items = []
+            if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
+                for snap in snapshots {
+                    print("SNAP: ", snap)
+                    DataService.ds.REF_COURSES.childByAppendingPath(snap.key).observeSingleEventOfType(.Value, withBlock: { snapshot in
+                        print(snapshot)
+                        let course = MenuItem(title: "\(snapshot.value.objectForKey("major")!) \(snapshot.value.objectForKey("number")!)", borderTop: false)
+                        print(course.title)
+                        self.items.insert(course, atIndex: 0)
+                        
+                        self.tableView.reloadData()
+                    })
+                }
+            }
+            
+            // Append Defaults
+            self.items += self.appendDefaltItems()
+            
+            self.tableView.reloadData()
+        })
+        
     }
-    
-    override func viewDidAppear(animated: Bool) {
-        // Get course Data
-        getUsersCourses()
-        tableView.reloadData()
-    }
-    
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
@@ -101,7 +117,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func appendDefaltItems() -> [MenuItem] {
         let defaults = [
             MenuItem(title: "Add Course"),
-            MenuItem(title: "Settings"),
+            MenuItem(title: "Settings", borderTop: true),
             MenuItem(title: "Logout")
         ]
         print("appended defaults")
@@ -119,20 +135,19 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func getUsersCourses() {
-        self.items = []
-        self.courses = []
-        
-        for (courseId, val) in (StateService.ss.CURRENT_USER?.courseIds)! {
-            if val == 1 {
-                DataService.ds.REF_COURSES.childByAppendingPath(courseId).observeSingleEventOfType(.Value, withBlock: { snapshot in
-                    // print(snapshot)
-                    let course = MenuItem(title: "\(snapshot.value.objectForKey("major")!) \(snapshot.value.objectForKey("number")!)")
-                    print(course.title)
-                    self.items.insert(course, atIndex: 0)
-                })
-            }
-        }
-    }
+//    func getUsersCourses() {
+//        for (courseId, val) in (StateService.ss.CURRENT_USER?.courseIds)! {
+//            if val == 1 {
+//                DataService.ds.REF_COURSES.childByAppendingPath(courseId).observeSingleEventOfType(.Value, withBlock: { snapshot in
+//                    // print(snapshot)
+//                    let course = MenuItem(title: "\(snapshot.value.objectForKey("major")!) \(snapshot.value.objectForKey("number")!)", borderTop: false)
+//                    print(course.title)
+//                    self.items.insert(course, atIndex: 0)
+//                    
+//                    self.tableView.reloadData()
+//                })
+//            }
+//        }
+//    }
     
 }
