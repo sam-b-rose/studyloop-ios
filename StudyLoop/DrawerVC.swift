@@ -36,15 +36,15 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // NSNotificationCenter.defaultCenter().addObserver(self, selector: "getUsersCourses:",name:"loadCourses", object: nil)
         
         DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").observeEventType(.Value, withBlock: { snapshot in
-            print(snapshot.value)
+            //print(snapshot.value)
             
             self.items = []
             if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
                 for snap in snapshots {
-                    print("SNAP: ", snap)
+                    //print("SNAP: ", snap)
                     DataService.ds.REF_COURSES.childByAppendingPath(snap.key).observeSingleEventOfType(.Value, withBlock: { snapshot in
-                        print(snapshot)
-                        let course = MenuItem(title: "\(snapshot.value.objectForKey("major")!) \(snapshot.value.objectForKey("number")!)", borderTop: false)
+                        //print(snapshot)
+                        let course = MenuItem(title: "\(snapshot.value.objectForKey("major")!) \(snapshot.value.objectForKey("number")!)", courseId: snapshot.value.objectForKey("id") as! String)
                         print(course.title)
                         self.items.insert(course, atIndex: 0)
                         
@@ -106,7 +106,9 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 break
             default:
                 // go to course
-                mainNavigation.topViewController?.viewDidAppear(false)
+                //mainNavigation.topViewController?.viewDidAppear(false)
+                let courseVC = mainNavigation.topViewController as? CourseVC
+                courseVC!.loadCourse(items[indexPath.row].courseId)
             }
             
             // drawerController.mainViewController = mainNavigation
@@ -120,7 +122,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             MenuItem(title: "Settings", borderTop: true),
             MenuItem(title: "Logout")
         ]
-        print("appended defaults")
+        //print("appended defaults")
         
         return defaults
     }

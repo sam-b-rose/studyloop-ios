@@ -200,11 +200,4 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
                 completion: nil)
         }
     }
-    
-    @IBAction func didTapOpenButton(sender: UIBarButtonItem) {
-        if let drawerController = navigationController?.parentViewController as? KYDrawerController {
-            drawerController.setDrawerState(.Opened, animated: true)
-        }
-    }
-
 }

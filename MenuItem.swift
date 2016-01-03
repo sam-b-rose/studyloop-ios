@@ -10,10 +10,15 @@ import Foundation
 
 class MenuItem {
     private var _title: String!
+    private var _courseId: String!
     private var _borderTop: Bool!
     
     var title: String {
         return _title
+    }
+    
+    var courseId: String {
+        return _courseId
     }
     
     var borderTop: Bool {
@@ -22,6 +27,12 @@ class MenuItem {
     
     init(title: String) {
         self._title = title
+        self._borderTop = false
+    }
+    
+    init(title: String, courseId: String) {
+        self._title = title
+        self._courseId = courseId
         self._borderTop = false
     }
     

@@ -44,6 +44,10 @@ class DataService {
         return _REF_UNIVERSITIES
     }
     
+    var REF_LOOPS: Firebase {
+        return _REF_LOOPS
+    }
+    
     var REF_LOOP: Firebase {
         return _REF_LOOP
     }

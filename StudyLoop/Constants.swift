@@ -20,6 +20,8 @@ let SEGUE_LOGGED_OUT = "loggedOut"
 let SEGUE_SETTINGS = "settings"
 let SEGUE_SELECT_UNIVERSITY = "selectUniversity"
 let SEGUE_ADD_COURSE = "addCourse"
+let SEGUE_COURSE = "course"
+let SEGUE_LOOP = "loop"
 
 // Status Codes
 let STATUS_ACCOUNT_NONEXSIT = -8

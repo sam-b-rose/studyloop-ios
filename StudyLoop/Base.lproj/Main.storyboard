@@ -31,6 +31,7 @@
             <string>NotoSans</string>
             <string>NotoSans</string>
             <string>NotoSans</string>
+            <string>NotoSans</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -432,14 +433,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="byD-FQ-cae">
-                        <barButtonItem key="leftBarButtonItem" image="bars" id="39e-XP-zrM">
-                            <color key="tintColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <action selector="didTapOpenButton:" destination="oAH-fn-Mry" id="AM2-HF-xJy"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="byD-FQ-cae"/>
                     <connections>
                         <outlet property="bottomSpacingConstraint" destination="zoS-he-EG3" id="mVe-V7-2ZI"/>
                         <outlet property="imageSelectorBtn" destination="paJ-x4-yKT" id="6a1-7V-xjV"/>
@@ -456,7 +450,86 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1886" y="487"/>
+            <point key="canvasLocation" x="2450" y="487"/>
+        </scene>
+        <!--CourseVC-->
+        <scene sceneID="zEx-HX-o5v">
+            <objects>
+                <viewController storyboardIdentifier="CourseVC" id="AEC-cA-p8P" customClass="CourseVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="8VF-hj-EmJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="oEe-Cb-CRn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="TzN-1u-a48">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zLo-qK-n5w">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NAV-4Z-b2X">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="LoopCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="LoopCell" id="NLj-qp-Ved" customClass="LoopCell" customModule="StudyLoop" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NLj-qp-Ved" id="pRA-Me-cEI">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Homework 6" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EB6-7B-MMS">
+                                                    <rect key="frame" x="8" y="11" width="584" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="WnX-AR-5XZ"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="EB6-7B-MMS" firstAttribute="trailing" secondItem="pRA-Me-cEI" secondAttribute="trailingMargin" id="NEK-n7-g1H"/>
+                                                <constraint firstItem="EB6-7B-MMS" firstAttribute="leading" secondItem="pRA-Me-cEI" secondAttribute="leadingMargin" id="Une-K9-0yd"/>
+                                                <constraint firstItem="EB6-7B-MMS" firstAttribute="centerY" secondItem="pRA-Me-cEI" secondAttribute="centerY" id="be0-hh-t4I"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="loopName" destination="EB6-7B-MMS" id="PI4-Gt-y6X"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="NAV-4Z-b2X" secondAttribute="trailing" id="5jm-YN-5Mu"/>
+                            <constraint firstItem="oEe-Cb-CRn" firstAttribute="top" secondItem="NAV-4Z-b2X" secondAttribute="bottom" id="7OS-4t-Yer"/>
+                            <constraint firstAttribute="trailing" secondItem="zLo-qK-n5w" secondAttribute="trailing" id="8PN-rZ-t7U"/>
+                            <constraint firstItem="zLo-qK-n5w" firstAttribute="top" secondItem="8VF-hj-EmJ" secondAttribute="bottom" id="9pF-tF-61M"/>
+                            <constraint firstItem="NAV-4Z-b2X" firstAttribute="leading" secondItem="TzN-1u-a48" secondAttribute="leading" id="hLD-g7-kwD"/>
+                            <constraint firstItem="zLo-qK-n5w" firstAttribute="leading" secondItem="TzN-1u-a48" secondAttribute="leading" id="mba-vn-pQW"/>
+                            <constraint firstItem="NAV-4Z-b2X" firstAttribute="top" secondItem="8VF-hj-EmJ" secondAttribute="bottom" id="tGH-o7-EYc"/>
+                            <constraint firstItem="oEe-Cb-CRn" firstAttribute="top" secondItem="zLo-qK-n5w" secondAttribute="bottom" id="tv3-f7-8Fa"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="aqI-f3-5Kv">
+                        <barButtonItem key="leftBarButtonItem" image="bars" id="39e-XP-zrM">
+                            <color key="tintColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="didTapOpenButton:" destination="AEC-cA-p8P" id="TWH-UP-PlH"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="NAV-4Z-b2X" id="pbx-Z4-yL6"/>
+                        <segue destination="oAH-fn-Mry" kind="show" identifier="loop" id="haR-vv-BLV"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VKa-MB-M5G" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1770" y="487"/>
         </scene>
         <!--SettingsVC-->
         <scene sceneID="PgW-dy-rXg">
@@ -487,7 +560,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T76-aU-6LL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2589" y="1263"/>
+            <point key="canvasLocation" x="3247" y="1197"/>
         </scene>
         <!--Add CourseVC-->
         <scene sceneID="juf-rE-HOu">
@@ -713,12 +786,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c9Z-Yp-3ha" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2589" y="487"/>
+            <point key="canvasLocation" x="3183" y="353"/>
         </scene>
         <!--Select University-->
         <scene sceneID="gPb-mY-bYE">
             <objects>
-                <viewController id="HHz-C6-cOx" customClass="SelectUniversityVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="HHz-C6-cOx" customClass="UniversityVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bLu-nZ-mc3"/>
                         <viewControllerLayoutGuide type="bottom" id="PSq-Y9-mCN"/>
@@ -967,7 +1040,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="oAH-fn-Mry" kind="relationship" relationship="rootViewController" id="5pg-q2-3bJ"/>
+                        <segue destination="AEC-cA-p8P" kind="relationship" relationship="rootViewController" id="HoZ-kh-olR"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bHX-Ul-oq2" userLabel="First Responder" sceneMemberID="firstResponder"/>

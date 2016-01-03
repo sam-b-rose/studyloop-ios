@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class SelectUniversityVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class UniversityVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
     
