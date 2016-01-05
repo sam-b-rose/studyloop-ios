@@ -18,26 +18,34 @@ class LoginVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         
         DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
             if authData != nil {
                 // user authenticated
-                print("From LoginVC", authData.providerData)
+                print("From LoginVC", authData.uid, authData.providerData)
                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
                 
                 // check for university
                 DataService.ds.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                    // print(snapshot.value)
+                    print(snapshot.value)
                     
-                    let userDict = self.snapshotToDictionary(snapshot)
-                    let currentUser = User(dictionary: userDict)
-                    StateService.ss.setUser(currentUser)
-                    
-                    if userDict["universityId"] == nil {
-                        self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+                    if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
+                        let currentUser = User(dictionary: userDict)
+                        StateService.ss.setUser(currentUser)
+                        
+                        if currentUser.universityId == nil {
+                            self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+                        } else {
+                            self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                        }
+                    } else {
+                        self.showErrorAlert("No user data", msg: "There wasn't any data returned for this user.")
                     }
-                    
-                    self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                 })
                 
             } else {
@@ -45,11 +53,6 @@ class LoginVC: UIViewController {
                 print("No User is signed in")
             }
         })
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
     }
     
     @IBAction func fbBtnPressed(sender: UIButton!) {
@@ -122,10 +125,6 @@ class LoginVC: UIViewController {
                                     
                                     DataService.ds.createFirebaseUser(authData.uid, user: user)
                                 })
-                                // TODO: Check for University
-                                //self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
-                                //self.dismissViewControllerAnimated(true, completion: nil)
-                                //self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                             }
                             
                         })
@@ -134,53 +133,12 @@ class LoginVC: UIViewController {
                     }
                 } else {
                     NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
-                    //self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                 }
             })
             
         } else {
             showErrorAlert("Email and Password Required", msg: "You must enter an email and a password")
         }
-    }
-    
-    func snapshotToDictionary(snapshot: FDataSnapshot) -> Dictionary<String, AnyObject> {
-        var d = Dictionary<String, AnyObject>()
-        
-        if snapshot.value.objectForKey("id") != nil {
-            d["id"] = snapshot.value.objectForKey("id") as? String
-        } else {
-            d["id"] = nil
-        }
-        
-        if snapshot.value.objectForKey("email") != nil {
-            d["email"] = snapshot.value.objectForKey("email") as? String
-        } else {
-            d["email"] = nil
-        }
-        
-        if snapshot.value.objectForKey("name") != nil {
-            d["name"] = snapshot.value.objectForKey("name") as? String
-        } else {
-            d["name"] = nil
-        }
-        
-        if snapshot.value.objectForKey("universityId") != nil {
-            d["universityId"] = snapshot.value.objectForKey("universityId") as? String
-        } else {
-            d["universityId"] = nil
-        }
-        
-        if snapshot.value.objectForKey("courseIds") != nil {
-            d["courseIds"] = snapshot.value.objectForKey("courseIds") as? Dictionary<String, Int>
-        } else {
-            d["courseIds"] = nil
-        }
-        
-        if snapshot.value.objectForKey("profileImageURL") != nil {
-            d["profileImageURL"] = snapshot.value.objectForKey("profileImageURL") as? String
-        }
-        
-        return d
     }
     
     func showErrorAlert(title: String, msg: String) {

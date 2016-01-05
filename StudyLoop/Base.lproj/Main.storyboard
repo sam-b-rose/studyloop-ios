@@ -439,8 +439,6 @@
                         <outlet property="imageSelectorBtn" destination="paJ-x4-yKT" id="6a1-7V-xjV"/>
                         <outlet property="messageField" destination="ZgF-8j-sJc" id="N5V-n7-R39"/>
                         <outlet property="tableView" destination="dhX-cC-a0J" id="A6C-hm-JvG"/>
-                        <segue destination="m8u-j2-o1x" kind="show" identifier="addCourse" animates="NO" id="fr3-y4-Nlv"/>
-                        <segue destination="V29-VW-8VX" kind="show" identifier="settings" animates="NO" id="dSe-Ke-XCs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bQf-vE-Nst" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -450,7 +448,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2450" y="487"/>
+            <point key="canvasLocation" x="2682" y="-241"/>
         </scene>
         <!--CourseVC-->
         <scene sceneID="zEx-HX-o5v">
@@ -525,6 +523,8 @@
                     <connections>
                         <outlet property="tableView" destination="NAV-4Z-b2X" id="pbx-Z4-yL6"/>
                         <segue destination="oAH-fn-Mry" kind="show" identifier="loop" id="haR-vv-BLV"/>
+                        <segue destination="V29-VW-8VX" kind="show" identifier="settings" id="zoq-2u-qX6"/>
+                        <segue destination="m8u-j2-o1x" kind="show" identifier="addCourse" id="AU2-PV-bCn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VKa-MB-M5G" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -560,7 +560,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T76-aU-6LL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3247" y="1197"/>
+            <point key="canvasLocation" x="2682" y="1388"/>
         </scene>
         <!--Add CourseVC-->
         <scene sceneID="juf-rE-HOu">
@@ -786,7 +786,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c9Z-Yp-3ha" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3183" y="353"/>
+            <point key="canvasLocation" x="2687" y="505"/>
         </scene>
         <!--Select University-->
         <scene sceneID="gPb-mY-bYE">
@@ -811,7 +811,7 @@
                                                 <rect key="frame" x="0.0" y="28" width="544" height="60"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uSv-Lf-x7e" id="h0G-fE-ZQ0">
-                                                    <rect key="frame" x="0.0" y="0.0" width="544" height="59"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="544" height="59.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="University of Tennessee" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IhG-xD-cM4">

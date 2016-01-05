@@ -107,8 +107,11 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             default:
                 // go to course
                 //mainNavigation.topViewController?.viewDidAppear(false)
-                let courseVC = mainNavigation.topViewController as? CourseVC
-                courseVC!.loadCourse(items[indexPath.row].courseId)
+                dispatch_async(dispatch_get_main_queue(), {
+                    NSNotificationCenter.defaultCenter().postNotificationName("reloadData", object: self.items[indexPath.row].courseId)
+                })
+        
+                print("DrawerVC", items[indexPath.row].courseId)
             }
             
             // drawerController.mainViewController = mainNavigation
@@ -122,8 +125,6 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             MenuItem(title: "Settings", borderTop: true),
             MenuItem(title: "Logout")
         ]
-        //print("appended defaults")
-        
         return defaults
     }
     
@@ -136,20 +137,4 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             drawerController.setDrawerState(.Closed, animated: true)
         }
     }
-    
-//    func getUsersCourses() {
-//        for (courseId, val) in (StateService.ss.CURRENT_USER?.courseIds)! {
-//            if val == 1 {
-//                DataService.ds.REF_COURSES.childByAppendingPath(courseId).observeSingleEventOfType(.Value, withBlock: { snapshot in
-//                    // print(snapshot)
-//                    let course = MenuItem(title: "\(snapshot.value.objectForKey("major")!) \(snapshot.value.objectForKey("number")!)", borderTop: false)
-//                    print(course.title)
-//                    self.items.insert(course, atIndex: 0)
-//                    
-//                    self.tableView.reloadData()
-//                })
-//            }
-//        }
-//    }
-    
 }

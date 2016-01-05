@@ -22,15 +22,11 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.delegate = self
         tableView.dataSource = self
         
-        if course != "" {
-            loadCourse(course)
-        } else {
-            // display default
-        }
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadCourse:", name: "reloadData", object: nil)
     }
     
-    override func viewDidAppear(animated: Bool) {
-        
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -45,6 +41,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let loop = loops[indexPath.row]
         
         if let cell = tableView.dequeueReusableCellWithIdentifier("LoopCell") as? LoopCell {
+            print(loop.subject)
             cell.configureCell(loop)
             return cell
         } else {
@@ -55,28 +52,35 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         performSegueWithIdentifier(SEGUE_LOOP, sender: nil)
     }
-
-    func loadCourse(courseId: String) {
-        DataService.ds.REF_LOOPS
-            .queryOrderedByChild("courseId")
-            .queryEqualToValue(course)
-            .observeEventType(.Value, withBlock: { snapshot in
-                
-                if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
-                    for snap in snapshots {
-                        print("SNAP: \(snap)")
-                        
-                        if let loopDict = snap.value as? Dictionary<String, AnyObject> {
+    
+    func loadCourse(notification: NSNotification) {
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        
+        if let courseId = notification.object as? String {
+            self.loops = []
+            print("CourseVC", courseId)
+            DataService.ds.REF_LOOPS
+                .queryOrderedByChild("courseId")
+                .queryEqualToValue(courseId)
+                .observeSingleEventOfType(.Value, withBlock: { snapshot in
+                    
+                    if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
+                        for snap in snapshots {
+                            print("SNAP: \(snap)")
                             
-                            // Create Loop Object
-                            let loop = Loop(loopDict: loopDict)
-                            self.loops.append(loop)
+                            if let loopDict = snap.value as? Dictionary<String, AnyObject> {
+                                
+                                // Create Loop Object
+                                let loop = Loop(loopDict: loopDict)
+                                self.loops.append(loop)
+                            }
                         }
                     }
-                }
-                
-                self.tableView.reloadData()
-            })
+                    print("loops", self.loops.count)
+                    self.tableView.reloadData()
+                })
+        }
     }
     
     @IBAction func didTapOpenButton(sender: UIBarButtonItem) {
