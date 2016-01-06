@@ -85,6 +85,10 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    @IBAction func didTapAddCourseButton(sender: AnyObject) {
+        performSegueWithIdentifier(SEGUE_ADD_LOOP, sender: nil)
+    }
+    
     @IBAction func didTapOpenButton(sender: UIBarButtonItem) {
         if let drawerController = navigationController?.parentViewController as? KYDrawerController {
             drawerController.setDrawerState(.Opened, animated: true)

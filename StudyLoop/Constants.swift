@@ -25,6 +25,7 @@ let SEGUE_SELECT_UNIVERSITY = "selectUniversity"
 let SEGUE_ADD_COURSE = "addCourse"
 let SEGUE_COURSE = "course"
 let SEGUE_LOOP = "loop"
+let SEGUE_ADD_LOOP = "addLoop"
 
 // Status Codes
 let STATUS_ACCOUNT_NONEXSIT = -8

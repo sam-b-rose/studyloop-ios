@@ -519,12 +519,18 @@
                                 <action selector="didTapOpenButton:" destination="AEC-cA-p8P" id="TWH-UP-PlH"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="plus" id="un0-N8-fib">
+                            <connections>
+                                <action selector="didTapAddCourseButton:" destination="AEC-cA-p8P" id="AuG-OK-0CK"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="NAV-4Z-b2X" id="pbx-Z4-yL6"/>
                         <segue destination="oAH-fn-Mry" kind="show" identifier="loop" id="haR-vv-BLV"/>
                         <segue destination="V29-VW-8VX" kind="show" identifier="settings" id="zoq-2u-qX6"/>
                         <segue destination="m8u-j2-o1x" kind="show" identifier="addCourse" id="AU2-PV-bCn"/>
+                        <segue destination="kFU-Cu-Du2" kind="show" identifier="addLoop" id="q0E-vX-lTr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VKa-MB-M5G" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -560,7 +566,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T76-aU-6LL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2682" y="1388"/>
+            <point key="canvasLocation" x="1770" y="1296"/>
         </scene>
         <!--Add CourseVC-->
         <scene sceneID="juf-rE-HOu">
@@ -786,7 +792,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c9Z-Yp-3ha" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2687" y="505"/>
+            <point key="canvasLocation" x="2675" y="487"/>
         </scene>
         <!--Select University-->
         <scene sceneID="gPb-mY-bYE">
@@ -874,7 +880,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="L5E-9s-6YK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1886" y="1924"/>
+            <point key="canvasLocation" x="-568" y="860"/>
         </scene>
         <!--DrawerVC-->
         <scene sceneID="AIb-fo-lSa">
@@ -1047,6 +1053,37 @@
             </objects>
             <point key="canvasLocation" x="1074" y="487"/>
         </scene>
+        <!--Add LoopVC-->
+        <scene sceneID="Dqb-zu-JOI">
+            <objects>
+                <viewController id="kFU-Cu-Du2" customClass="AddLoopVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="VsU-09-jhZ"/>
+                        <viewControllerLayoutGuide type="bottom" id="qIh-hP-ooN"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="DXf-DM-d4i">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Loop" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J3I-qH-Wpm">
+                                <rect key="frame" x="263" y="289" width="74" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="J3I-qH-Wpm" firstAttribute="centerY" secondItem="DXf-DM-d4i" secondAttribute="centerY" id="FKd-VG-EIo"/>
+                            <constraint firstItem="J3I-qH-Wpm" firstAttribute="centerX" secondItem="DXf-DM-d4i" secondAttribute="centerX" id="acp-D7-U9R"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="KTX-hT-aaR"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ERn-lX-d53" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2682" y="1296"/>
+        </scene>
     </scenes>
     <resources>
         <image name="bars" width="21" height="17"/>
@@ -1054,6 +1091,7 @@
         <image name="ece255-hw7" width="371" height="480"/>
         <image name="heart-o" width="150" height="150"/>
         <image name="owl-light-bg" width="400" height="400"/>
+        <image name="plus" width="20" height="20"/>
         <image name="profile" width="128" height="128"/>
         <image name="studyloop-logo" width="521" height="149"/>
     </resources>
