@@ -14,6 +14,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     var loops = [Loop]()
+    var selectedLoop: Loop! = nil
     var course = "4kZH8xslYkTLg"
     
     override func viewDidLoad() {
@@ -50,7 +51,8 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier(SEGUE_LOOP, sender: nil)
+        selectedLoop = loops[indexPath.row]
+        self.performSegueWithIdentifier(SEGUE_LOOP, sender: nil)
     }
     
     func loadCourse(notification: NSNotification) {
@@ -72,7 +74,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                             if let loopDict = snap.value as? Dictionary<String, AnyObject> {
                                 
                                 // Create Loop Object
-                                let loop = Loop(loopDict: loopDict)
+                                let loop = Loop(uid: snap.key, loopDict: loopDict)
                                 self.loops.append(loop)
                             }
                         }
@@ -86,6 +88,13 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBAction func didTapOpenButton(sender: UIBarButtonItem) {
         if let drawerController = navigationController?.parentViewController as? KYDrawerController {
             drawerController.setDrawerState(.Opened, animated: true)
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if(segue.identifier == SEGUE_LOOP) {
+            let loopVC = segue.destinationViewController as! LoopVC
+            loopVC.loop = selectedLoop
         }
     }
 }

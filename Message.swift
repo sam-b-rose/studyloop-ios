@@ -60,7 +60,7 @@ class Message {
             self._messageText = messageText
         }
         
-        self._messageRef = DataService.ds.REF_LOOP.childByAppendingPath(self._messageKey)
+        self._messageRef = DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(self._messageKey)
     }
     
     func adjustLikes (addLike: Bool) {

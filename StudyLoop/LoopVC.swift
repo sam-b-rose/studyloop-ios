@@ -18,6 +18,7 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     @IBOutlet weak var imageSelectorBtn: UIImageView!
     @IBOutlet weak var bottomSpacingConstraint: NSLayoutConstraint!
     
+    var loop: Loop!
     var messages = [Message]()
     var imageSelected = false
     static var imageCache = NSCache()
@@ -35,8 +36,8 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         
         tableView.estimatedRowHeight = 432
         
-        DataService.ds.REF_LOOP.observeEventType(.Value, withBlock: { snapshot in
-            // print(snapshot.value)
+        DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid).observeEventType(.Value, withBlock: { snapshot in
+            print(snapshot.value)
             
             self.messages = []
             if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
@@ -61,7 +62,7 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     }
     
     override func viewDidAppear(animated: Bool) {
-        print("load course loops")
+
     }
     
     deinit {
@@ -170,7 +171,7 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         }
         
         print(message)
-        let firebasePost = DataService.ds.REF_LOOP.childByAutoId()
+        let firebasePost = DataService.ds.REF_LOOP_MESSAGES.childByAutoId()
         firebasePost.setValue(message)
         
         messageField.text = ""

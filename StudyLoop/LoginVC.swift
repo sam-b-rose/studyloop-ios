@@ -32,7 +32,7 @@ class LoginVC: UIViewController {
                 
                 // check for university
                 DataService.ds.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                    print(snapshot.value)
+                    // print(snapshot.value)
                     
                     if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
                         let currentUser = User(dictionary: userDict)
@@ -44,7 +44,7 @@ class LoginVC: UIViewController {
                             self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                         }
                     } else {
-                        self.showErrorAlert("No user data", msg: "There wasn't any data returned for this user.")
+                        self.showErrorAlert("No user in database", msg: "The user has been authenicated but is not in database.")
                     }
                 })
                 
@@ -77,7 +77,7 @@ class LoginVC: UIViewController {
                             "provider": authData.provider!,
                             "name": authData.providerData["displayName"] as! NSString as String,
                             "email": authData.providerData["email"] as! NSString as String,
-                            "profileImageURL": authData.providerData["profileImageURL"] as! NSString as String
+                            "profileImageURL": authData.providerData["profileImageURL"] as! NSString as String,
                         ]
                         
                         DataService.ds.createFirebaseUser(authData.uid, user: user)
