@@ -64,8 +64,8 @@ class User {
         self._courseIds = Dictionary<String, Int>()
     }
     
-    init(dictionary: Dictionary<String, AnyObject?>) {
-        self._id = dictionary["id"] as? String
+    init(uid: String, dictionary: Dictionary<String, AnyObject?>) {
+        self._id = uid
         self._email = dictionary["email"] as? String
 
         if dictionary["name"] != nil {

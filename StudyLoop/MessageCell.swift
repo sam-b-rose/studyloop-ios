@@ -14,7 +14,7 @@ class MessageCell: UITableViewCell {
 
     @IBOutlet weak var profileImg: UIImageView!
     @IBOutlet weak var messageImg: UIImageView!
-    @IBOutlet weak var messageText: UILabel!
+    @IBOutlet weak var textValue: UILabel!
     @IBOutlet weak var likesLbl: UILabel!
     @IBOutlet weak var likeImage: UIImageView!
     
@@ -48,7 +48,7 @@ class MessageCell: UITableViewCell {
         likeRef = DataService.ds.REF_USER_CURRENT.childByAppendingPath("likes").childByAppendingPath(message.messageKey)
 
         self.message = message
-        self.messageText.text = message.messageText
+        self.textValue.text = message.textValue
         self.likesLbl.text = "\(message.likes)"
         self.messageImg.hidden = true
         

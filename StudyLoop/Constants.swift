@@ -11,6 +11,9 @@ import UIKit
 
 let SHADOW_COLOR: CGFloat = 157.0 / 255.0
 
+// Firebase Timestamp
+let kFirebaseServerValueTimestamp = [".sv":"timestamp"]
+
 // Keys
 let KEY_UID = "uid"
 

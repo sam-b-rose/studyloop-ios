@@ -35,7 +35,7 @@ class LoginVC: UIViewController {
                     // print(snapshot.value)
                     
                     if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
-                        let currentUser = User(dictionary: userDict)
+                        let currentUser = User(uid: snapshot.key, dictionary: userDict)
                         StateService.ss.setUser(currentUser)
                         
                         if currentUser.universityId == nil {

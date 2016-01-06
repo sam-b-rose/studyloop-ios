@@ -160,10 +160,13 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     }
     
     func postToFirebase(imgUrl: String?) {
-        
         var message: Dictionary<String, AnyObject> = [
             "textValue": "\(messageField.text!)",
-            "likes": 0
+            "createdById": (StateService.ss.CURRENT_USER?.id)!,
+            "createdByName": (StateService.ss.CURRENT_USER?.name)!,
+            "courseId": loop.courseId,
+            "loopId": loop.uid,
+            "createdAt": kFirebaseServerValueTimestamp
         ]
         
         if imgUrl != nil {
@@ -171,7 +174,7 @@ class LoopVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         }
         
         print(message)
-        let firebasePost = DataService.ds.REF_LOOP_MESSAGES.childByAutoId()
+        let firebasePost = DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid).childByAutoId()
         firebasePost.setValue(message)
         
         messageField.text = ""

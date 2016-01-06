@@ -10,15 +10,18 @@ import Foundation
 import Firebase
 
 class Message {
-    private var _messageText: String!
+    private var _textValue: String!
     private var _imageUrl: String?
     private var _likes: Int!
-    private var _username: String!
+    private var _loopId: String!
+    private var _courseId: String!
+    private var _createdById: String!
+    private var _createdByName: String!
     private var _messageKey: String!
     private var _messageRef: Firebase!
     
-    var messageText: String {
-        return _messageText
+    var textValue: String {
+        return _textValue
     }
     
     var imageUrl: String? {
@@ -29,22 +32,32 @@ class Message {
         return _likes
     }
     
-    var username: String {
-        return _username
+    var createdById: String {
+        return _createdById
+    }
+    
+    var createdByName: String {
+        return _createdByName
     }
     
     var messageKey: String {
         return _messageKey
     }
     
-    init(text: String, imageUrl: String?, username: String) {
-        self._messageText = text
+    init(text: String, imageUrl: String?, createdByName: String, createdById: String) {
+        self._textValue = text
         self._imageUrl = imageUrl
-        self._username = username
+        self._createdByName = createdByName
+        self._createdByName = createdById
     }
     
     init(messageKey: String, dictionary: Dictionary<String, AnyObject>) {
         self._messageKey = messageKey
+        self._textValue = dictionary["textValue"] as? String
+        self._createdById = dictionary["createdById"] as? String
+        self._createdByName = dictionary["createdByName"] as? String
+        self._loopId = dictionary["loopId"] as? String
+        self._courseId = dictionary["courseId"] as? String
         
         if let likes = dictionary["likes"] as? Int {
             self._likes = likes
@@ -54,10 +67,6 @@ class Message {
 
         if let imgUrl = dictionary["imageUrl"] as? String {
             self._imageUrl = imgUrl
-        }
-
-        if let messageText = dictionary["textValue"] as? String {
-            self._messageText = messageText
         }
         
         self._messageRef = DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(self._messageKey)
