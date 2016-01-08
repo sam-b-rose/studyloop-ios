@@ -44,7 +44,9 @@ class LoginVC: UIViewController {
                             self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                         }
                     } else {
+                        // TODO: Remove this alert message
                         self.showErrorAlert("No user in database", msg: "The user has been authenicated but is not in database.")
+                        self.createUser(authData: FAuthData)
                     }
                 })
                 
@@ -65,28 +67,13 @@ class LoginVC: UIViewController {
             } else {
                 let accessToken = FBSDKAccessToken.currentAccessToken().tokenString
                 //print("Successfully logined in with facebook. \(accessToken)")
-                
-                DataService.ds.REF_BASE.authWithOAuthProvider("facebook", token: accessToken, withCompletionBlock: { (error, authData) -> Void in
+                DataService.ds.REF_BASE.authWithOAuthProvider("facebook", token: accessToken, withCompletionBlock: {
+                    error, authData in
                     if error != nil {
                         print("login failed. \(error)")
-                        
                     } else {
                         print("Logged in! \(authData)")
-                        
-                        let user = [
-                            "provider": authData.provider!,
-                            "name": authData.providerData["displayName"] as! NSString as String,
-                            "email": authData.providerData["email"] as! NSString as String,
-                            "profileImageURL": authData.providerData["profileImageURL"] as! NSString as String,
-                        ]
-                        
-                        DataService.ds.createFirebaseUser(authData.uid, user: user)
-                        
-                        // TODO: Check for University
-                        NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
-                        //self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
-                        //self.dismissViewControllerAnimated(true, completion: nil)
-                        //self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                        self.createUser(authData)
                     }
                 })
             }
@@ -111,19 +98,8 @@ class LoginVC: UIViewController {
                                 NSUserDefaults.standardUserDefaults().setValue(result[KEY_UID], forKey: KEY_UID)
                                 
                                 DataService.ds.REF_BASE.authUser(email, password: pwd, withCompletionBlock: {
-                                    err, authData in
-                                    
-                                    print(authData)
-                                    
-                                    // TODO: should check for provider
-                                    let user = [
-                                        "provider": authData.provider!,
-                                        "email": authData.providerData["email"] as! NSString as String,
-                                        "profileImageURL": authData.providerData["profileImageURL"] as! NSString as String,
-                                        "name": authData.providerData["email"] as! NSString as String
-                                    ]
-                                    
-                                    DataService.ds.createFirebaseUser(authData.uid, user: user)
+                                    error, authData in
+                                    self.createUser(authData)
                                 })
                             }
                             
@@ -139,6 +115,18 @@ class LoginVC: UIViewController {
         } else {
             showErrorAlert("Email and Password Required", msg: "You must enter an email and a password")
         }
+    }
+    
+    func createUser(authData: FAuthData) {
+        let user = [
+            "provider": authData.provider!,
+            "name": authData.providerData["displayName"] as! NSString as String,
+            "email": authData.providerData["email"] as! NSString as String,
+            "profileImageURL": authData.providerData["profileImageURL"] as! NSString as String,
+        ]
+        
+        DataService.ds.createFirebaseUser(authData.uid, user: user)
+        NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
     }
     
     func showErrorAlert(title: String, msg: String) {
