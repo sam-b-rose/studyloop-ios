@@ -19,11 +19,6 @@ class LoginVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
         // TODO: Do something with Device ID
         // let deviceId = UIDevice.currentDevice().identifierForVendor!.UUIDString
         
@@ -63,6 +58,11 @@ class LoginVC: UIViewController {
         })
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+    
+    }
+    
     @IBAction func fbBtnPressed(sender: UIButton!) {
         let facebookLogin = FBSDKLoginManager()
         
@@ -79,9 +79,20 @@ class LoginVC: UIViewController {
                         print("login failed. \(error)")
                     } else {
                         print("Logged in! \(authData)")
-                        self.createUser(authData, completion: {
-                            result in
-                            print(result)
+                        
+                        DataService.ds.REF_UID_MAPPING.childByAppendingPath(authData.uid).observeSingleEventOfType(.Value, withBlock: {
+                            snapshot in
+                            print(snapshot)
+                            
+                            if snapshot.value != nil {
+                                print("Facebook User is in database")
+                            } else {
+                                print("No user in database")
+                                self.createUser(authData, completion: {
+                                    result in
+                                    print(result)
+                                })
+                            }
                         })
                     }
                 })
