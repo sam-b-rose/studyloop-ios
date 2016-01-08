@@ -3,17 +3,20 @@ PODS:
   - Firebase (2.4.3)
   - FuzzySearch (1.1.0)
   - KYDrawerController (1.1.2)
+  - SlackTextViewController (1.8)
 
 DEPENDENCIES:
   - Alamofire (~> 3.0)
   - Firebase (>= 2.4.3)
   - FuzzySearch (~> 1.1)
   - KYDrawerController
+  - SlackTextViewController
 
 SPEC CHECKSUMS:
   Alamofire: 9f93b56389e48def9220dd57d1f44b1927229a5a
   Firebase: 48179995b561e2262c5d4060ecdffca45fbbff8b
   FuzzySearch: 3521e8252654b857fd02b630d399f0ca884b09d4
   KYDrawerController: 222c4d07ed09fa7842011d36d73e3599dcbccab3
+  SlackTextViewController: 0300adee2931fdbe72488990336f0937dbed048e
 
 COCOAPODS: 0.39.0

@@ -23,11 +23,6 @@ class DataService {
     private var _REF_UNIVERSITIES = Firebase(url: "\(URL_BASE)/universities")
     private var _REF_USERS = Firebase(url: "\(URL_BASE)/users")
     
-    // for Dev Only
-    //private var _REF_LOOP = Firebase(url: "\(URL_BASE)/loop-messages/-K6B8Ccm8ST60MX5oN8p")
-    //private var _REF_USERS = Firebase(url: "\(URL_BASE)/ios-users")
-    
-    
     var REF_BASE: Firebase {
         return _REF_BASE
     }
@@ -48,9 +43,9 @@ class DataService {
         return _REF_LOOPS
     }
     
-//    var REF_LOOP: Firebase {
-//        return _REF_LOOP
-//    }
+    var REF_UID_MAPPING: Firebase {
+        return _REF_UID_MAPPING
+    }
     
     var REF_USERS: Firebase {
         return _REF_USERS

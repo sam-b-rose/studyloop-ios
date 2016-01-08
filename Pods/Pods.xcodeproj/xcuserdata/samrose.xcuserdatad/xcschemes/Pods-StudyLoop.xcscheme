@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '604FC77D8A6DEF3E4EE91298'
+               BlueprintIdentifier = '8944C17D171594F8E39157A4'
                BlueprintName = 'Pods-StudyLoop'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'Pods_StudyLoop.framework'>
