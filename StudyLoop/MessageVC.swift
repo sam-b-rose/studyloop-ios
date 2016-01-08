@@ -7,36 +7,64 @@
 //
 
 import UIKit
+import Firebase
 import SlackTextViewController
 
 class MessageVC: SLKTextViewController {
     
     var loop: Loop!
     var messages = [Message]()
-
+    var lastSeen: Int!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.bounces = true
+        self.shakeToClearEnabled = true
+        self.keyboardPanningEnabled = true
+        self.inverted = false
+        
         // Get Loop Data
-
-        // Table Stuff
+        self.loadMessages()
+        
         // Set up UI controls
+        self.leftButton.setImage(UIImage(named: "icn_upload"), forState: UIControlState.Normal)
+        self.leftButton.tintColor = UIColor.grayColor()
+        self.rightButton.setTitle("Send", forState: UIControlState.Normal)
+        
+        // Table Stuff
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 64.0
         self.tableView.separatorStyle = .None
+        self.tableView.registerClass(LoopMessageCell.self, forCellReuseIdentifier: "LoopMessageCell")
     }
     
     // MARK: Message Logic
     func loadMessages() {
         self.messages.removeAll()
+        
         // Get Messages
-        let messages = [Message]()
-        self.addMessages(messages)
+        print("Loop ID", loop.uid)
+        DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid).observeEventType(.Value, withBlock: { snapshot in
+            var messages = [Message]()
+            
+            if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
+                for snap in snapshots {
+                    if let messageDict = snap.value as? Dictionary<String, AnyObject> {
+                        let key = snap.key
+                        let message = Message(messageKey: key, dictionary: messageDict)
+                        messages.append(message)
+                    }
+                }
+            }
+            self.addMessages(messages)
+        })
     }
     
     func addMessages(messages: [Message]) {
-        self.messages.appendContentsOf(messages)
-        self.messages.sortInPlace { $1.createdAt > $0.createdAt }
+        // self.messages.appendContentsOf(messages)
+        // self.messages.sortInPlace { $1.createdAt > $0.createdAt }
+        self.messages = messages
         
         dispatch_async(dispatch_get_main_queue()) {
             () -> Void in
@@ -44,7 +72,32 @@ class MessageVC: SLKTextViewController {
             if self.messages.count > 0 {
                 self.scrollToBottomMessage()
             }
+            //DataService.ds.REF_USER_CURRENT.childByAppendingPath("loopIds").childByAppendingPath(self.loop.uid).setValue([".sv": "timestamp"])
         }
+    }
+    
+    override func didPressRightButton(sender: AnyObject!) {
+        self.textView.refreshFirstResponder()
+        
+        let message: Dictionary<String, AnyObject> = [
+            "textValue": "\(self.textView.text!)",
+            "createdById": (StateService.ss.CURRENT_USER?.id)!,
+            "createdByName": (StateService.ss.CURRENT_USER?.name)!,
+            "courseId": loop.courseId,
+            "loopId": loop.uid,
+            "createdAt": kFirebaseServerValueTimestamp
+        ]
+        
+        DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid).childByAutoId().setValue(message, withCompletionBlock: {
+            error, ref in
+            
+            if error != nil {
+                print("Error sending message")
+            } else {
+                self.textView.text = ""
+            }
+        })
+        super.didPressRightButton(sender)
     }
     
     // MARK: UI Logic
@@ -53,6 +106,7 @@ class MessageVC: SLKTextViewController {
         if self.messages.count == 0 {
             return
         }
+//        self.tableView.slk_scrollToBottomAnimated(true)
         let bottomMessageIndex = NSIndexPath(forRow: self.tableView.numberOfRowsInSection(0) - 1,
             inSection: 0)
         self.tableView.scrollToRowAtIndexPath(bottomMessageIndex, atScrollPosition: .Bottom,
@@ -70,17 +124,12 @@ class MessageVC: SLKTextViewController {
         -> UITableViewCell {
             let message = messages[indexPath.row]
             
-            if let cell = tableView.dequeueReusableCellWithIdentifier("MessageCell") as? MessageCell {
+            if let cell = tableView.dequeueReusableCellWithIdentifier("LoopMessageCell") as? LoopMessageCell {
                 
-                cell.request?.cancel()
+                cell.nameLabel.text = message.createdByName
+                cell.bodyLabel.text = message.textValue
+                cell.selectionStyle = .None
                 
-                var img: UIImage?
-                
-                if let url =  message.imageUrl {
-                    img = LoopVC.imageCache.objectForKey(url) as? UIImage
-                }
-                
-                cell.configureCell(message, img: img)
                 return cell
             } else {
                 return MessageCell()
@@ -91,5 +140,5 @@ class MessageVC: SLKTextViewController {
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
-
+    
 }
