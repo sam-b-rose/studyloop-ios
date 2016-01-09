@@ -32,6 +32,7 @@
             <string>NotoSans</string>
             <string>NotoSans</string>
             <string>NotoSans</string>
+            <string>NotoSans</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -305,13 +306,13 @@
                                                                                 </mask>
                                                                             </variation>
                                                                         </imageView>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="username42" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.59999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="SVj-Go-nPR">
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username42" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.59999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="SVj-Go-nPR">
                                                                             <rect key="frame" x="60" y="0.0" width="395" height="50"/>
                                                                             <fontDescription key="fontDescription" name="NotoSans-Bold" family="Noto Sans" pointSize="17"/>
                                                                             <color key="textColor" red="0.3921568627" green="0.42352941179999998" blue="0.4941176471" alpha="1" colorSpace="calibratedRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="heart-o" translatesAutoresizingMaskIntoConstraints="NO" id="PmY-Ac-DQm">
+                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart-o" translatesAutoresizingMaskIntoConstraints="NO" id="PmY-Ac-DQm">
                                                                             <rect key="frame" x="465" y="0.0" width="25" height="50"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="25" id="710-Xp-9jU"/>
@@ -323,10 +324,10 @@
                                                                                 </mask>
                                                                             </variation>
                                                                         </imageView>
-                                                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="3jp-3f-kXJ">
+                                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="3jp-3f-kXJ">
                                                                             <rect key="frame" x="500" y="0.0" width="44" height="50"/>
                                                                             <subviews>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="1444" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s9N-LJ-XMw">
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1444" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s9N-LJ-XMw">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="44" height="24"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" constant="24" id="3zM-Jx-Cui"/>
@@ -335,7 +336,7 @@
                                                                                     <color key="textColor" red="0.3921568627" green="0.42352941179999998" blue="0.4941176471" alpha="1" colorSpace="calibratedRGB"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Likes" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VwP-lC-vof">
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Likes" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VwP-lC-vof">
                                                                                     <rect key="frame" x="0.0" y="24" width="44" height="26"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" constant="26" id="MJD-8n-Okk"/>
@@ -517,13 +518,21 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No course selected..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cuU-ey-Ol0">
+                                <rect key="frame" x="217" y="288" width="166" height="24"/>
+                                <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
+                                <color key="textColor" red="0.3921568627" green="0.42352941179999998" blue="0.4941176471" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="NAV-4Z-b2X" secondAttribute="trailing" id="5jm-YN-5Mu"/>
+                            <constraint firstItem="cuU-ey-Ol0" firstAttribute="centerX" secondItem="TzN-1u-a48" secondAttribute="centerX" id="5v9-vc-qIM"/>
                             <constraint firstItem="oEe-Cb-CRn" firstAttribute="top" secondItem="NAV-4Z-b2X" secondAttribute="bottom" id="7OS-4t-Yer"/>
                             <constraint firstAttribute="trailing" secondItem="zLo-qK-n5w" secondAttribute="trailing" id="8PN-rZ-t7U"/>
                             <constraint firstItem="zLo-qK-n5w" firstAttribute="top" secondItem="8VF-hj-EmJ" secondAttribute="bottom" id="9pF-tF-61M"/>
+                            <constraint firstItem="cuU-ey-Ol0" firstAttribute="centerY" secondItem="TzN-1u-a48" secondAttribute="centerY" id="TBU-46-bZq"/>
                             <constraint firstItem="NAV-4Z-b2X" firstAttribute="leading" secondItem="TzN-1u-a48" secondAttribute="leading" id="hLD-g7-kwD"/>
                             <constraint firstItem="zLo-qK-n5w" firstAttribute="leading" secondItem="TzN-1u-a48" secondAttribute="leading" id="mba-vn-pQW"/>
                             <constraint firstItem="NAV-4Z-b2X" firstAttribute="top" secondItem="8VF-hj-EmJ" secondAttribute="bottom" id="tGH-o7-EYc"/>
@@ -546,6 +555,7 @@
                     <connections>
                         <outlet property="addLoopBtn" destination="un0-N8-fib" id="hPi-gv-Jq4"/>
                         <outlet property="menuBtn" destination="39e-XP-zrM" id="Aei-tJ-Mpy"/>
+                        <outlet property="noCourseLbl" destination="cuU-ey-Ol0" id="RP1-gZ-n6q"/>
                         <outlet property="tableView" destination="NAV-4Z-b2X" id="pbx-Z4-yL6"/>
                         <segue destination="V29-VW-8VX" kind="show" identifier="settings" id="zoq-2u-qX6"/>
                         <segue destination="m8u-j2-o1x" kind="show" identifier="addCourse" id="AU2-PV-bCn"/>
@@ -981,24 +991,45 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="56"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Menu Item" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Fn-wQ-MwW">
-                                                    <rect key="frame" x="8" y="15" width="584" height="26"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="26" id="Vje-yl-rFI"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uMq-Zl-S0l">
+                                                    <rect key="frame" x="20" y="16" width="560" height="24"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Menu Item" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Fn-wQ-MwW">
+                                                            <rect key="frame" x="0.0" y="0.0" width="528" height="24"/>
+                                                            <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
+                                                            <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Icon" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="999-Ir-dpO">
+                                                            <rect key="frame" x="528" y="0.0" width="33" height="24"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="1Fn-wQ-MwW" firstAttribute="centerY" secondItem="xsN-Li-91b" secondAttribute="centerY" id="1xz-JP-wkb"/>
-                                                <constraint firstItem="1Fn-wQ-MwW" firstAttribute="leading" secondItem="xsN-Li-91b" secondAttribute="leadingMargin" id="V58-pW-1h2"/>
-                                                <constraint firstItem="1Fn-wQ-MwW" firstAttribute="trailing" secondItem="xsN-Li-91b" secondAttribute="trailingMargin" id="ihh-aV-VGL"/>
+                                                <constraint firstItem="uMq-Zl-S0l" firstAttribute="top" secondItem="xsN-Li-91b" secondAttribute="topMargin" constant="8" id="4Ba-kc-zgW"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="uMq-Zl-S0l" secondAttribute="trailing" id="8YF-yt-07T"/>
+                                                <constraint firstAttribute="trailing" secondItem="uMq-Zl-S0l" secondAttribute="trailing" constant="20" id="IQc-Je-scM"/>
+                                                <constraint firstItem="uMq-Zl-S0l" firstAttribute="centerY" secondItem="xsN-Li-91b" secondAttribute="centerY" id="WGb-Kn-axQ"/>
+                                                <constraint firstItem="uMq-Zl-S0l" firstAttribute="leading" secondItem="xsN-Li-91b" secondAttribute="leading" constant="20" id="bEf-xo-0jn"/>
+                                                <constraint firstItem="uMq-Zl-S0l" firstAttribute="leading" secondItem="xsN-Li-91b" secondAttribute="leadingMargin" id="laE-sg-pKL"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="uMq-Zl-S0l" secondAttribute="bottom" constant="8" id="ulb-JB-Yg1"/>
                                             </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="4Ba-kc-zgW"/>
+                                                    <exclude reference="8YF-yt-07T"/>
+                                                    <exclude reference="laE-sg-pKL"/>
+                                                    <exclude reference="ulb-JB-Yg1"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="itemLabel" destination="1Fn-wQ-MwW" id="U7R-in-s8T"/>
+                                            <outlet property="menuIcon" destination="999-Ir-dpO" id="rrb-Br-Yes"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

@@ -22,16 +22,18 @@ class LoginVC: UIViewController {
         // TODO: Do something with Device ID
         // let deviceId = UIDevice.currentDevice().identifierForVendor!.UUIDString
         
+//        if let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) {
+//            
+//        }
+        
         DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
             if authData != nil {
                 // user authenticated
                 print("From LoginVC", authData.uid)
                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
                 
-                // check for university
+                // check for if user exists and if they have a university selected
                 DataService.ds.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                    //print(snapshot.value)
-                    
                     if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
                         let currentUser = User(uid: snapshot.key, dictionary: userDict)
                         StateService.ss.setUser(currentUser)
@@ -58,11 +60,6 @@ class LoginVC: UIViewController {
         })
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-    
-    }
-    
     @IBAction func fbBtnPressed(sender: UIButton!) {
         let facebookLogin = FBSDKLoginManager()
         
@@ -79,7 +76,6 @@ class LoginVC: UIViewController {
                         print("login failed. \(error)")
                     } else {
                         print("Logged in!")
-                        
                         DataService.ds.REF_UID_MAPPING.childByAppendingPath(authData.uid).observeSingleEventOfType(.Value, withBlock: {
                             snapshot in
                             // print(snapshot)
@@ -115,8 +111,6 @@ class LoginVC: UIViewController {
                                 self.showErrorAlert("Could not create account", msg: "Problem creating accound. Try something else")
                             } else {
                                 print("Created a new email/password user!")
-                                NSUserDefaults.standardUserDefaults().setValue(result[KEY_UID], forKey: KEY_UID)
-                                
                                 DataService.ds.REF_BASE.authUser(email, password: pwd, withCompletionBlock: {
                                     error, authData in
                                     self.createUser(authData, completion: {
@@ -132,6 +126,7 @@ class LoginVC: UIViewController {
                     }
                 } else {
                     NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
+                    NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
                 }
             })
             
@@ -156,6 +151,7 @@ class LoginVC: UIViewController {
                 
                 DataService.ds.createFirebaseUser(authData.uid, user: user)
                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
+                NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
                 completion(result: "Finished creating user")
             }
         })

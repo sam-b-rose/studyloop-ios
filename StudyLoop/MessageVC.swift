@@ -14,7 +14,8 @@ class MessageVC: SLKTextViewController {
     
     var loop: Loop!
     var messages = [Message]()
-    var lastSeen: Int!
+    var userImageMap = [String: String]()
+    static var imageCache = NSCache()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +28,9 @@ class MessageVC: SLKTextViewController {
         // Get Loop Data
         self.loadMessages()
         
+        // Watch Loop
+        self.watchLoop()
+        
         // Set up UI controls
         self.leftButton.setImage(UIImage(named: "icn_upload"), forState: UIControlState.Normal)
         self.leftButton.tintColor = UIColor.grayColor()
@@ -38,6 +42,17 @@ class MessageVC: SLKTextViewController {
         self.tableView.estimatedRowHeight = 64.0
         self.tableView.separatorStyle = .None
         self.tableView.registerClass(LoopMessageCell.self, forCellReuseIdentifier: "LoopMessageCell")
+    }
+    
+    func watchLoop() {
+        DataService.ds.REF_LOOPS.childByAppendingPath(loop.uid).observeEventType(.Value, withBlock: {
+            snapshot in
+            print("UPDATED LOOP SNAP: ", snapshot)
+            if let loopDict = snapshot.value as? Dictionary<String, AnyObject> {
+                self.loop = Loop(uid: snapshot.key, loopDict: loopDict)
+                self.mapUserImages()
+            }
+        })
     }
     
     // MARK: Message Logic
@@ -64,16 +79,11 @@ class MessageVC: SLKTextViewController {
         
         DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid).queryLimitedToLast(25).observeEventType(.ChildAdded, withBlock: { snapshot in
             var messages = [Message]()
-            
-            print("SNAP: ", snapshot)
-            
             if let messageDict = snapshot.value as? Dictionary<String, AnyObject> {
                 let key = snapshot.key
                 let message = Message(messageKey: key, dictionary: messageDict)
                 messages.append(message)
             }
-            
-            print("message count", messages.count)
             self.addMessages(messages)
         })
     }
@@ -87,8 +97,22 @@ class MessageVC: SLKTextViewController {
             self.tableView.reloadData()
             if self.messages.count > 0 {
                 self.scrollToBottomMessage()
-                // Slacks Scrollhttps://app.frontify.com/d/pycVdw06UoZ8/studyloop-style-guide
+                // Slacks Scroll
                 // self.tableView.slk_scrollToBottomAnimated(true)
+            }
+        }
+    }
+    
+    func mapUserImages() {
+        print(loop.userIds)
+        for user in loop.userIds {
+            if userImageMap[user] == nil {
+                DataService.ds.REF_USERS.childByAppendingPath(user).observeSingleEventOfType(.Value, withBlock: {
+                    snapshot in
+                    if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
+                        self.userImageMap[user] = userDict["profileImageURL"] as? String
+                    }
+                })
             }
         }
     }
@@ -157,11 +181,16 @@ class MessageVC: SLKTextViewController {
             let message = messages[indexPath.row]
             
             if let cell = tableView.dequeueReusableCellWithIdentifier("LoopMessageCell") as? LoopMessageCell {
+                var img: UIImage?
+                let imgUrl: String? = self.userImageMap[message.createdById]
                 
-                cell.nameLabel.text = message.createdByName
-                cell.bodyLabel.text = message.textValue
+                if imgUrl != nil {
+                    img = MessageVC.imageCache.objectForKey(imgUrl!) as? UIImage
+                }
+                
+                print("Image Data", img, imgUrl)
+                cell.configureCell(message.textValue, name: message.createdByName, imageUrl: imgUrl, image: img)
                 cell.selectionStyle = .None
-                
                 return cell
             } else {
                 return MessageCell()

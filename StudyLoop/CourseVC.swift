@@ -15,6 +15,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addLoopBtn: UIBarButtonItem!
     @IBOutlet weak var menuBtn: UIBarButtonItem!
+    @IBOutlet weak var noCourseLbl: UILabel!
     
     var loops = [Loop]()
     var selectedLoop: Loop! = nil
@@ -37,8 +38,11 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Load last viewed course or selected course
         if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String {
             getLoops(courseId)
+            noCourseLbl.hidden = true
         } else {
             print("No course selected")
+            noCourseLbl.hidden = false
+            NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
         }
         
         if let courseTitle = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE_TITLE) as? String {

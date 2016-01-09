@@ -11,6 +11,7 @@ import UIKit
 class DrawerCell: UITableViewCell {
 
     @IBOutlet weak var itemLabel: UILabel!
+    @IBOutlet weak var menuIcon: UILabel!
     
     var item: MenuItem!
     let border = CALayer()
@@ -22,6 +23,13 @@ class DrawerCell: UITableViewCell {
     func configureCell(item: MenuItem) {
         self.item = item
         self.itemLabel.text = item.title
+        
+        if item.title == "Add Course" {
+            menuIcon.font = UIFont.ioniconOfSize(17)
+            menuIcon.text = String.ioniconWithCode("ion-plus-round")
+        } else {
+            menuIcon.text = ""
+        }
         
         if item.borderTop {
             // add border

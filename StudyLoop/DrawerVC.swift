@@ -89,7 +89,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             
             switch indexPath.row {
             case (items.count - 3):
-                // Settings
+                // Add Course
                 print("add course")
                 mainNavigation.topViewController?.performSegueWithIdentifier(SEGUE_ADD_COURSE, sender: nil)
                 break
@@ -102,18 +102,15 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 // Logout
                 print("logout")
                 DataService.ds.REF_BASE.unauth()
+                resetUserDefaults()
                 drawerController.dismissViewControllerAnimated(true, completion: nil)
                 break
             default:
                 // go to course
                 NSUserDefaults.standardUserDefaults().setValue(items[indexPath.row].courseId, forKey: KEY_COURSE)
                 NSUserDefaults.standardUserDefaults().setValue(items[indexPath.row].title, forKey: KEY_COURSE_TITLE)
-                
-//                let courseVC = mainNavigation.topViewController as! CourseVC
-//                courseVC.navigationItem.title = items[indexPath.row].title
             }
             
-            // drawerController.mainViewController = mainNavigation
             drawerController.setDrawerState(.Closed, animated: true)
         }
     }
@@ -125,6 +122,12 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             MenuItem(title: "Logout")
         ]
         return defaults
+    }
+    
+    func resetUserDefaults() {
+        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UID)
+        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
+        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
     }
     
     func goToProfile() {
