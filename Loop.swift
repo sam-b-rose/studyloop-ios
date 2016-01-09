@@ -15,6 +15,7 @@ class Loop {
     private var _subject: String!
     private var _universityId: String!
     private var _lastMessage: String!
+    private var _hasCurrentUser: Bool!
     private var _userIds: [String]!
     
     var uid: String {
@@ -42,6 +43,15 @@ class Loop {
         }
     }
     
+    var hasCurrentUser: Bool {
+        get {
+            return _hasCurrentUser
+        }
+        set(hasUser) {
+            _hasCurrentUser = hasUser
+        }
+    }
+    
     var userIds: [String] {
         return _userIds
     }
@@ -54,6 +64,7 @@ class Loop {
         self._universityId = universityId
         
         self._lastMessage = lastMessage
+        self._hasCurrentUser = false
         
         self._userIds = [String]()
         for (user, _) in userIds {
@@ -67,6 +78,7 @@ class Loop {
         self._createdAt = loopDict["createdAt"] as? String
         self._subject = loopDict["subject"] as? String
         self._universityId = loopDict["universityId"] as? String
+        self._hasCurrentUser = false
         
         if let last = loopDict["lastMessage"] as? String {
             self._lastMessage = last

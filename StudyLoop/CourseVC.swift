@@ -17,7 +17,6 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var menuBtn: UIBarButtonItem!
     
     var loops = [Loop]()
-    var courseTitle: String = ""
     var selectedLoop: Loop! = nil
     let attributes = [NSFontAttributeName: UIFont.ioniconOfSize(22)] as Dictionary!
 
@@ -75,9 +74,13 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        joinLoop(loops[indexPath.row].subject)
         selectedLoop = loops[indexPath.row]
-        //self.performSegueWithIdentifier(SEGUE_LOOP, sender: nil)
+        
+        if selectedLoop.hasCurrentUser == true {
+            self.performSegueWithIdentifier(SEGUE_LOOP, sender: nil)
+        } else {
+            joinLoop()
+        }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
@@ -93,6 +96,13 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                         if let loopDict = snap.value as? Dictionary<String, AnyObject> {
                             // Create Loop Object
                             let loop = Loop(uid: snap.key, loopDict: loopDict)
+                            
+                            // Check if user is in loop
+                            let userIndex = loop.userIds.indexOf((StateService.ss.CURRENT_USER?.id)!)
+                            if userIndex != nil {
+                                loop.hasCurrentUser = true
+                            }
+                            
                             self.loops.append(loop)
                         }
                     }
@@ -101,11 +111,24 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             })
     }
     
-    func joinLoop(loopName: String) {
-        let alert = UIAlertController(title: "Join Loop", message: "Do you want to join \(loopName)?", preferredStyle: .Alert)
-        let action = UIAlertAction(title: "Join", style: .Default, handler: nil)
-        alert.addAction(action)
+    func joinLoop() {
+        let alert = UIAlertController(title: "Join Loop", message: "Do you want to join \(selectedLoop.subject)?", preferredStyle: .Alert)
+        let join = UIAlertAction(title: "Join", style: .Default, handler: joinLoopHandler)
+        let cancel = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
+        let preferredAction = join
+        alert.addAction(preferredAction)
+        alert.addAction(cancel)
         presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func joinLoopHandler(alert: UIAlertAction) -> Void {
+        addUserToLoop()
+    }
+    
+    func addUserToLoop() {
+        DataService.ds.REF_LOOPS.childByAppendingPath(selectedLoop.uid).childByAppendingPath("userIds").childByAppendingPath(StateService.ss.CURRENT_USER?.id).setValue(true)
+        DataService.ds.REF_USER_CURRENT.childByAppendingPath("loopIds").childByAppendingPath(selectedLoop.uid).setValue(true)
+        self.performSegueWithIdentifier(SEGUE_LOOP, sender: nil)
     }
     
     @IBAction func didTapAddCourseButton(sender: AnyObject) {

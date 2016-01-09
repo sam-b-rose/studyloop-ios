@@ -31,6 +31,7 @@ class MessageVC: SLKTextViewController {
         self.leftButton.setImage(UIImage(named: "icn_upload"), forState: UIControlState.Normal)
         self.leftButton.tintColor = UIColor.grayColor()
         self.rightButton.setTitle("Send", forState: UIControlState.Normal)
+        navigationItem.title = loop.subject
         
         // Table Stuff
         self.tableView.rowHeight = UITableViewAutomaticDimension
@@ -111,7 +112,7 @@ class MessageVC: SLKTextViewController {
                 print("Error sending message")
             } else {
                 self.textView.text = ""
-                DataService.ds.REF_LOOPS.childByAppendingPath(self.loop.uid).setValue(["lastMessage" : message])
+                // DataService.ds.REF_LOOPS.childByAppendingPath(self.loop.uid).setValue(["lastMessage" : message])
             }
         })
         super.didPressRightButton(sender)
