@@ -15,7 +15,7 @@ class Message {
     private var _likes: Int!
     private var _loopId: String!
     private var _courseId: String!
-    private var _createdAt: String?
+    private var _createdAt: Int?
     private var _createdById: String!
     private var _createdByName: String!
     private var _messageKey: String!
@@ -33,7 +33,7 @@ class Message {
         return _likes
     }
     
-    var createdAt: String? {
+    var createdAt: Int? {
         return _createdAt
     }
     
@@ -64,7 +64,7 @@ class Message {
         self._loopId = dictionary["loopId"] as? String
         self._courseId = dictionary["courseId"] as? String
         
-        if let createdAt = dictionary["createdAt"] as? String {
+        if let createdAt = dictionary["createdAt"] as? Int {
             self._createdAt = createdAt
         } else {
             self._createdAt = nil

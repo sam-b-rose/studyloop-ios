@@ -106,12 +106,11 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 break
             default:
                 // go to course
-                //mainNavigation.topViewController?.viewDidAppear(false)
-                dispatch_async(dispatch_get_main_queue(), {
-                    NSNotificationCenter.defaultCenter().postNotificationName("reloadData", object: self.items[indexPath.row].courseId)
-                })
-        
-                print("DrawerVC", items[indexPath.row].courseId)
+                NSUserDefaults.standardUserDefaults().setValue(items[indexPath.row].courseId, forKey: KEY_COURSE)
+                NSUserDefaults.standardUserDefaults().setValue(items[indexPath.row].title, forKey: KEY_COURSE_TITLE)
+                
+//                let courseVC = mainNavigation.topViewController as! CourseVC
+//                courseVC.navigationItem.title = items[indexPath.row].title
             }
             
             // drawerController.mainViewController = mainNavigation

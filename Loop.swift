@@ -14,6 +14,7 @@ class Loop {
     private var _createdAt: String!
     private var _subject: String!
     private var _universityId: String!
+    private var _lastMessage: String!
     private var _userIds: [String]!
     
     var uid: String {
@@ -32,16 +33,27 @@ class Loop {
         return _universityId
     }
     
+    var lastMessage: String {
+        get {
+            return _lastMessage
+        }
+        set(newLastMessage) {
+            _lastMessage = newLastMessage
+        }
+    }
+    
     var userIds: [String] {
         return _userIds
     }
     
-    init(uid: String, courseId: String, createdAt: String, subject: String, universityId: String, userIds: Dictionary<String, Int>) {
+    init(uid: String, courseId: String, createdAt: String, subject: String, universityId: String, lastMessage: String, userIds: Dictionary<String, Int>) {
         self._uid = uid
         self._courseId = courseId
         self._createdAt = createdAt
         self._subject = subject
         self._universityId = universityId
+        
+        self._lastMessage = lastMessage
         
         self._userIds = [String]()
         for (user, _) in userIds {
@@ -55,6 +67,12 @@ class Loop {
         self._createdAt = loopDict["createdAt"] as? String
         self._subject = loopDict["subject"] as? String
         self._universityId = loopDict["universityId"] as? String
+        
+        if let last = loopDict["lastMessage"] as? String {
+            self._lastMessage = last
+        } else {
+            self._lastMessage = ""
+        }
         
         self._userIds = [String]()
         if let userIdsDict = loopDict["userIds"] as? Dictionary<String, Int> {

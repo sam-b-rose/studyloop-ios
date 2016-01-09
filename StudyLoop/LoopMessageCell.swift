@@ -13,14 +13,14 @@ class LoopMessageCell: UITableViewCell {
 
     lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
+        label.font = UIFont(name: "NotoSans", size: 17)
         label.textColor = UIColor(red:0, green:0.87, blue:0.74, alpha:1)
         return label
     }()
     
     lazy var bodyLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+        label.font = UIFont(name: "NotoSans", size: 17)
         label.numberOfLines = 0
         return label
     }()

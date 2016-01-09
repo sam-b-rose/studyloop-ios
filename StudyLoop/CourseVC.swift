@@ -13,17 +13,38 @@ import KYDrawerController
 class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
-    var loops = [Loop]()
-    var selectedLoop: Loop! = nil
-    var course = "4kZH8xslYkTLg"
+    @IBOutlet weak var addLoopBtn: UIBarButtonItem!
+    @IBOutlet weak var menuBtn: UIBarButtonItem!
     
+    var loops = [Loop]()
+    var courseTitle: String = ""
+    var selectedLoop: Loop! = nil
+    let attributes = [NSFontAttributeName: UIFont.ioniconOfSize(22)] as Dictionary!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorStyle = .None
+        tableView.registerClass(LoopCell.self, forCellReuseIdentifier: "LoopCell")
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadCourse:", name: "reloadData", object: nil)
+        // Set navigation menu title and icons
+        addLoopBtn.setTitleTextAttributes(attributes, forState: .Normal)
+        addLoopBtn.title = String.ioniconWithName(.PlusRound)
+        menuBtn.setTitleTextAttributes(attributes, forState: .Normal)
+        menuBtn.title = String.ioniconWithName(.NaviconRound)
+        
+        // Load last viewed course or selected course
+        if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String {
+            getLoops(courseId)
+        } else {
+            print("No course selected")
+        }
+        
+        if let courseTitle = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE_TITLE) as? String {
+            navigationItem.title = courseTitle
+        }
     }
     
     deinit {
@@ -43,7 +64,10 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         if let cell = tableView.dequeueReusableCellWithIdentifier("LoopCell") as? LoopCell {
             print(loop.subject)
-            cell.configureCell(loop)
+            
+            cell.loopLabel.text = loop.subject
+            cell.lastLabel.text = loop.lastMessage
+            
             return cell
         } else {
             return LoopCell()
@@ -51,38 +75,37 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        joinLoop(loops[indexPath.row].subject)
         selectedLoop = loops[indexPath.row]
-        self.performSegueWithIdentifier(SEGUE_LOOP, sender: nil)
+        //self.performSegueWithIdentifier(SEGUE_LOOP, sender: nil)
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
-    func loadCourse(notification: NSNotification) {
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        
-        if let courseId = notification.object as? String {
-            self.loops = []
-            print("CourseVC", courseId)
-            DataService.ds.REF_LOOPS
-                .queryOrderedByChild("courseId")
-                .queryEqualToValue(courseId)
-                .observeSingleEventOfType(.Value, withBlock: { snapshot in
-                    
-                    if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
-                        for snap in snapshots {
-                            print("SNAP: \(snap)")
-                            
-                            if let loopDict = snap.value as? Dictionary<String, AnyObject> {
-                                
-                                // Create Loop Object
-                                let loop = Loop(uid: snap.key, loopDict: loopDict)
-                                self.loops.append(loop)
-                            }
+    func getLoops(courseId: String) {
+        self.loops.removeAll()
+        DataService.ds.REF_LOOPS
+            .queryOrderedByChild("courseId")
+            .queryEqualToValue(courseId)
+            .observeSingleEventOfType(.Value, withBlock: { snapshot in
+                
+                if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
+                    for snap in snapshots {
+                        if let loopDict = snap.value as? Dictionary<String, AnyObject> {
+                            // Create Loop Object
+                            let loop = Loop(uid: snap.key, loopDict: loopDict)
+                            self.loops.append(loop)
                         }
                     }
-                    print("loops", self.loops.count)
-                    self.tableView.reloadData()
-                })
-        }
+                }
+                self.tableView.reloadData()
+            })
+    }
+    
+    func joinLoop(loopName: String) {
+        let alert = UIAlertController(title: "Join Loop", message: "Do you want to join \(loopName)?", preferredStyle: .Alert)
+        let action = UIAlertAction(title: "Join", style: .Default, handler: nil)
+        alert.addAction(action)
+        presentViewController(alert, animated: true, completion: nil)
     }
     
     @IBAction func didTapAddCourseButton(sender: AnyObject) {

@@ -25,12 +25,12 @@ class LoginVC: UIViewController {
         DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
             if authData != nil {
                 // user authenticated
-                print("From LoginVC", authData.uid, authData.providerData)
+                print("From LoginVC", authData.uid)
                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
                 
                 // check for university
                 DataService.ds.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                    print(snapshot.value)
+                    //print(snapshot.value)
                     
                     if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
                         let currentUser = User(uid: snapshot.key, dictionary: userDict)
@@ -78,11 +78,11 @@ class LoginVC: UIViewController {
                     if error != nil {
                         print("login failed. \(error)")
                     } else {
-                        print("Logged in! \(authData)")
+                        print("Logged in!")
                         
                         DataService.ds.REF_UID_MAPPING.childByAppendingPath(authData.uid).observeSingleEventOfType(.Value, withBlock: {
                             snapshot in
-                            print(snapshot)
+                            // print(snapshot)
                             
                             if snapshot.value != nil {
                                 print("Facebook User is in database")

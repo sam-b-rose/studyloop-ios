@@ -44,35 +44,51 @@ class MessageVC: SLKTextViewController {
         self.messages.removeAll()
         
         // Get Messages
-        print("Loop ID", loop.uid)
-        DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid).observeEventType(.Value, withBlock: { snapshot in
+//        print("Loop ID", loop.uid)
+//        DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid).observeSingleEventOfType(.Value, withBlock: { snapshot in
+//            var messages = [Message]()
+//            
+//            if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
+//                for snap in snapshots {
+//                    if let messageDict = snap.value as? Dictionary<String, AnyObject> {
+//                        let key = snap.key
+//                        let message = Message(messageKey: key, dictionary: messageDict)
+//                        messages.append(message)
+//                    }
+//                }
+//            }
+//            print("message count", messages.count)
+//            self.addMessages(messages)
+//        })
+        
+        DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid).queryLimitedToLast(25).observeEventType(.ChildAdded, withBlock: { snapshot in
             var messages = [Message]()
             
-            if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
-                for snap in snapshots {
-                    if let messageDict = snap.value as? Dictionary<String, AnyObject> {
-                        let key = snap.key
-                        let message = Message(messageKey: key, dictionary: messageDict)
-                        messages.append(message)
-                    }
-                }
+            print("SNAP: ", snapshot)
+            
+            if let messageDict = snapshot.value as? Dictionary<String, AnyObject> {
+                let key = snapshot.key
+                let message = Message(messageKey: key, dictionary: messageDict)
+                messages.append(message)
             }
+            
+            print("message count", messages.count)
             self.addMessages(messages)
         })
     }
     
     func addMessages(messages: [Message]) {
-        // self.messages.appendContentsOf(messages)
-        // self.messages.sortInPlace { $1.createdAt > $0.createdAt }
-        self.messages = messages
+        self.messages.appendContentsOf(messages)
+        self.messages.sortInPlace { $1.createdAt > $0.createdAt }
         
         dispatch_async(dispatch_get_main_queue()) {
             () -> Void in
             self.tableView.reloadData()
             if self.messages.count > 0 {
                 self.scrollToBottomMessage()
+                // Slacks Scrollhttps://app.frontify.com/d/pycVdw06UoZ8/studyloop-style-guide
+                // self.tableView.slk_scrollToBottomAnimated(true)
             }
-            //DataService.ds.REF_USER_CURRENT.childByAppendingPath("loopIds").childByAppendingPath(self.loop.uid).setValue([".sv": "timestamp"])
         }
     }
     
@@ -95,6 +111,7 @@ class MessageVC: SLKTextViewController {
                 print("Error sending message")
             } else {
                 self.textView.text = ""
+                DataService.ds.REF_LOOPS.childByAppendingPath(self.loop.uid).setValue(["lastMessage" : message])
             }
         })
         super.didPressRightButton(sender)
@@ -106,11 +123,25 @@ class MessageVC: SLKTextViewController {
         if self.messages.count == 0 {
             return
         }
-//        self.tableView.slk_scrollToBottomAnimated(true)
         let bottomMessageIndex = NSIndexPath(forRow: self.tableView.numberOfRowsInSection(0) - 1,
             inSection: 0)
         self.tableView.scrollToRowAtIndexPath(bottomMessageIndex, atScrollPosition: .Bottom,
             animated: true)
+    }
+    
+    func detectTyping() {
+        DataService.ds.REF_LOOPS.childByAppendingPath(loop.uid).childByAppendingPath("typing").observeEventType(.Value, withBlock: {
+            snapshot in
+            print(snapshot)
+        })
+    }
+    
+    func showTypingIndicator(member: String) {
+        self.typingIndicatorView.insertUsername(member)
+    }
+    
+    func hideTypingIndicator(member: String) {
+        self.typingIndicatorView.removeUsername(member)
     }
     
     // MARK: UITableView Delegate

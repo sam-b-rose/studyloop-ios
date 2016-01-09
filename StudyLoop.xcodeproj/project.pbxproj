@@ -30,6 +30,8 @@
 		6FAF96961C38AACA00B6860F /* CourseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAF96951C38AACA00B6860F /* CourseVC.swift */; };
 		6FAF96981C38B85000B6860F /* LoopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAF96971C38B85000B6860F /* LoopCell.swift */; };
 		6FAF969A1C38BA8400B6860F /* Loop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAF96991C38BA8400B6860F /* Loop.swift */; };
+		6FB0348F1C41447600648876 /* ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6FB0348E1C41447600648876 /* ionicons.ttf */; };
+		6FB034911C41448700648876 /* Ionicons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB034901C41448700648876 /* Ionicons.swift */; };
 		6FD49A4C1C34EC5A0052C6EC /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD49A4B1C34EC5A0052C6EC /* Course.swift */; };
 		6FDB4BE61C4056680064B50D /* LoopMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDB4BE51C4056680064B50D /* LoopMessageCell.swift */; };
 		6FE8106D1C0AA35300B1ABA8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE8106C1C0AA35300B1ABA8 /* AppDelegate.swift */; };
@@ -95,6 +97,8 @@
 		6FAF96951C38AACA00B6860F /* CourseVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseVC.swift; sourceTree = "<group>"; };
 		6FAF96971C38B85000B6860F /* LoopCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopCell.swift; sourceTree = "<group>"; };
 		6FAF96991C38BA8400B6860F /* Loop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loop.swift; sourceTree = "<group>"; };
+		6FB0348E1C41447600648876 /* ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ionicons.ttf; sourceTree = "<group>"; };
+		6FB034901C41448700648876 /* Ionicons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ionicons.swift; sourceTree = "<group>"; };
 		6FD49A4B1C34EC5A0052C6EC /* Course.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
 		6FDB4BE51C4056680064B50D /* LoopMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopMessageCell.swift; sourceTree = "<group>"; };
 		6FE810691C0AA35300B1ABA8 /* StudyLoop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StudyLoop.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -235,6 +239,7 @@
 		6FE810A41C0B1E3300B1ABA8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6FB0348E1C41447600648876 /* ionicons.ttf */,
 				6FE810B11C0B239500B1ABA8 /* NotoSans-Bold.ttf */,
 				6FE810B21C0B239500B1ABA8 /* NotoSans-BoldItalic.ttf */,
 				6FE810B31C0B239500B1ABA8 /* NotoSans-Italic.ttf */,
@@ -298,6 +303,7 @@
 			isa = PBXGroup;
 			children = (
 				6FE810AF1C0B21F100B1ABA8 /* Constants.swift */,
+				6FB034901C41448700648876 /* Ionicons.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -434,6 +440,7 @@
 				6FE8107A1C0AA35300B1ABA8 /* LaunchScreen.storyboard in Resources */,
 				6FE810B61C0B239500B1ABA8 /* NotoSans-BoldItalic.ttf in Resources */,
 				6FE810771C0AA35300B1ABA8 /* Assets.xcassets in Resources */,
+				6FB0348F1C41447600648876 /* ionicons.ttf in Resources */,
 				6F90FEFF1C2C3CFC001920C4 /* Main.storyboard in Resources */,
 				6FE810AB1C0B1ECF00B1ABA8 /* Montserrat-Regular.ttf in Resources */,
 				6FE810B71C0B239500B1ABA8 /* NotoSans-Italic.ttf in Resources */,
@@ -536,6 +543,7 @@
 				6F6BD57F1C3CB0FA005DB6A3 /* AddLoopVC.swift in Sources */,
 				6FAF96941C385F2C00B6860F /* UserImage.swift in Sources */,
 				6F19BE301C1A6AA1004DC7A5 /* User.swift in Sources */,
+				6FB034911C41448700648876 /* Ionicons.swift in Sources */,
 				6FAF969A1C38BA8400B6860F /* Loop.swift in Sources */,
 				6FABA9351C32B8370094067D /* MenuItem.swift in Sources */,
 				6FD49A4C1C34EC5A0052C6EC /* Course.swift in Sources */,

@@ -270,7 +270,7 @@
                                     <constraint firstItem="hk4-HQ-dyC" firstAttribute="top" secondItem="NiM-QL-1mH" secondAttribute="topMargin" id="ugF-S8-e9K"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="432" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dhX-cC-a0J">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="432" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dhX-cC-a0J">
                                 <rect key="frame" x="20" y="73" width="560" height="469"/>
                                 <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
@@ -305,13 +305,13 @@
                                                                                 </mask>
                                                                             </variation>
                                                                         </imageView>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="username42" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.59999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="SVj-Go-nPR">
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username42" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.59999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="SVj-Go-nPR">
                                                                             <rect key="frame" x="60" y="0.0" width="395" height="50"/>
                                                                             <fontDescription key="fontDescription" name="NotoSans-Bold" family="Noto Sans" pointSize="17"/>
                                                                             <color key="textColor" red="0.3921568627" green="0.42352941179999998" blue="0.4941176471" alpha="1" colorSpace="calibratedRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="heart-o" translatesAutoresizingMaskIntoConstraints="NO" id="PmY-Ac-DQm">
+                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart-o" translatesAutoresizingMaskIntoConstraints="NO" id="PmY-Ac-DQm">
                                                                             <rect key="frame" x="465" y="0.0" width="25" height="50"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="25" id="710-Xp-9jU"/>
@@ -323,10 +323,10 @@
                                                                                 </mask>
                                                                             </variation>
                                                                         </imageView>
-                                                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="3jp-3f-kXJ">
+                                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="3jp-3f-kXJ">
                                                                             <rect key="frame" x="500" y="0.0" width="44" height="50"/>
                                                                             <subviews>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="1444" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s9N-LJ-XMw">
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1444" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s9N-LJ-XMw">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="44" height="24"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" constant="24" id="3zM-Jx-Cui"/>
@@ -335,7 +335,7 @@
                                                                                     <color key="textColor" red="0.3921568627" green="0.42352941179999998" blue="0.4941176471" alpha="1" colorSpace="calibratedRGB"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Likes" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VwP-lC-vof">
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Likes" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VwP-lC-vof">
                                                                                     <rect key="frame" x="0.0" y="24" width="44" height="26"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" constant="26" id="MJD-8n-Okk"/>
@@ -531,19 +531,21 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="aqI-f3-5Kv">
-                        <barButtonItem key="leftBarButtonItem" image="bars" id="39e-XP-zrM">
+                        <barButtonItem key="leftBarButtonItem" title="Menu" id="39e-XP-zrM">
                             <color key="tintColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="didTapOpenButton:" destination="AEC-cA-p8P" id="TWH-UP-PlH"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="plus" id="un0-N8-fib">
+                        <barButtonItem key="rightBarButtonItem" title="Add Loop" id="un0-N8-fib">
                             <connections>
                                 <action selector="didTapAddCourseButton:" destination="AEC-cA-p8P" id="AuG-OK-0CK"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="addLoopBtn" destination="un0-N8-fib" id="hPi-gv-Jq4"/>
+                        <outlet property="menuBtn" destination="39e-XP-zrM" id="Aei-tJ-Mpy"/>
                         <outlet property="tableView" destination="NAV-4Z-b2X" id="pbx-Z4-yL6"/>
                         <segue destination="V29-VW-8VX" kind="show" identifier="settings" id="zoq-2u-qX6"/>
                         <segue destination="m8u-j2-o1x" kind="show" identifier="addCourse" id="AU2-PV-bCn"/>
@@ -1036,7 +1038,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="2hR-o1-psZ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" red="0.070588235294117646" green="0.078431372549019607" blue="0.090196078431372548" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -1056,7 +1058,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="barTintColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" red="0.070588235294117646" green="0.078431372549019607" blue="0.090196078431372548" alpha="1" colorSpace="calibratedRGB"/>
                         <textAttributes key="titleTextAttributes">
                             <fontDescription key="fontDescription" name="NotoSans-Bold" family="Noto Sans" pointSize="0.0"/>
                             <color key="textColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
@@ -1104,12 +1106,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="bars" width="21" height="17"/>
         <image name="camera-light" width="50" height="43"/>
         <image name="ece255-hw7" width="371" height="480"/>
         <image name="heart-o" width="150" height="150"/>
         <image name="owl-light-bg" width="400" height="400"/>
-        <image name="plus" width="20" height="20"/>
         <image name="profile" width="128" height="128"/>
         <image name="studyloop-logo" width="521" height="149"/>
     </resources>
