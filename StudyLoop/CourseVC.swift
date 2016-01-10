@@ -93,7 +93,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             .observeSingleEventOfType(.Value, withBlock: { snapshot in
                 
                 if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
-                    print("LOOP SNAP: ", snapshot)
+                    // print("LOOP SNAP: ", snapshot)
                     for snap in snapshots {
                         if let loopDict = snap.value as? Dictionary<String, AnyObject> {
                             // Create Loop Object

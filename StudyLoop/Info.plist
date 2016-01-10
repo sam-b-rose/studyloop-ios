@@ -112,5 +112,7 @@
 		<string>NotoSans-Regular.tff</string>
 		<string>ionicons.tff</string>
 	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>

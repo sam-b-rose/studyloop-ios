@@ -30,7 +30,7 @@ class LoopMessageCell: UITableViewCell {
     
     lazy var userAvatar: UIImageView = {
         let avatar = UIImageView(image: UIImage(named: "owl-light-bg"))
-        avatar.layer.cornerRadius = 15
+        avatar.layer.cornerRadius = 20
         avatar.clipsToBounds = true
         return avatar
     }()
@@ -54,8 +54,8 @@ class LoopMessageCell: UITableViewCell {
         userAvatar.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(self).offset(15)
             make.left.equalTo(self).offset(20)
-            make.width.equalTo(30)
-            make.height.equalTo(30)
+            make.width.equalTo(40)
+            make.height.equalTo(40)
         }
         
         nameLabel.snp_makeConstraints { (make) -> Void in

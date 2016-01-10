@@ -11,24 +11,19 @@ import UIKit
 class AddLoopVC: UIViewController {
 
     @IBOutlet weak var loopSubjectField: MaterialTextField!
-    @IBOutlet weak var addLoopBtn: UIBarButtonItem!
     
     let attributes = [NSFontAttributeName: UIFont.ioniconOfSize(20)] as Dictionary!
     
     override func viewDidLoad() {
         // Set Nav Items
-        addLoopBtn.setTitleTextAttributes(attributes, forState: .Normal)
-        addLoopBtn.title = String.ioniconWithName(.Checkmark)
+        //addLoopBtn.setTitleTextAttributes(attributes, forState: .Normal)
+        //addLoopBtn.title = String.ioniconWithName(.Checkmark)
         
-        if let courseTitle = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE_TITLE) as? String {
-            navigationItem.title = "Add a new Loop to \(courseTitle)"
-        } else {
-            print("No course defined.")
-        }
+        navigationItem.title = "New Loop"
     }
 
-    @IBAction func didTapAddLoop(sender: AnyObject) {
-        print(loopSubjectField.text)
+    
+    @IBAction func didTapAddLoopBtn(sender: AnyObject) {
         if let txt = loopSubjectField.text where txt != "" {
             let newLoop: Dictionary<String, AnyObject> = [
                 "courseId": NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE)!,
@@ -46,7 +41,7 @@ class AddLoopVC: UIViewController {
                     print("Error creating new loop.", error)
                 }
             })
-
+            
         }
     }
 }
