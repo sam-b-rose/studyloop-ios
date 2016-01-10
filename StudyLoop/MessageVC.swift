@@ -20,6 +20,8 @@ class MessageVC: SLKTextViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // self.pleaseWait()
+        
         self.bounces = true
         self.shakeToClearEnabled = true
         self.keyboardPanningEnabled = true
@@ -47,49 +49,55 @@ class MessageVC: SLKTextViewController {
     func watchLoop() {
         DataService.ds.REF_LOOPS.childByAppendingPath(loop.uid).observeEventType(.Value, withBlock: {
             snapshot in
-            print("UPDATED LOOP SNAP: ", snapshot)
             if let loopDict = snapshot.value as? Dictionary<String, AnyObject> {
                 self.loop = Loop(uid: snapshot.key, loopDict: loopDict)
-                self.mapUserImages()
+                self.mapUserImages({
+                    result in
+                    if result == true {
+                        self.tableView.reloadData()
+                        // self.clearAllNotice()
+                    }
+                })
             }
         })
+    }
+    
+    func mapUserImages(completion: (result: Bool)-> Void) {
+        let userGroup = dispatch_group_create()
+        
+        for user in loop.userIds {
+        dispatch_group_enter(userGroup)
+            if userImageMap[user] == nil {
+                DataService.ds.REF_USERS.childByAppendingPath(user).observeSingleEventOfType(.Value, withBlock: {
+                    snapshot in
+                    if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
+                        self.userImageMap[user] = userDict["profileImageURL"] as? String
+                    }
+                    dispatch_group_leave(userGroup)
+                })
+            }
+        }
+    
+        dispatch_group_notify(userGroup, dispatch_get_main_queue()) {
+            completion(result: true)
+        }
     }
     
     // MARK: Message Logic
     func loadMessages() {
         self.messages.removeAll()
-        
         // Get Messages
-//        print("Loop ID", loop.uid)
-//        DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid).observeSingleEventOfType(.Value, withBlock: { snapshot in
-//            var messages = [Message]()
-//            
-//            if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
-//                for snap in snapshots {
-//                    if let messageDict = snap.value as? Dictionary<String, AnyObject> {
-//                        let key = snap.key
-//                        let message = Message(messageKey: key, dictionary: messageDict)
-//                        messages.append(message)
-//                    }
-//                }
-//            }
-//            print("message count", messages.count)
-//            self.addMessages(messages)
-//        })
-        
-        DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid).queryLimitedToLast(25).observeEventType(.ChildAdded, withBlock: { snapshot in
-            var messages = [Message]()
+        DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid).observeEventType(.ChildAdded, withBlock: { snapshot in
             if let messageDict = snapshot.value as? Dictionary<String, AnyObject> {
                 let key = snapshot.key
                 let message = Message(messageKey: key, dictionary: messageDict)
-                messages.append(message)
+                self.addMessages(message)
             }
-            self.addMessages(messages)
         })
     }
     
-    func addMessages(messages: [Message]) {
-        self.messages.appendContentsOf(messages)
+    func addMessages(message: Message) {
+        self.messages.append(message)
         self.messages.sortInPlace { $1.createdAt > $0.createdAt }
         
         dispatch_async(dispatch_get_main_queue()) {
@@ -99,20 +107,6 @@ class MessageVC: SLKTextViewController {
                 self.scrollToBottomMessage()
                 // Slacks Scroll
                 // self.tableView.slk_scrollToBottomAnimated(true)
-            }
-        }
-    }
-    
-    func mapUserImages() {
-        print(loop.userIds)
-        for user in loop.userIds {
-            if userImageMap[user] == nil {
-                DataService.ds.REF_USERS.childByAppendingPath(user).observeSingleEventOfType(.Value, withBlock: {
-                    snapshot in
-                    if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
-                        self.userImageMap[user] = userDict["profileImageURL"] as? String
-                    }
-                })
             }
         }
     }
@@ -131,7 +125,6 @@ class MessageVC: SLKTextViewController {
         
         DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid).childByAutoId().setValue(message, withCompletionBlock: {
             error, ref in
-            
             if error != nil {
                 print("Error sending message")
             } else {
@@ -181,16 +174,8 @@ class MessageVC: SLKTextViewController {
             let message = messages[indexPath.row]
             
             if let cell = tableView.dequeueReusableCellWithIdentifier("LoopMessageCell") as? LoopMessageCell {
-                var img: UIImage?
-                let imgUrl: String? = self.userImageMap[message.createdById]
-                
-                if imgUrl != nil {
-                    img = MessageVC.imageCache.objectForKey(imgUrl!) as? UIImage
-                }
-                
-                print("Image Data", img, imgUrl)
-                cell.configureCell(message.textValue, name: message.createdByName, imageUrl: imgUrl, image: img)
-                cell.selectionStyle = .None
+                let imgUrl = self.userImageMap[message.createdById]
+                cell.configureCell(message.textValue, name: message.createdByName, imageUrl: imgUrl)
                 return cell
             } else {
                 return MessageCell()

@@ -41,6 +41,7 @@ class LoginVC: UIViewController {
                         if currentUser.universityId == nil {
                             self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
                         } else {
+                            NSUserDefaults.standardUserDefaults().setValue(currentUser.universityId, forKey: KEY_UNIVESITY)
                             self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                         }
                     } else {
@@ -50,7 +51,7 @@ class LoginVC: UIViewController {
                             print(result)
                         })
                     }
-                    self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                    //self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                 })
                 
             } else {

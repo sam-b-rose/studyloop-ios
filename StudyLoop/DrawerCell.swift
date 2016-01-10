@@ -26,7 +26,7 @@ class DrawerCell: UITableViewCell {
         
         if item.title == "Add Course" {
             menuIcon.font = UIFont.ioniconOfSize(17)
-            menuIcon.text = String.ioniconWithCode("ion-plus-round")
+            menuIcon.text = String.ioniconWithCode("ion-plus")
         } else {
             menuIcon.text = ""
         }

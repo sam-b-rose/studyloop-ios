@@ -72,22 +72,25 @@ class LoopMessageCell: UITableViewCell {
         }
     }
     
-    func configureCell(text: String, name: String, imageUrl: String?, image: UIImage?) {
+    func configureCell(text: String, name: String, imageUrl: String?) {
+        self.selectionStyle = .None
         nameLabel.text = name
         bodyLabel.text = text
         
-        if image != nil {
-            self.userAvatar.image = image
-        } else if imageUrl != nil {
-            request = Alamofire.request(.GET, imageUrl!).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, err in
-                if err == nil {
-                    let img = UIImage(data: data!)!
-                    self.userAvatar.image = img
-                    MessageVC.imageCache.setObject(img, forKey: imageUrl!)
-                } else {
-                    print("There was an error!", err)
-                }
-            })
+        if imageUrl != nil {
+            if let img = MessageVC.imageCache.objectForKey(imageUrl!) as? UIImage {
+                self.userAvatar.image = img
+            } else {
+                request = Alamofire.request(.GET, imageUrl!).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, err in
+                    if err == nil {
+                        let img = UIImage(data: data!)!
+                        self.userAvatar.image = img
+                        MessageVC.imageCache.setObject(img, forKey: imageUrl!)
+                    } else {
+                        print("There was an error!", err)
+                    }
+                })
+            }
         }
     }
 }

@@ -45,9 +45,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     DataService.ds.REF_COURSES.childByAppendingPath(snap.key).observeSingleEventOfType(.Value, withBlock: { snapshot in
                         //print(snapshot)
                         let course = MenuItem(title: "\(snapshot.value.objectForKey("major")!) \(snapshot.value.objectForKey("number")!)", courseId: snapshot.value.objectForKey("id") as! String)
-                        print(course.title)
                         self.items.insert(course, atIndex: 0)
-                        
                         self.tableView.reloadData()
                     })
                 }
@@ -71,7 +69,6 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let item = items[indexPath.row]
-        
         if let cell = tableView.dequeueReusableCellWithIdentifier("DrawerCell") as? DrawerCell {
             cell.configureCell(item)
             return cell
@@ -126,6 +123,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func resetUserDefaults() {
         NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UID)
+        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UNIVESITY)
         NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
         NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
     }

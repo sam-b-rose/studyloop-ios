@@ -19,7 +19,8 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var loops = [Loop]()
     var selectedLoop: Loop! = nil
-    let attributes = [NSFontAttributeName: UIFont.ioniconOfSize(22)] as Dictionary!
+    let attributesMenu = [NSFontAttributeName: UIFont.ioniconOfSize(26)] as Dictionary!
+    let attributesPlus = [NSFontAttributeName: UIFont.ioniconOfSize(18)] as Dictionary!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,30 +31,30 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.registerClass(LoopCell.self, forCellReuseIdentifier: "LoopCell")
         
         // Set navigation menu title and icons
-        addLoopBtn.setTitleTextAttributes(attributes, forState: .Normal)
-        addLoopBtn.title = String.ioniconWithName(.PlusRound)
-        menuBtn.setTitleTextAttributes(attributes, forState: .Normal)
-        menuBtn.title = String.ioniconWithName(.NaviconRound)
-        
-        // Load last viewed course or selected course
-        if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String {
-            getLoops(courseId)
-            noCourseLbl.hidden = true
-        } else {
-            print("No course selected")
-            noCourseLbl.hidden = false
-            NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
-        }
+        addLoopBtn.setTitleTextAttributes(attributesPlus, forState: .Normal)
+        addLoopBtn.title = String.ioniconWithName(.Plus)
+        menuBtn.setTitleTextAttributes(attributesMenu, forState: .Normal)
+        menuBtn.title = String.ioniconWithName(.Navicon)
         
         if let courseTitle = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE_TITLE) as? String {
             navigationItem.title = courseTitle
         }
     }
     
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        
+        // Load last viewed course or selected course
+        if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String {
+            noCourseLbl.hidden = true
+            getLoops(courseId)
+        } else {
+            print("No course selected")
+            noCourseLbl.hidden = false
+            NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
+        }
     }
-    
+        
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -66,11 +67,8 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let loop = loops[indexPath.row]
         
         if let cell = tableView.dequeueReusableCellWithIdentifier("LoopCell") as? LoopCell {
-            print(loop.subject)
-            
             cell.loopLabel.text = loop.subject
             cell.lastLabel.text = loop.lastMessage
-            
             return cell
         } else {
             return LoopCell()
@@ -79,7 +77,6 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         selectedLoop = loops[indexPath.row]
-        
         if selectedLoop.hasCurrentUser == true {
             self.performSegueWithIdentifier(SEGUE_LOOP, sender: nil)
         } else {
@@ -96,6 +93,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             .observeSingleEventOfType(.Value, withBlock: { snapshot in
                 
                 if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
+                    print("LOOP SNAP: ", snapshot)
                     for snap in snapshots {
                         if let loopDict = snap.value as? Dictionary<String, AnyObject> {
                             // Create Loop Object

@@ -16,6 +16,7 @@ let kFirebaseServerValueTimestamp = [".sv":"timestamp"]
 
 // Keys
 let KEY_UID = "uid"
+let KEY_UNIVESITY = "university"
 let KEY_COURSE = "course"
 let KEY_COURSE_TITLE = "courseTitle"
 

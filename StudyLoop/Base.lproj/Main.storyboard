@@ -33,6 +33,8 @@
             <string>NotoSans</string>
             <string>NotoSans</string>
             <string>NotoSans</string>
+            <string>NotoSans</string>
+            <string>NotoSans</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -272,7 +274,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="432" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dhX-cC-a0J">
-                                <rect key="frame" x="20" y="73" width="560" height="469"/>
+                                <rect key="frame" x="20" y="20" width="560" height="522"/>
                                 <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="MessageCell" id="vs4-zm-Iqk" userLabel="MessageCell" customClass="MessageCell" customModule="StudyLoop" customModuleProvider="target">
@@ -496,8 +498,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Homework 6" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EB6-7B-MMS">
-                                                    <rect key="frame" x="8" y="-1" width="584" height="61"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Homework 6" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EB6-7B-MMS">
+                                                    <rect key="frame" x="8" y="0.0" width="584" height="60"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="60" id="WnX-AR-5XZ"/>
                                                     </constraints>
@@ -992,7 +994,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uMq-Zl-S0l">
-                                                    <rect key="frame" x="20" y="16" width="560" height="24"/>
+                                                    <rect key="frame" x="20" y="17" width="560" height="24"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Menu Item" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Fn-wQ-MwW">
                                                             <rect key="frame" x="0.0" y="0.0" width="528" height="24"/>
@@ -1002,11 +1004,28 @@
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Icon" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="999-Ir-dpO">
                                                             <rect key="frame" x="528" y="0.0" width="33" height="24"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="30" id="2g4-YD-njf"/>
+                                                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="33" id="F25-f8-Dlc"/>
+                                                                <constraint firstAttribute="width" constant="33" id="lcj-bw-t38"/>
+                                                            </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
+                                                            <variation key="default">
+                                                                <mask key="constraints">
+                                                                    <exclude reference="2g4-YD-njf"/>
+                                                                    <exclude reference="F25-f8-Dlc"/>
+                                                                    <exclude reference="lcj-bw-t38"/>
+                                                                </mask>
+                                                            </variation>
                                                         </label>
                                                     </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="1Fn-wQ-MwW" firstAttribute="top" secondItem="uMq-Zl-S0l" secondAttribute="top" id="X5k-iT-xiH"/>
+                                                        <constraint firstItem="1Fn-wQ-MwW" firstAttribute="leading" secondItem="uMq-Zl-S0l" secondAttribute="leading" id="qhI-gk-vE6"/>
+                                                        <constraint firstAttribute="bottom" secondItem="1Fn-wQ-MwW" secondAttribute="bottom" id="xcP-sS-jot"/>
+                                                    </constraints>
                                                 </stackView>
                                             </subviews>
                                             <constraints>
@@ -1104,7 +1123,7 @@
             </objects>
             <point key="canvasLocation" x="1074" y="487"/>
         </scene>
-        <!--Add LoopVC-->
+        <!--Title-->
         <scene sceneID="Dqb-zu-JOI">
             <objects>
                 <viewController id="kFU-Cu-Du2" customClass="AddLoopVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
@@ -1116,20 +1135,53 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Loop" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J3I-qH-Wpm">
-                                <rect key="frame" x="263" y="289" width="74" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Loop Subject" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KRT-w6-Y3e">
+                                <rect key="frame" x="20" y="84" width="105" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="105" id="URE-V0-fyY"/>
+                                    <constraint firstAttribute="height" constant="22" id="pfu-qn-GvI"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
+                                <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="pfu-qn-GvI"/>
+                                    </mask>
+                                </variation>
                             </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Homework 1 or maybe Exam 2 Review" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sbg-X7-GyW" customClass="MaterialTextField" customModule="StudyLoop" customModuleProvider="target">
+                                <rect key="frame" x="20" y="128" width="560" height="35"/>
+                                <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="VoI-hx-LTY"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="35" id="Vux-3r-0xA"/>
+                                </constraints>
+                                <color key="textColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="J3I-qH-Wpm" firstAttribute="centerY" secondItem="DXf-DM-d4i" secondAttribute="centerY" id="FKd-VG-EIo"/>
-                            <constraint firstItem="J3I-qH-Wpm" firstAttribute="centerX" secondItem="DXf-DM-d4i" secondAttribute="centerX" id="acp-D7-U9R"/>
+                            <constraint firstItem="KRT-w6-Y3e" firstAttribute="top" secondItem="VsU-09-jhZ" secondAttribute="bottom" constant="20" id="2FS-vk-GQS"/>
+                            <constraint firstItem="sbg-X7-GyW" firstAttribute="top" secondItem="KRT-w6-Y3e" secondAttribute="bottom" constant="20" id="Hse-gY-TS6"/>
+                            <constraint firstItem="KRT-w6-Y3e" firstAttribute="leading" secondItem="DXf-DM-d4i" secondAttribute="leadingMargin" id="a1V-Ws-RST"/>
+                            <constraint firstItem="sbg-X7-GyW" firstAttribute="trailing" secondItem="DXf-DM-d4i" secondAttribute="trailingMargin" id="cik-oO-0Kx"/>
+                            <constraint firstItem="sbg-X7-GyW" firstAttribute="leading" secondItem="DXf-DM-d4i" secondAttribute="leadingMargin" id="lfu-h0-oDH"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="KTX-hT-aaR"/>
+                    <navigationItem key="navigationItem" title="Title" id="Rvy-d0-cYg">
+                        <barButtonItem key="rightBarButtonItem" title="Submit" id="Ei9-bT-pG9">
+                            <connections>
+                                <action selector="didTapAddLoop:" destination="kFU-Cu-Du2" id="8Ne-Fs-w00"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="addLoopBtn" destination="Ei9-bT-pG9" id="JAl-G1-Bvj"/>
+                        <outlet property="loopSubjectField" destination="sbg-X7-GyW" id="u4N-6i-Nri"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ERn-lX-d53" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
