@@ -20,8 +20,9 @@ class UniversityVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         
         tableView.delegate = self
         tableView.dataSource = self
+        navigationItem.title = "Select University"
         
-        DataService.ds.REF_UNIVERSITIES.observeEventType(.Value, withBlock: { snapshot in
+        DataService.ds.REF_UNIVERSITIES.observeSingleEventOfType(.Value, withBlock: { snapshot in
             self.universities = []
             if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
                 for snap in snapshots {
@@ -64,8 +65,15 @@ class UniversityVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        StateService.ss.CURRENT_USER?.setUniversity(universities[indexPath.row].universityKey)
-        dismissViewControllerAnimated(true, completion: nil)
+        let key = universities[indexPath.row].universityKey
+        DataService.ds.REF_USER_CURRENT.childByAppendingPath("universityId").setValue(key, withCompletionBlock: {
+            error, ref in
+            if error == nil {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            } else {
+                print("Error setting university")
+            }
+        })
     }
 
     override func didReceiveMemoryWarning() {

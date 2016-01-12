@@ -115,8 +115,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func appendDefaltItems() -> [MenuItem] {
         let defaults = [
             MenuItem(title: "Add Course"),
-            MenuItem(title: "Settings", borderTop: true),
-            MenuItem(title: "Logout")
+            MenuItem(title: "Settings", borderTop: true)
         ]
         return defaults
     }

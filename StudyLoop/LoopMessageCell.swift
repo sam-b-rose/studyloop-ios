@@ -52,7 +52,7 @@ class LoopMessageCell: UITableViewCell {
         self.addSubview(self.userAvatar)
         
         userAvatar.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(self).offset(15)
+            make.top.equalTo(self).offset(18)
             make.left.equalTo(self).offset(20)
             make.width.equalTo(40)
             make.height.equalTo(40)

@@ -13,7 +13,8 @@ import KYDrawerController
 class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var addLoopBtn: UIBarButtonItem!
+    @IBOutlet weak var settingBtn: UIBarButtonItem!
+    @IBOutlet weak var addLoopBtn: MaterialButton!
     @IBOutlet weak var menuBtn: UIBarButtonItem!
     @IBOutlet weak var noCourseLbl: UILabel!
     
@@ -31,8 +32,8 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.registerClass(LoopCell.self, forCellReuseIdentifier: "LoopCell")
         
         // Set navigation menu title and icons
-        addLoopBtn.setTitleTextAttributes(attributesPlus, forState: .Normal)
-        addLoopBtn.title = String.ioniconWithName(.Plus)
+        settingBtn.setTitleTextAttributes(attributesPlus, forState: .Normal)
+        settingBtn.title = String.ioniconWithName(.IosGear)
         menuBtn.setTitleTextAttributes(attributesMenu, forState: .Normal)
         menuBtn.title = String.ioniconWithName(.Navicon)
         
@@ -47,10 +48,12 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Load last viewed course or selected course
         if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String {
             noCourseLbl.hidden = true
+            addLoopBtn.hidden = false
             getLoops(courseId)
         } else {
             print("No course selected")
             noCourseLbl.hidden = false
+            addLoopBtn.hidden = true
             NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
         }
     }
@@ -133,7 +136,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.performSegueWithIdentifier(SEGUE_LOOP, sender: nil)
     }
     
-    @IBAction func didTapAddCourseButton(sender: AnyObject) {
+    @IBAction func didTapAddLoopButton(sender: AnyObject) {
         performSegueWithIdentifier(SEGUE_ADD_LOOP, sender: nil)
     }
     

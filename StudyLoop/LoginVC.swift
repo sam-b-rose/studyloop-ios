@@ -16,49 +16,64 @@ class LoginVC: UIViewController {
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     
+    var handle: UInt?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         // TODO: Do something with Device ID
         // let deviceId = UIDevice.currentDevice().identifierForVendor!.UUIDString
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
         
-//        if let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) {
-//            
-//        }
-        
-        DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
+        handle = DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
             if authData != nil {
                 // user authenticated
                 print("From LoginVC", authData.uid)
                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
-                
-                // check for if user exists and if they have a university selected
-                DataService.ds.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                    if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
-                        let currentUser = User(uid: snapshot.key, dictionary: userDict)
-                        StateService.ss.setUser(currentUser)
-                        
-                        if currentUser.universityId == nil {
-                            self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
-                        } else {
-                            NSUserDefaults.standardUserDefaults().setValue(currentUser.universityId, forKey: KEY_UNIVESITY)
-                            self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
-                        }
-                    } else {
-                        print("No user in database")
-                        self.createUser(authData, completion: {
-                            result in
-                            print(result)
-                        })
-                    }
-                    //self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
-                })
-                
+                NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
+                NSUserDefaults.standardUserDefaults().setValue("Select a Course", forKey: KEY_COURSE_TITLE)
+                self.checkUserData(authData)
             } else {
                 // No user is signed in
                 print("No User is signed in")
+                NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UID)
             }
         })
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(true)
+        print("Removing Auth Observer")
+        DataService.ds.REF_BASE.removeAuthEventObserverWithHandle(handle!)
+    }
+    
+    
+    func checkUserData(authData: FAuthData) {
+        // check for if user exists and if they have a university selected
+        DataService.ds.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
+                let currentUser = User(uid: snapshot.key, dictionary: userDict)
+                StateService.ss.setUser(currentUser)
+                
+                if currentUser.universityId == nil {
+                    self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+                } else {
+                    NSUserDefaults.standardUserDefaults().setValue(currentUser.universityId, forKey: KEY_UNIVESITY)
+                    self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                }
+            } else {
+                print("No user in database")
+                self.createUser(authData, completion: {
+                    result in
+                    print(result)
+                    self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+                })
+            }
+        })
+        
     }
     
     @IBAction func fbBtnPressed(sender: UIButton!) {
@@ -77,18 +92,14 @@ class LoginVC: UIViewController {
                         print("login failed. \(error)")
                     } else {
                         print("Logged in!")
+                        
+                        // Check UID Mapping
                         DataService.ds.REF_UID_MAPPING.childByAppendingPath(authData.uid).observeSingleEventOfType(.Value, withBlock: {
                             snapshot in
-                            // print(snapshot)
-                            
                             if snapshot.value != nil {
                                 print("Facebook User is in database")
                             } else {
                                 print("No user in database")
-                                self.createUser(authData, completion: {
-                                    result in
-                                    print(result)
-                                })
                             }
                         })
                     }
@@ -114,10 +125,7 @@ class LoginVC: UIViewController {
                                 print("Created a new email/password user!")
                                 DataService.ds.REF_BASE.authUser(email, password: pwd, withCompletionBlock: {
                                     error, authData in
-                                    self.createUser(authData, completion: {
-                                        result in
-                                        print(result)
-                                    })
+                                    // create new user - handled in checkUserData
                                 })
                             }
                             
@@ -125,9 +133,6 @@ class LoginVC: UIViewController {
                     } else {
                         self.showErrorAlert("Could not login", msg: "Please check your username and password")
                     }
-                } else {
-                    NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
-                    NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
                 }
             })
             
@@ -138,7 +143,7 @@ class LoginVC: UIViewController {
     
     func createUser(authData: FAuthData, completion: (result: String) -> Void) {
         DataService.ds.REF_UID_MAPPING.childByAppendingPath(authData.uid).setValue(authData.uid, withCompletionBlock: {
-        error, ref in
+            error, ref in
             if error != nil {
                 print("Error setting the UID Mapping")
             } else {
@@ -152,7 +157,9 @@ class LoginVC: UIViewController {
                 
                 DataService.ds.createFirebaseUser(authData.uid, user: user)
                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
-                NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
+//                NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
+//                NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
+//                NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UNIVESITY)
                 completion(result: "Finished creating user")
             }
         })
