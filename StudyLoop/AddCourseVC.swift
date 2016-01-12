@@ -37,6 +37,10 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate 
         if(StateService.ss.COURSES?.count == 0) {
             StateService.ss.getCourses()
         }
+        
+        if let topItem = self.navigationController?.navigationBar.topItem {
+            topItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        }
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

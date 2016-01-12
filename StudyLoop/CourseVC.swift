@@ -136,6 +136,11 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.performSegueWithIdentifier(SEGUE_LOOP, sender: nil)
     }
     
+    @IBAction func didTapSettingsButton(sender: AnyObject) {
+        performSegueWithIdentifier(SEGUE_COURSE_SETTINGS, sender: nil)
+    }
+    
+    
     @IBAction func didTapAddLoopButton(sender: AnyObject) {
         performSegueWithIdentifier(SEGUE_ADD_LOOP, sender: nil)
     }

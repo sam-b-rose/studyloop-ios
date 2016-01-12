@@ -85,23 +85,23 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             drawerController.mainViewController = mainNavigation
             
             switch indexPath.row {
-            case (items.count - 3):
+            case (items.count - 2):
                 // Add Course
                 print("add course")
                 mainNavigation.topViewController?.performSegueWithIdentifier(SEGUE_ADD_COURSE, sender: nil)
                 break
-            case (items.count - 2):
+            case (items.count - 1):
                 // Settings
                 print("settings")
                 mainNavigation.topViewController?.performSegueWithIdentifier(SEGUE_SETTINGS, sender: nil)
                 break
-            case (items.count - 1):
-                // Logout
-                print("logout")
-                DataService.ds.REF_BASE.unauth()
-                resetUserDefaults()
-                drawerController.dismissViewControllerAnimated(true, completion: nil)
-                break
+//            case (items.count - 1):
+//                // Logout
+//                print("logout")
+//                DataService.ds.REF_BASE.unauth()
+//                resetUserDefaults()
+//                drawerController.dismissViewControllerAnimated(true, completion: nil)
+//                break
             default:
                 // go to course
                 NSUserDefaults.standardUserDefaults().setValue(items[indexPath.row].courseId, forKey: KEY_COURSE)

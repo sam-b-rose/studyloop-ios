@@ -39,6 +39,10 @@ class MessageVC: SLKTextViewController {
         self.rightButton.setTitle("Send", forState: UIControlState.Normal)
         navigationItem.title = loop.subject
         
+        if let topItem = self.navigationController?.navigationBar.topItem {
+            topItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        }
+        
         // Table Stuff
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 64.0

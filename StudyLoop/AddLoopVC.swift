@@ -20,6 +20,9 @@ class AddLoopVC: UIViewController {
         //addLoopBtn.title = String.ioniconWithName(.Checkmark)
         
         navigationItem.title = "New Loop"
+        if let topItem = self.navigationController?.navigationBar.topItem {
+            topItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        }
     }
 
     

@@ -22,7 +22,10 @@ class AppSettingsVC: UITableViewController {
         facebookIcon.font = UIFont.ioniconOfSize(22)
         facebookIcon.textColor = UIColor(red:0.28, green:0.37, blue:0.62, alpha:1)
         facebookIcon.text = String.ioniconWithCode("ion-social-facebook")
-    
+        
+        if let topItem = self.navigationController?.navigationBar.topItem {
+            topItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        }
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
