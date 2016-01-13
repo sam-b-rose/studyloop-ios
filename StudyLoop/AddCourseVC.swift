@@ -12,7 +12,7 @@ import Alamofire
 import KYDrawerController
 import FuzzySearch
 
-class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBtn: MaterialButton!
@@ -30,6 +30,10 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate 
         
         tableView.delegate = self
         tableView.dataSource = self
+        
+        majorInput.delegate = self
+        numberInput.delegate = self
+        instructorInput.delegate = self
         
         // Get Course Data
         if(StateService.ss.COURSES?.count == 0) {
@@ -100,56 +104,64 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate 
         view.endEditing(true)
     }
     
-    @IBAction func searchCourses(sender: AnyObject) {
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        searchCourses()
+        return true
+    }
+    
+    @IBAction func didTapSearchButton(sender: AnyObject) {
         
-        // Search
         if searchBtn.titleLabel?.text == "Search" {
-            print("search for :", majorInput.text!, numberInput.text!, instructorInput.text)
-            dismissKeyboard()
-            hideTextFields()
-            
-            if majorInput.text != "" || numberInput.text != "" || instructorInput.text != "" {
-                query = [majorInput.text!, numberInput.text!, instructorInput.text!].joinWithSeparator(" ").lowercaseString
-                let filtered = StateService.ss.COURSES!.filter({ course in
-                    var comp = [String]()
-                    
-                    if majorInput.text != "" {
-                        comp.append(course.major)
-                    }
-                    
-                    if numberInput.text != "" {
-                        comp.append(String(course.number))
-                    }
-                    
-                    if instructorInput.text != "" {
-                        comp.append(course.instructor)
-                    }
-                    
-                    let compStr = comp.joinWithSeparator(" ").lowercaseString
-                    let score = FuzzySearch.score(originalString: query, stringToMatch: compStr)
-                    
-                    if score >= threshold {
-                        print(query, compStr, score)
-                    }
-                    
-                    return score >= threshold
-                })
-                
-                courseResults = filtered.sort {
-                    a, b -> Bool in
-                    return "\(a.major) \(a.number)" > "\(b.major) \(b.number)"
-                }
-                
-                tableView.reloadData()
-            }
-
+            // Search
+            searchCourses()
         } else {
             // Reset to search again
-            
             showTextFields()
             courseResults.removeAll()
             tableView.reloadData()
         }
+    }
+    
+    func searchCourses() {
+        print("search for :", majorInput.text!, numberInput.text!, instructorInput.text)
+        dismissKeyboard()
+        hideTextFields()
+        
+        if majorInput.text != "" || numberInput.text != "" || instructorInput.text != "" {
+            query = [majorInput.text!, numberInput.text!, instructorInput.text!].joinWithSeparator(" ").lowercaseString
+            let filtered = StateService.ss.COURSES!.filter({ course in
+                var comp = [String]()
+                
+                if majorInput.text != "" {
+                    comp.append(course.major)
+                }
+                
+                if numberInput.text != "" {
+                    comp.append(String(course.number))
+                }
+                
+                if instructorInput.text != "" {
+                    comp.append(course.instructor)
+                }
+                
+                let compStr = comp.joinWithSeparator(" ").lowercaseString
+                let score = FuzzySearch.score(originalString: query, stringToMatch: compStr)
+                
+                if score >= threshold {
+                    print(query, compStr, score)
+                }
+                
+                return score >= threshold
+            })
+            
+            courseResults = filtered.sort {
+                a, b -> Bool in
+                return "\(a.major) \(a.number)" > "\(b.major) \(b.number)"
+            }
+            
+            tableView.reloadData()
+        }
+
     }
     
     override func didReceiveMemoryWarning() {

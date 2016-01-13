@@ -672,7 +672,7 @@
                                         </constraints>
                                         <color key="textColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" spellCheckingType="no" returnKeyType="search"/>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="RIe-zj-aOh"/>
@@ -688,7 +688,7 @@
                                         </constraints>
                                         <color key="textColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" returnKeyType="search"/>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="B0g-HH-iPo"/>
@@ -704,7 +704,7 @@
                                         </constraints>
                                         <color key="textColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="search"/>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="SSE-eQ-gXS"/>
@@ -718,7 +718,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rpv-Kq-m3s" customClass="MaterialButton" customModule="StudyLoop" customModuleProvider="target">
-                                <rect key="frame" x="198" y="137" width="205" height="45"/>
+                                <rect key="frame" x="20" y="137" width="560" height="45"/>
                                 <color key="backgroundColor" red="0.1137254902" green="0.86274509799999999" blue="0.74117647060000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="195" id="6Kn-oZ-yO6"/>
@@ -734,10 +734,11 @@
                                     <mask key="constraints">
                                         <exclude reference="6Kn-oZ-yO6"/>
                                         <exclude reference="LjF-to-0Fx"/>
+                                        <exclude reference="rPX-Os-9Sy"/>
                                     </mask>
                                 </variation>
                                 <connections>
-                                    <action selector="searchCourses:" destination="m8u-j2-o1x" eventType="touchUpInside" id="8xd-iC-GfT"/>
+                                    <action selector="didTapSearchButton:" destination="m8u-j2-o1x" eventType="touchUpInside" id="3Ui-zc-OCp"/>
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="55" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8Un-P1-0Hc">
@@ -780,7 +781,9 @@
                             <constraint firstItem="Zva-Y5-J4y" firstAttribute="top" secondItem="Rpv-Kq-m3s" secondAttribute="bottom" constant="10" id="Hhn-Yb-s8t"/>
                             <constraint firstItem="7qt-QM-kHa" firstAttribute="top" secondItem="Zva-Y5-J4y" secondAttribute="bottom" id="JA1-tm-fqz"/>
                             <constraint firstAttribute="trailing" secondItem="8Un-P1-0Hc" secondAttribute="trailing" id="OMP-xl-Tkh"/>
+                            <constraint firstItem="Rpv-Kq-m3s" firstAttribute="trailing" secondItem="Fcu-e2-Do2" secondAttribute="trailingMargin" id="OvZ-ah-zW8"/>
                             <constraint firstItem="Zva-Y5-J4y" firstAttribute="trailing" secondItem="Fcu-e2-Do2" secondAttribute="trailingMargin" id="Rlv-k9-X5P"/>
+                            <constraint firstItem="Rpv-Kq-m3s" firstAttribute="leading" secondItem="Fcu-e2-Do2" secondAttribute="leadingMargin" id="T6i-qM-9fQ"/>
                             <constraint firstItem="93D-dM-S3c" firstAttribute="leading" secondItem="Fcu-e2-Do2" secondAttribute="leadingMargin" id="TK7-E1-Cjz"/>
                             <constraint firstItem="Rpv-Kq-m3s" firstAttribute="top" secondItem="93D-dM-S3c" secondAttribute="bottom" constant="8" id="bnN-9H-EMa"/>
                             <constraint firstItem="8Un-P1-0Hc" firstAttribute="top" secondItem="Rpv-Kq-m3s" secondAttribute="bottom" constant="10" id="eYY-bi-LNF"/>
