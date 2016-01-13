@@ -17,6 +17,8 @@ class LoopVC: SLKTextViewController {
     var userImageMap = [String: String]()
     static var imageCache = NSCache()
     
+    let attributes = [NSFontAttributeName: UIFont.ioniconOfSize(26)] as Dictionary!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,7 +39,12 @@ class LoopVC: SLKTextViewController {
         self.leftButton.setImage(UIImage(named: "icn_upload"), forState: UIControlState.Normal)
         self.leftButton.tintColor = UIColor.grayColor()
         self.rightButton.setTitle("Send", forState: UIControlState.Normal)
-        navigationItem.title = loop.subject
+        
+        // Navbar Stuff
+        let more = UIBarButtonItem(title: String.ioniconWithName(.More), style: .Plain, target: self, action: Selector("goToLoopSettings"))
+        self.navigationItem.rightBarButtonItem = more
+        self.navigationItem.rightBarButtonItem!.setTitleTextAttributes(attributes, forState: .Normal)
+        self.navigationItem.title = loop.subject
         
         if let topItem = self.navigationController?.navigationBar.topItem {
             topItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
@@ -164,6 +171,11 @@ class LoopVC: SLKTextViewController {
     
     func hideTypingIndicator(member: String) {
         self.typingIndicatorView.removeUsername(member)
+    }
+    
+    func goToLoopSettings() {
+        print("going to loop settings")
+        performSegueWithIdentifier(SEGUE_LOOP_SETTINGS, sender: nil)
     }
     
     // MARK: UITableView Delegate
