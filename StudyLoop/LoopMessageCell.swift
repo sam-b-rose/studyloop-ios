@@ -78,14 +78,14 @@ class LoopMessageCell: UITableViewCell {
         bodyLabel.text = text
         
         if imageUrl != nil {
-            if let img = MessageVC.imageCache.objectForKey(imageUrl!) as? UIImage {
+            if let img = LoopVC.imageCache.objectForKey(imageUrl!) as? UIImage {
                 self.userAvatar.image = img
             } else {
                 request = Alamofire.request(.GET, imageUrl!).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, err in
                     if err == nil {
                         let img = UIImage(data: data!)!
                         self.userAvatar.image = img
-                        MessageVC.imageCache.setObject(img, forKey: imageUrl!)
+                        LoopVC.imageCache.setObject(img, forKey: imageUrl!)
                     } else {
                         print("There was an error!", err)
                     }

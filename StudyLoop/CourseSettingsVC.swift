@@ -29,6 +29,24 @@ class CourseSettingsVC: UITableViewController {
         }
     }
     
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        var sectionName: String!
+        
+        switch section {
+        case 0:
+            let courseTitle = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE_TITLE) as? String
+            sectionName = "\(courseTitle!) Settings"
+            break
+        case 1:
+            sectionName = "Notifications"
+            break
+        default:
+            sectionName = ""
+        }
+        
+        return sectionName
+    }
+    
     func leaveCourse() {
         let courseTitle = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE_TITLE)!
         let alert = UIAlertController(title: "Leave Course", message: "Do you want to leave \(courseTitle)?", preferredStyle: .Alert)
@@ -39,7 +57,7 @@ class CourseSettingsVC: UITableViewController {
         alert.addAction(cancel)
         presentViewController(alert, animated: true, completion: nil)
     }
-
+    
     func leaveCourseHandler(alert: UIAlertAction) -> Void {
         removeUserFromCourse()
     }

@@ -24,8 +24,6 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate 
     var courseResults = [Course]()
     var query = ""
     let threshold = 0.1
-    let majorSortDescriptor = NSSortDescriptor(key: "major", ascending: true, selector: "localizedStandardCompare:")
-    let numberSortDescriptor = NSSortDescriptor(key: "number", ascending: true, selector: "localizedStandardCompare:")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,45 +66,90 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate 
         navigationController?.popToRootViewControllerAnimated(true)
     }
     
+    func hideTextFields() {
+        majorInput.frame.size.height = 0
+        majorInput.hidden = true
+        
+        numberInput.frame.size.height = 0
+        numberInput.hidden = true
+        
+        instructorInput.frame.size.height = 0
+        instructorInput.hidden = true
+        
+        searchBtn.setTitle("Search Again", forState: .Normal)
+    }
+    
+    func showTextFields() {
+        let textFieldHeight: CGFloat = 35
+        
+        majorInput.frame.size.height = textFieldHeight
+        majorInput.hidden = false
+        
+        numberInput.frame.size.height = textFieldHeight
+        numberInput.hidden = false
+        
+        instructorInput.frame.size.height = textFieldHeight
+        instructorInput.hidden = false
+        
+        searchBtn.setTitle("Search", forState: .Normal)
+    }
+    
+    //Calls this function when the tap is recognized.
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
     
     @IBAction func searchCourses(sender: AnyObject) {
-        print("search for :", majorInput.text!, numberInput.text!, instructorInput.text)
         
-        if majorInput.text != "" || numberInput.text != "" || instructorInput.text != "" {
-            query = [majorInput.text!, numberInput.text!, instructorInput.text!].joinWithSeparator(" ").lowercaseString
-            let filtered = StateService.ss.COURSES!.filter({ course in
-                var comp = [String]()
-                
-                if majorInput.text != "" {
-                    comp.append(course.major)
-                }
-                
-                if numberInput.text != "" {
-                    comp.append(String(course.number))
-                }
-                
-                if instructorInput.text != "" {
-                    comp.append(course.instructor)
-                }
-                
-                let compStr = comp.joinWithSeparator(" ").lowercaseString
-                let score = FuzzySearch.score(originalString: query, stringToMatch: compStr)
-                
-                if score >= threshold {
-                    print(query, compStr, score)
-                }
-                
-                return score >= threshold
-            })
+        // Search
+        if searchBtn.titleLabel?.text == "Search" {
+            print("search for :", majorInput.text!, numberInput.text!, instructorInput.text)
+            dismissKeyboard()
+            hideTextFields()
             
-            courseResults = filtered.sort {
-                a, b -> Bool in
-                return "\(a.major) \(a.number)" > "\(b.major) \(b.number)"
+            if majorInput.text != "" || numberInput.text != "" || instructorInput.text != "" {
+                query = [majorInput.text!, numberInput.text!, instructorInput.text!].joinWithSeparator(" ").lowercaseString
+                let filtered = StateService.ss.COURSES!.filter({ course in
+                    var comp = [String]()
+                    
+                    if majorInput.text != "" {
+                        comp.append(course.major)
+                    }
+                    
+                    if numberInput.text != "" {
+                        comp.append(String(course.number))
+                    }
+                    
+                    if instructorInput.text != "" {
+                        comp.append(course.instructor)
+                    }
+                    
+                    let compStr = comp.joinWithSeparator(" ").lowercaseString
+                    let score = FuzzySearch.score(originalString: query, stringToMatch: compStr)
+                    
+                    if score >= threshold {
+                        print(query, compStr, score)
+                    }
+                    
+                    return score >= threshold
+                })
+                
+                courseResults = filtered.sort {
+                    a, b -> Bool in
+                    return "\(a.major) \(a.number)" > "\(b.major) \(b.number)"
+                }
+                
+                tableView.reloadData()
             }
+
+        } else {
+            // Reset to search again
             
+            showTextFields()
+            courseResults.removeAll()
             tableView.reloadData()
         }
-        
     }
     
     override func didReceiveMemoryWarning() {

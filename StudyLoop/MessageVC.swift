@@ -1,5 +1,5 @@
 //
-//  MessageVC.swift
+//  LoopVC.swift
 //  StudyLoop
 //
 //  Created by Sam Rose on 1/8/16.
@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import SlackTextViewController
 
-class MessageVC: SLKTextViewController {
+class LoopVC: SLKTextViewController {
     
     var loop: Loop!
     var messages = [Message]()

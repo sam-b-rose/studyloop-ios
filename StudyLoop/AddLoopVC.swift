@@ -15,16 +15,22 @@ class AddLoopVC: UIViewController {
     let attributes = [NSFontAttributeName: UIFont.ioniconOfSize(20)] as Dictionary!
     
     override func viewDidLoad() {
-        // Set Nav Items
-        //addLoopBtn.setTitleTextAttributes(attributes, forState: .Normal)
-        //addLoopBtn.title = String.ioniconWithName(.Checkmark)
+        
+        //Looks for single or multiple taps.
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        view.addGestureRecognizer(tap)
         
         navigationItem.title = "New Loop"
         if let topItem = self.navigationController?.navigationBar.topItem {
             topItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         }
     }
-
+    
+    //Calls this function when the tap is recognized.
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
     
     @IBAction func didTapAddLoopBtn(sender: AnyObject) {
         if let txt = loopSubjectField.text where txt != "" {

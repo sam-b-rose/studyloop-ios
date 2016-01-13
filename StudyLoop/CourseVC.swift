@@ -153,7 +153,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if(segue.identifier == SEGUE_LOOP) {
-            let loopVC = segue.destinationViewController as! MessageVC
+            let loopVC = segue.destinationViewController as! LoopVC
             loopVC.loop = selectedLoop
         }
     }

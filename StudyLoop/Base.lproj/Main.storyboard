@@ -221,10 +221,10 @@
             </objects>
             <point key="canvasLocation" x="-568" y="44"/>
         </scene>
-        <!--MessageVC-->
+        <!--LoopVC-->
         <scene sceneID="bEz-0r-qZK">
             <objects>
-                <viewController id="FYn-S8-KxX" customClass="MessageVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="FYn-S8-KxX" customClass="LoopVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="0jB-As-0r9"/>
                         <viewControllerLayoutGuide type="bottom" id="mJ7-t5-1LH"/>
@@ -673,6 +673,11 @@
                                         <color key="textColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="RIe-zj-aOh"/>
+                                            </mask>
+                                        </variation>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="220" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WLk-7K-Gvu" customClass="MaterialTextField" customModule="StudyLoop" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="43" width="560" height="35"/>
@@ -684,6 +689,11 @@
                                         <color key="textColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="B0g-HH-iPo"/>
+                                            </mask>
+                                        </variation>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Larsen" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fzL-Y3-SSb" customClass="MaterialTextField" customModule="StudyLoop" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="86" width="560" height="35"/>
@@ -695,6 +705,11 @@
                                         <color key="textColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="SSE-eQ-gXS"/>
+                                            </mask>
+                                        </variation>
                                     </textField>
                                 </subviews>
                             </stackView>
@@ -1172,7 +1187,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
-                            <tableViewSection headerTitle="Members" footerTitle="" id="Vdj-yZ-3WC">
+                            <tableViewSection headerTitle="Course" footerTitle="" id="Vdj-yZ-3WC">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="classmate" rowHeight="43" id="vEJ-7W-Kf0">
                                         <rect key="frame" x="0.0" y="50" width="600" height="43"/>
