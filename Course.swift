@@ -15,6 +15,7 @@ class Course {
     private var _major: String!
     private var _number: Int!
     private var _name: String!
+    private var _title: String!
     private var _universityId: String!
     private var _courseRef: Firebase!
     
@@ -37,6 +38,10 @@ class Course {
     var name: String {
         return _name
     }
+   
+    var title: String {
+        return _title
+    }
     
     var universityId: String? {
         return _universityId
@@ -49,6 +54,8 @@ class Course {
         self._number = number
         self._name = name
         self._universityId = universityId
+        
+        self._title = "\(major) \(number)"
     }
     
     init(dictionary: Dictionary<String, AnyObject?>) {
@@ -58,5 +65,6 @@ class Course {
         self._number = dictionary["number"] as? Int
         self._name = dictionary["name"] as? String
         self._universityId = dictionary["universityId"] as? String
+        self._title = "\(self._major) \(self._number)"
     }
 }

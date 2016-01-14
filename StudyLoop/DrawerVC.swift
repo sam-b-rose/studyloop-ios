@@ -95,13 +95,6 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 print("settings")
                 mainNavigation.topViewController?.performSegueWithIdentifier(SEGUE_SETTINGS, sender: nil)
                 break
-//            case (items.count - 1):
-//                // Logout
-//                print("logout")
-//                DataService.ds.REF_BASE.unauth()
-//                resetUserDefaults()
-//                drawerController.dismissViewControllerAnimated(true, completion: nil)
-//                break
             default:
                 // go to course
                 NSUserDefaults.standardUserDefaults().setValue(items[indexPath.row].courseId, forKey: KEY_COURSE)
@@ -118,13 +111,6 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             MenuItem(title: "Settings", borderTop: true)
         ]
         return defaults
-    }
-    
-    func resetUserDefaults() {
-        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UID)
-        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UNIVESITY)
-        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
-        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
     }
     
     func goToProfile() {

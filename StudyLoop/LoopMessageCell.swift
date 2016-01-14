@@ -28,6 +28,14 @@ class LoopMessageCell: UITableViewCell {
         return label
     }()
     
+    lazy var initialsLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "NotoSans", size: 17)
+        label.textColor = UIColor(red:0.2, green:0.42, blue:0.4, alpha:1)
+        label.textAlignment = .Center
+        return label
+    }()
+    
     lazy var userAvatar: UIImageView = {
         let avatar = UIImageView(image: UIImage(named: "owl-light-bg"))
         avatar.layer.cornerRadius = 20
@@ -50,12 +58,17 @@ class LoopMessageCell: UITableViewCell {
         self.addSubview(self.nameLabel)
         self.addSubview(self.bodyLabel)
         self.addSubview(self.userAvatar)
+        self.addSubview(self.initialsLabel)
         
         userAvatar.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(self).offset(18)
             make.left.equalTo(self).offset(20)
             make.width.equalTo(40)
             make.height.equalTo(40)
+        }
+        
+        initialsLabel.snp_makeConstraints { (make) -> Void in
+            make.center.equalTo(self.userAvatar)
         }
         
         nameLabel.snp_makeConstraints { (make) -> Void in
@@ -72,12 +85,28 @@ class LoopMessageCell: UITableViewCell {
         }
     }
     
-    func configureCell(text: String, name: String, imageUrl: String?) {
+    func configureCell(text: String, name: String?, imageUrl: String?) {
         self.selectionStyle = .None
-        nameLabel.text = name
         bodyLabel.text = text
         
+        if name != nil {
+            nameLabel.text = name
+            let initialsArr = name!.characters.split{$0 == " "}.map(String.init)
+            let firstInitial = getFirstLetter(initialsArr[0])
+            var secondInitial = ""
+            if initialsArr.count > 1 {
+                secondInitial = getFirstLetter(initialsArr[1])
+            }
+            let initials = "\(firstInitial)\(secondInitial)"
+            initialsLabel.text = initials
+            print(initials)
+        } else {
+            nameLabel.text = "Removed User"
+            initialsLabel.text = "RM"
+        }
+        
         if imageUrl != nil {
+            initialsLabel.hidden = true
             if let img = LoopVC.imageCache.objectForKey(imageUrl!) as? UIImage {
                 self.userAvatar.image = img
             } else {
@@ -91,6 +120,15 @@ class LoopMessageCell: UITableViewCell {
                     }
                 })
             }
+        } else {
+            initialsLabel.hidden = false
+            userAvatar.backgroundColor = UIColor(red:0.87, green:0.94, blue:0.94, alpha:1)
+            userAvatar.image = nil
         }
+    }
+    
+    func getFirstLetter(str: String) -> String {
+        let index = str.startIndex.advancedBy(0)
+        return str.substringToIndex(index)
     }
 }

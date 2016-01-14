@@ -15,6 +15,7 @@ class LoopVC: SLKTextViewController {
     var loop: Loop!
     var messages = [Message]()
     var userImageMap = [String: String]()
+    var userNameMap = [String: String]()
     static var imageCache = NSCache()
     
     let attributes = [NSFontAttributeName: UIFont.ioniconOfSize(26)] as Dictionary!
@@ -62,7 +63,7 @@ class LoopVC: SLKTextViewController {
             snapshot in
             if let loopDict = snapshot.value as? Dictionary<String, AnyObject> {
                 self.loop = Loop(uid: snapshot.key, loopDict: loopDict)
-                self.mapUserImages({
+                self.createUserMaps({
                     result in
                     if result == true {
                         self.tableView.reloadData()
@@ -73,7 +74,7 @@ class LoopVC: SLKTextViewController {
         })
     }
     
-    func mapUserImages(completion: (result: Bool)-> Void) {
+    func createUserMaps(completion: (result: Bool)-> Void) {
         let userGroup = dispatch_group_create()
         
         for user in loop.userIds {
@@ -83,6 +84,7 @@ class LoopVC: SLKTextViewController {
                     snapshot in
                     if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
                         self.userImageMap[user] = userDict["profileImageURL"] as? String
+                        self.userNameMap[user] = userDict["name"] as? String
                     }
                     dispatch_group_leave(userGroup)
                 })
@@ -174,7 +176,6 @@ class LoopVC: SLKTextViewController {
     }
     
     func goToLoopSettings() {
-        print("going to loop settings")
         performSegueWithIdentifier(SEGUE_LOOP_SETTINGS, sender: nil)
     }
     
@@ -191,7 +192,8 @@ class LoopVC: SLKTextViewController {
             
             if let cell = tableView.dequeueReusableCellWithIdentifier("LoopMessageCell") as? LoopMessageCell {
                 let imgUrl = self.userImageMap[message.createdById]
-                cell.configureCell(message.textValue, name: message.createdByName, imageUrl: imgUrl)
+                let name = self.userNameMap[message.createdById]
+                cell.configureCell(message.textValue, name: name, imageUrl: imgUrl)
                 return cell
             } else {
                 return MessageCell()
@@ -201,6 +203,13 @@ class LoopVC: SLKTextViewController {
     // MARK: UITableViewDataSource Delegate
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if(segue.identifier == SEGUE_LOOP_SETTINGS) {
+            let loopSettingsVC = segue.destinationViewController as! LoopSettingsVC
+            loopSettingsVC.loopId = self.loop.uid
+        }
     }
     
 }

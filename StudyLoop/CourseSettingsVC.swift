@@ -22,11 +22,13 @@ class CourseSettingsVC: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        if indexPath.row == 1 {
-            leaveCourse()
+        if indexPath.section == 0 {
+            if indexPath.row == 1 {
+                leaveCourse()
+            }
         }
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -50,9 +52,9 @@ class CourseSettingsVC: UITableViewController {
     func leaveCourse() {
         let courseTitle = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE_TITLE)!
         let alert = UIAlertController(title: "Leave Course", message: "Do you want to leave \(courseTitle)?", preferredStyle: .Alert)
-        let join = UIAlertAction(title: "Leave", style: .Default, handler: leaveCourseHandler)
+        let leave = UIAlertAction(title: "Leave", style: .Default, handler: leaveCourseHandler)
         let cancel = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
-        let preferredAction = join
+        let preferredAction = leave
         alert.addAction(preferredAction)
         alert.addAction(cancel)
         presentViewController(alert, animated: true, completion: nil)
@@ -64,20 +66,25 @@ class CourseSettingsVC: UITableViewController {
     
     func removeUserFromCourse() {
         print("leave course")
-        if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String {
+        if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String, let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String {
             DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").childByAppendingPath(courseId).removeValue()
-            print("removed course from user")
+            DataService.ds.REF_COURSES.childByAppendingPath(courseId).childByAppendingPath("userIds").childByAppendingPath(userId).removeValue()
+            self.noticeSuccess("Removed from Course!")
+            
+            // refresh CourseVC page
             self.navigationController?.popViewControllerAnimated(true)
         }
     }
-    
+
     /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
-    
-    // Configure the cell...
-    
-    return cell
+    let cell = tableView.dequeueReusableCellWithIdentifier("courseSettingsCell", forIndexPath: indexPath)
+        
+        if indexPath.row != 1 {
+            cell.selectionStyle = UITableViewCellSelectionStyle.None
+        }
+        
+        return cell
     }
     */
     

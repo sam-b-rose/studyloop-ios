@@ -10,6 +10,8 @@ import UIKit
 
 class LoopSettingsVC: UITableViewController {
 
+    var loopId: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
       
@@ -61,13 +63,12 @@ class LoopSettingsVC: UITableViewController {
     
     func removeUserFromLoop() {
         print("leave loop")
-//        if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String {
-//            DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").childByAppendingPath(courseId).removeValue()
-//            print("removed course from user")
-//            self.navigationController?.popViewControllerAnimated(true)
-//        }
-        
-          self.navigationController?.popViewControllerAnimated(true)
+        if let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String {
+            DataService.ds.REF_USER_CURRENT.childByAppendingPath("loopIds").childByAppendingPath(loopId).removeValue()
+            DataService.ds.REF_LOOPS.childByAppendingPath("userIds").childByAppendingPath(userId).removeValue()
+            print("removed user from loop")
+            self.navigationController?.popViewControllerAnimated(true)
+        }
     }
 
     /*

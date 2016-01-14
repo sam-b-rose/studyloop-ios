@@ -33,7 +33,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         // Set navigation menu title and icons
         settingBtn.setTitleTextAttributes(attributesPlus, forState: .Normal)
-        settingBtn.title = String.ioniconWithName(.IosGear)
+        settingBtn.title = ""
         menuBtn.setTitleTextAttributes(attributesMenu, forState: .Normal)
         menuBtn.title = String.ioniconWithName(.Navicon)
         
@@ -49,11 +49,13 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String {
             noCourseLbl.hidden = true
             addLoopBtn.hidden = false
+            settingBtn.title = String.ioniconWithName(.IosGear)
             getLoops(courseId)
         } else {
             print("No course selected")
             noCourseLbl.hidden = false
             addLoopBtn.hidden = true
+            settingBtn.title = ""
             NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
         }
     }

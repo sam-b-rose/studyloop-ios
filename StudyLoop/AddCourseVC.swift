@@ -45,6 +45,14 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
         }
     }
     
+    override func viewWillDisappear(animated : Bool) {
+        super.viewWillDisappear(animated)
+        
+        if (self.isMovingFromParentViewController()){
+            SwiftNotice.clear()
+        }
+    }
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -67,7 +75,10 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         StateService.ss.CURRENT_USER?.addCourse(courseResults[indexPath.row].uid)
-        navigationController?.popToRootViewControllerAnimated(true)
+        NSUserDefaults.standardUserDefaults().setObject(courseResults[indexPath.row].uid, forKey: KEY_COURSE)
+        NSUserDefaults.standardUserDefaults().setObject(courseResults[indexPath.row].title, forKey: KEY_COURSE_TITLE)
+        self.noticeSuccess("Added to Course!")
+        // navigationController?.popToRootViewControllerAnimated(true)
     }
     
     func hideTextFields() {

@@ -28,6 +28,7 @@ class StateService {
     }
     
     func getCourses() {
+        SwiftNotice.wait()
         _COURSES = []
         let universityId = _CURRENT_USER?.universityId
         print("getting courses from", universityId)
@@ -48,6 +49,7 @@ class StateService {
                             self._COURSES.append(course)
                         }
                     }
+                    SwiftNotice.clear()
                     print("finished with \(self._COURSES.count) courses")
                 }
             })
