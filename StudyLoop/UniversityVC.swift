@@ -73,9 +73,9 @@ class UniversityVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         DataService.ds.REF_USER_CURRENT.childByAppendingPath("universityId").setValue(key, withCompletionBlock: {
             error, ref in
             if error == nil {
-                //self.dismissViewControllerAnimated(true, completion: nil)
+                self.dismissViewControllerAnimated(true, completion: nil)
                 print("Set the univeristy to \(key)")
-                self.navigationController!.popViewControllerAnimated(true)
+                // self.navigationController!.popViewControllerAnimated(true)
             } else {
                 print("Error setting university")
             }

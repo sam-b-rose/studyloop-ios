@@ -11,6 +11,12 @@ import KYDrawerController
 
 class AppSettingsVC: UITableViewController {
     
+    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var universityLabel: UILabel!
+    
+    var currentUser: User?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -18,6 +24,16 @@ class AppSettingsVC: UITableViewController {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
         tableView.addGestureRecognizer(tap)
         tap.cancelsTouchesInView = false
+        
+        // Get Current User Data
+        DataService.ds.REF_USER_CURRENT.observeEventType(.Value, withBlock: {
+            snapshot in
+            if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
+                self.currentUser = User(uid: snapshot.key, dictionary: userDict)
+                self.nameTextField.text = self.currentUser?.name
+                self.emailTextField.text = self.currentUser?.email
+            }
+        })
         
         // Hide Back Nav Button text
         if let topItem = self.navigationController?.navigationBar.topItem {

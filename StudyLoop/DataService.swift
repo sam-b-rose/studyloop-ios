@@ -15,6 +15,7 @@ class DataService {
     static let ds = DataService()
     
     private var _REF_BASE = Firebase(url: "\(URL_BASE)")
+    private var _REF_QUEUES = Firebase(url: "\(URL_BASE)/queues")
     private var _REF_COURSES = Firebase(url: "\(URL_BASE)/courses")
     private var _REF_LOOP_MESSAGES = Firebase(url: "\(URL_BASE)/loop-messages")
     private var _REF_LOOPS = Firebase(url: "\(URL_BASE)/loops")
@@ -25,6 +26,10 @@ class DataService {
     
     var REF_BASE: Firebase {
         return _REF_BASE
+    }
+
+    var REF_QUEUES: Firebase {
+        return _REF_QUEUES
     }
     
     var REF_COURSES: Firebase {

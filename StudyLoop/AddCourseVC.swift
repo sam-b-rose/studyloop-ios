@@ -77,7 +77,7 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
         StateService.ss.CURRENT_USER?.addCourse(courseResults[indexPath.row].uid)
         NSUserDefaults.standardUserDefaults().setObject(courseResults[indexPath.row].uid, forKey: KEY_COURSE)
         NSUserDefaults.standardUserDefaults().setObject(courseResults[indexPath.row].title, forKey: KEY_COURSE_TITLE)
-        self.noticeSuccess("Added to Course!")
+        self.noticeSuccess("Added to Course!", autoClear: true, autoClearTime: 2)
         // navigationController?.popToRootViewControllerAnimated(true)
     }
     

@@ -14,7 +14,6 @@ class CourseSettingsVC: UITableViewController {
         super.viewDidLoad()
         
         
-        
         // Hide the Back Navigation button text
         if let topItem = self.navigationController?.navigationBar.topItem {
             topItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
@@ -67,12 +66,23 @@ class CourseSettingsVC: UITableViewController {
     func removeUserFromCourse() {
         print("leave course")
         if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String, let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String {
-            DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").childByAppendingPath(courseId).removeValue()
-            DataService.ds.REF_COURSES.childByAppendingPath(courseId).childByAppendingPath("userIds").childByAppendingPath(userId).removeValue()
-            self.noticeSuccess("Removed from Course!")
-            
-            // refresh CourseVC page
-            self.navigationController?.popViewControllerAnimated(true)
+            DataService.ds.REF_COURSES.childByAppendingPath(courseId).childByAppendingPath("userIds").childByAppendingPath(userId).removeValueWithCompletionBlock({
+                error,  ref in
+                if error == nil {
+                    DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").childByAppendingPath(courseId).removeValueWithCompletionBlock({
+                        error, ref in
+                        if error == nil {
+                            self.noticeSuccess("Success!", autoClear: true, autoClearTime: 2)
+                            // refresh CourseVC page
+                            self.navigationController?.popViewControllerAnimated(true)
+                        } else {
+                            self.noticeError("Error!", autoClear: true, autoClearTime: 2)
+                        }
+                    })
+                } else {
+                    self.noticeError("Error!", autoClear: true, autoClearTime: 2)
+                }
+            })
         }
     }
 

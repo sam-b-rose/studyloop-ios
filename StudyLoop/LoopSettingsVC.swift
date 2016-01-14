@@ -64,10 +64,22 @@ class LoopSettingsVC: UITableViewController {
     func removeUserFromLoop() {
         print("leave loop")
         if let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String {
-            DataService.ds.REF_USER_CURRENT.childByAppendingPath("loopIds").childByAppendingPath(loopId).removeValue()
-            DataService.ds.REF_LOOPS.childByAppendingPath("userIds").childByAppendingPath(userId).removeValue()
-            print("removed user from loop")
-            self.navigationController?.popViewControllerAnimated(true)
+            DataService.ds.REF_QUEUES.childByAppendingPath("loops").childByAppendingPath("userIds").childByAppendingPath(userId).removeValueWithCompletionBlock({
+                error, ref in
+                if error == nil {
+                    DataService.ds.REF_USER_CURRENT.childByAppendingPath("loopIds").childByAppendingPath(self.loopId).removeValueWithCompletionBlock({
+                        error, ref in
+                        if error == nil {
+                            print("removed user from loop")
+                            self.navigationController?.popToRootViewControllerAnimated(true)
+                        } else {
+                            self.noticeError("Error!", autoClear: true, autoClearTime: 2)
+                        }
+                    })
+                } else {
+                    self.noticeError("Error!", autoClear: true, autoClearTime: 2)
+                }
+            })
         }
     }
 
