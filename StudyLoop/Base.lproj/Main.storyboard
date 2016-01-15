@@ -41,8 +41,6 @@
             <string>NotoSans</string>
             <string>NotoSans</string>
             <string>NotoSans</string>
-            <string>NotoSans</string>
-            <string>NotoSans</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -531,51 +529,12 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="appSettingsCell" id="HrD-Sd-d69">
-                                        <rect key="frame" x="0.0" y="306.5" width="600" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HrD-Sd-d69" id="i3t-bL-1Zv">
-                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cJD-IT-tOp">
-                                                    <rect key="frame" x="18" y="10.5" width="143.5" height="23.5"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Change password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tp9-n3-Iws">
-                                                            <rect key="frame" x="0.0" y="0.0" width="143.5" height="23.5"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="12080" id="Psh-cZ-upE"/>
-                                                            </constraints>
-                                                            <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
-                                                            <color key="textColor" red="0.3921568627" green="0.42352941179999998" blue="0.4941176471" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nai-nV-PpF">
-                                                            <rect key="frame" x="143.5" y="0.0" width="0.0" height="23.5"/>
-                                                            <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
-                                                            <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                    <constraints>
-                                                        <constraint firstItem="nai-nV-PpF" firstAttribute="leading" secondItem="Tp9-n3-Iws" secondAttribute="trailing" id="6EM-pw-6cC"/>
-                                                        <constraint firstAttribute="trailing" secondItem="nai-nV-PpF" secondAttribute="trailing" id="OvJ-HE-Mbj"/>
-                                                    </constraints>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="cJD-IT-tOp" firstAttribute="centerY" secondItem="i3t-bL-1Zv" secondAttribute="centerY" id="GBT-QI-wgh"/>
-                                                <constraint firstAttribute="trailing" secondItem="cJD-IT-tOp" secondAttribute="trailing" id="o8M-w6-Jjy"/>
-                                                <constraint firstItem="cJD-IT-tOp" firstAttribute="leading" secondItem="i3t-bL-1Zv" secondAttribute="leadingMargin" constant="10" id="ong-St-QWy"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Notifications" id="Qwj-Ex-8Qr">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="appSettingsCell" id="5Ev-Eg-oJJ">
-                                        <rect key="frame" x="0.0" y="400.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="356.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5Ev-Eg-oJJ" id="v6P-bk-cJF">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -604,7 +563,7 @@
                             <tableViewSection id="vk0-mD-iQY">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="appSettingsCell" id="VGc-lj-aZW">
-                                        <rect key="frame" x="0.0" y="480.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="436.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VGc-lj-aZW" id="gHq-5l-Xlx">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
@@ -646,7 +605,7 @@
                                         </constraints>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="appSettingsCell" id="JaB-CN-7qg">
-                                        <rect key="frame" x="0.0" y="524.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="480.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JaB-CN-7qg" id="oba-NA-aFP">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
