@@ -27,17 +27,15 @@ class DrawerCell: UITableViewCell {
         if item.title == "Add Course" {
             menuIcon.font = UIFont.ioniconOfSize(17)
             menuIcon.text = String.ioniconWithCode("ion-plus")
+        } else if item.title == "Settings" {
+            menuIcon.font = UIFont.ioniconOfSize(17)
+            menuIcon.text = String.ioniconWithCode("ion-ios-gear")
         } else {
             menuIcon.text = ""
         }
         
-        if item.borderTop {
-            // add border
-            border.backgroundColor = UIColor.lightGrayColor().CGColor
-            border.frame = CGRect(x: 0, y: 0, width: layer.frame.width, height: 0.5)
-            layer.addSublayer(border)
-        } else {
-            border.removeFromSuperlayer()
-        }
+        border.backgroundColor = UIColor(red:0.89, green:0.89, blue:0.9, alpha:1).CGColor
+        border.frame = CGRect(x: 15, y: 0, width: layer.frame.width - 15, height: 0.5)
+        layer.addSublayer(border)
     }
 }

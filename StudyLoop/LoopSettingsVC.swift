@@ -24,6 +24,10 @@ class LoopSettingsVC: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
+        if indexPath.row == 0 {
+            performSegueWithIdentifier(SEGUE_LOOP_MEMBERS, sender: nil)
+        }
+        
         if indexPath.row == 1 {
             leaveLoop()
         }
@@ -80,6 +84,13 @@ class LoopSettingsVC: UITableViewController {
                     self.noticeError("Error!", autoClear: true, autoClearTime: 2)
                 }
             })
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if(segue.identifier == SEGUE_LOOP_MEMBERS) {
+            let loopMembersVC = segue.destinationViewController as! LoopMembersVC
+            loopMembersVC.loopId = self.loopId
         }
     }
 

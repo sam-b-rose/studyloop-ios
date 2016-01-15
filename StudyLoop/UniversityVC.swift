@@ -81,6 +81,7 @@ class UniversityVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 print("Error setting university")
             }
         })
+         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     override func didReceiveMemoryWarning() {

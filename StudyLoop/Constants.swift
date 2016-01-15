@@ -31,6 +31,7 @@ let SEGUE_ADD_COURSE = "addCourse"
 let SEGUE_COURSE = "course"
 let SEGUE_LOOP = "loop"
 let SEGUE_ADD_LOOP = "addLoop"
+let SEGUE_LOOP_MEMBERS = "loopMembers"
 
 // Status Codes
 let STATUS_ACCOUNT_NONEXSIT = -8
