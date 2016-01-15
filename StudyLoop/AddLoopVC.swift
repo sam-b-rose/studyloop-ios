@@ -42,7 +42,7 @@ class AddLoopVC: UIViewController {
                 "universityId": NSUserDefaults.standardUserDefaults().objectForKey(KEY_UNIVESITY)!
             ]
             
-            DataService.ds.REF_LOOPS.childByAutoId().setValue(newLoop, withCompletionBlock: {
+            DataService.ds.REF_QUEUES.childByAppendingPath("loops").childByAppendingPath("tasks").childByAutoId().setValue(newLoop, withCompletionBlock: {
                 error, ref in
                 if error == nil {
                     self.navigationController?.popViewControllerAnimated(true)

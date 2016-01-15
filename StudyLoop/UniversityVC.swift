@@ -14,6 +14,7 @@ class UniversityVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     @IBOutlet weak var tableView: UITableView!
     
     var universities = [University]()
+    var parentVC: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,7 +76,7 @@ class UniversityVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             if error == nil {
                 self.dismissViewControllerAnimated(true, completion: nil)
                 print("Set the univeristy to \(key)")
-                // self.navigationController!.popViewControllerAnimated(true)
+                //self.navigationController!.popViewControllerAnimated(true)
             } else {
                 print("Error setting university")
             }

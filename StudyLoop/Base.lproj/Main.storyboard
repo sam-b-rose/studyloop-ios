@@ -40,6 +40,7 @@
             <string>NotoSans</string>
             <string>NotoSans</string>
             <string>NotoSans</string>
+            <string>NotoSans</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -151,7 +152,7 @@
                                             <constraint firstAttribute="height" constant="33" id="qvA-wB-C3H"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="NotoSans-Bold" family="Noto Sans" pointSize="15"/>
-                                        <state key="normal" title="Login / Signup">
+                                        <state key="normal" title="Login">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <variation key="default">
@@ -175,12 +176,23 @@
                                             <action selector="fbBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="knt-zf-jZd"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not registered? Sign up!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8zf-NI-i4H">
+                                        <rect key="frame" x="180" y="471" width="200" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="21" id="NS2-48-rJZ"/>
+                                            <constraint firstAttribute="width" constant="200" id="df3-W9-bGF"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
+                                        <color key="textColor" red="0.3921568627" green="0.42352941179999998" blue="0.4941176471" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="xA9-i8-HWB" firstAttribute="centerX" secondItem="NZC-hJ-F2w" secondAttribute="centerX" id="3cX-4W-DUA"/>
                                     <constraint firstItem="htn-MN-gv8" firstAttribute="top" secondItem="Mwe-6u-a0u" secondAttribute="bottom" constant="20" id="4ax-D5-3pM"/>
                                     <constraint firstItem="htn-MN-gv8" firstAttribute="leading" secondItem="Mwe-6u-a0u" secondAttribute="leading" id="5cg-FS-sO4"/>
+                                    <constraint firstAttribute="bottom" secondItem="8zf-NI-i4H" secondAttribute="bottom" constant="8" id="F26-bK-c5F"/>
                                     <constraint firstItem="r8e-0o-0uZ" firstAttribute="trailing" secondItem="htn-MN-gv8" secondAttribute="trailing" id="Kxf-z4-He9"/>
                                     <constraint firstItem="xA9-i8-HWB" firstAttribute="width" secondItem="jSV-Jj-lsR" secondAttribute="width" id="RJf-IW-bnz"/>
                                     <constraint firstItem="r8e-0o-0uZ" firstAttribute="leading" secondItem="htn-MN-gv8" secondAttribute="leading" id="UXf-tr-ekc"/>
@@ -193,6 +205,7 @@
                                     <constraint firstItem="xA9-i8-HWB" firstAttribute="top" secondItem="jSV-Jj-lsR" secondAttribute="bottom" constant="10" id="rrR-fG-xkb"/>
                                     <constraint firstItem="xA9-i8-HWB" firstAttribute="height" secondItem="jSV-Jj-lsR" secondAttribute="height" id="sBb-n8-Rnf"/>
                                     <constraint firstItem="Mwe-6u-a0u" firstAttribute="leading" secondItem="NZC-hJ-F2w" secondAttribute="leading" constant="20" id="xUC-1h-Isz"/>
+                                    <constraint firstItem="8zf-NI-i4H" firstAttribute="centerX" secondItem="NZC-hJ-F2w" secondAttribute="centerX" id="zUC-fh-xqr"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">

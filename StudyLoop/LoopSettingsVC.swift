@@ -48,7 +48,7 @@ class LoopSettingsVC: UITableViewController {
     
     func leaveLoop() {
         let loopTitle = "this loop"
-        let alert = UIAlertController(title: "Leave Course", message: "Do you want to leave \(loopTitle)?", preferredStyle: .Alert)
+        let alert = UIAlertController(title: "Leave Loop", message: "Do you want to leave \(loopTitle)?", preferredStyle: .Alert)
         let leave = UIAlertAction(title: "Leave", style: .Default, handler: leaveLoopHandler)
         let cancel = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
         let preferredAction = leave

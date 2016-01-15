@@ -35,21 +35,21 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
         numberInput.delegate = self
         instructorInput.delegate = self
         
+        let progressHUD = ProgressHUD(text: "Loading", activityIndicator: true)
+        self.view.addSubview(progressHUD)
+        
         // Get Course Data
         if(StateService.ss.COURSES?.count == 0) {
-            StateService.ss.getCourses()
+            progressHUD.show()
+            StateService.ss.getCourses({
+                result in
+                print(result)
+                progressHUD.hide()
+            })
         }
         
         if let topItem = self.navigationController?.navigationBar.topItem {
             topItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
-        }
-    }
-    
-    override func viewWillDisappear(animated : Bool) {
-        super.viewWillDisappear(animated)
-        
-        if (self.isMovingFromParentViewController()){
-            SwiftNotice.clear()
         }
     }
     
@@ -74,11 +74,18 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        StateService.ss.CURRENT_USER?.addCourse(courseResults[indexPath.row].uid)
-        NSUserDefaults.standardUserDefaults().setObject(courseResults[indexPath.row].uid, forKey: KEY_COURSE)
-        NSUserDefaults.standardUserDefaults().setObject(courseResults[indexPath.row].title, forKey: KEY_COURSE_TITLE)
-        self.noticeSuccess("Added to Course!", autoClear: true, autoClearTime: 2)
-        // navigationController?.popToRootViewControllerAnimated(true)
+        let courseId = courseResults[indexPath.row].uid
+        if let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String {
+            DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").childByAppendingPath(courseId).setValue(true, withCompletionBlock: {
+                error, ref in
+                DataService.ds.REF_COURSES.childByAppendingPath(courseId).childByAppendingPath("userIds").childByAppendingPath(userId).setValue(true)
+                NSUserDefaults.standardUserDefaults().setObject(courseId, forKey: KEY_COURSE)
+                NSUserDefaults.standardUserDefaults().setObject(self.courseResults[indexPath.row].title, forKey: KEY_COURSE_TITLE)
+            })
+        } else {
+            print("Failed to get User Defaults for courseId and userId")
+        }
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     func hideTextFields() {

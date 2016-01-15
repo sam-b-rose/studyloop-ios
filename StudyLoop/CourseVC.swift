@@ -37,9 +37,6 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         menuBtn.setTitleTextAttributes(attributesMenu, forState: .Normal)
         menuBtn.title = String.ioniconWithName(.Navicon)
         
-        if let courseTitle = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE_TITLE) as? String {
-            navigationItem.title = courseTitle
-        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -53,10 +50,19 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             getLoops(courseId)
         } else {
             print("No course selected")
+            loops.removeAll()
+            tableView.reloadData()
             noCourseLbl.hidden = false
             addLoopBtn.hidden = true
             settingBtn.title = ""
             NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
+        }
+        
+        if let courseTitle = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE_TITLE) as? String {
+            print(courseTitle)
+            navigationItem.title = courseTitle
+        } else {
+            navigationItem.title = "Select a Course"
         }
     }
         
@@ -101,11 +107,13 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     // print("LOOP SNAP: ", snapshot)
                     for snap in snapshots {
                         if let loopDict = snap.value as? Dictionary<String, AnyObject> {
+                            
                             // Create Loop Object
                             let loop = Loop(uid: snap.key, loopDict: loopDict)
-                            
+
                             // Check if user is in loop
-                            let userIndex = loop.userIds.indexOf((StateService.ss.CURRENT_USER?.id)!)
+                            let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
+                            let userIndex = loop.userIds.indexOf((userId)!)
                             if userIndex != nil {
                                 loop.hasCurrentUser = true
                             }

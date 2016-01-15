@@ -33,8 +33,6 @@ class LoginVC: UIViewController {
                 // user authenticated
                 print("From LoginVC", authData.uid)
                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
-                NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
-                NSUserDefaults.standardUserDefaults().setValue("Select a Course", forKey: KEY_COURSE_TITLE)
                 self.checkUserData(authData)
             } else {
                 // No user is signed in
@@ -56,7 +54,13 @@ class LoginVC: UIViewController {
         DataService.ds.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: { snapshot in
             if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
                 let currentUser = User(uid: snapshot.key, dictionary: userDict)
+                
+                // TODO: Remove need for StateService
                 StateService.ss.setUser(currentUser)
+                
+                // TODO: Set last course to user-activity/users/[userId]/courseId
+                NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
+                NSUserDefaults.standardUserDefaults().setValue("Select a Course", forKey: KEY_COURSE_TITLE)
                 
                 if currentUser.universityId == nil {
                     self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
@@ -92,16 +96,6 @@ class LoginVC: UIViewController {
                         print("login failed. \(error)")
                     } else {
                         print("Logged in!")
-                        
-                        // Check UID Mapping
-                        DataService.ds.REF_UID_MAPPING.childByAppendingPath(authData.uid).observeSingleEventOfType(.Value, withBlock: {
-                            snapshot in
-                            if snapshot.value != nil {
-                                print("Facebook User is in database")
-                            } else {
-                                print("No user in database")
-                            }
-                        })
                     }
                 })
             }
@@ -122,10 +116,9 @@ class LoginVC: UIViewController {
                             if error != nil {
                                 self.showErrorAlert("Could not create account", msg: "Problem creating accound. Try something else")
                             } else {
-                                print("Created a new email/password user!")
                                 DataService.ds.REF_BASE.authUser(email, password: pwd, withCompletionBlock: {
                                     error, authData in
-                                    // create new user - handled in checkUserData
+                                    print("Authed new user with email / password")
                                 })
                             }
                             
@@ -142,27 +135,26 @@ class LoginVC: UIViewController {
     }
     
     func createUser(authData: FAuthData, completion: (result: String) -> Void) {
-        DataService.ds.REF_UID_MAPPING.childByAppendingPath(authData.uid).setValue(authData.uid, withCompletionBlock: {
-            error, ref in
-            if error != nil {
-                print("Error setting the UID Mapping")
-            } else {
-                let name = (authData.providerData["displayName"] != nil) ? authData.providerData["displayName"] : authData.providerData["email"]
-                let user = [
-                    "id": authData.uid as String,
-                    "name": name as! NSString as String,
-                    "email": authData.providerData["email"] as! NSString as String,
-                    "profileImageURL": authData.providerData["profileImageURL"] as! NSString as String,
-                ]
-                
-                DataService.ds.createFirebaseUser(authData.uid, user: user)
-                NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
-//                NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
-//                NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
-//                NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UNIVESITY)
-                completion(result: "Finished creating user")
-            }
-        })
+        // TODO: Change to user input name
+        let name = (authData.providerData["displayName"] != nil) ? authData.providerData["displayName"] : authData.providerData["email"]
+        let user: Dictionary<String, AnyObject> = [
+            "id": authData.uid as String,
+            "name": name as! NSString as String,
+            "provider": authData.provider as String,
+            "email": authData.providerData["email"] as! String,
+            "profileImageURL": authData.providerData["profileImageURL"] as! String,
+            "createdAt": kFirebaseServerValueTimestamp as Dictionary<String, String>,
+            "updatedAt": kFirebaseServerValueTimestamp as Dictionary<String, String>
+        ]
+        
+        DataService.ds.createFirebaseUser(authData.uid, user: user)
+        
+        // Set User Defaults just incase
+        NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
+        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
+        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
+        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UNIVESITY)
+        completion(result: "Finished creating user")
     }
     
     func showErrorAlert(title: String, msg: String) {

@@ -13,7 +13,9 @@ class User {
     private var _email: String!
     private var _id: String!
     private var _name: String!
-    private var _facebookId: String?
+    private var _provider: String!
+    private var _updatedAt: String!
+    private var _createdAt: String!
     private var _profileImageURL: String?
     private var _courseIds: Dictionary<String, Int>?
     private var _universityId: String?
@@ -31,8 +33,16 @@ class User {
         return _name
     }
     
-    var facebookId: String? {
-        return _facebookId
+    var provider: String {
+        return _provider
+    }
+    
+    var updatedAt: String {
+        return _updatedAt
+    }
+    
+    var createdAt: String {
+        return _createdAt
     }
     
     var profileImageURL: String? {
@@ -47,26 +57,14 @@ class User {
         return _universityId
     }
     
-    init(uid: String, email: String, name: String?, profileImageURL: String?) {
-        self._id = uid
-        self._email = email
-        
-        if name != nil {
-            self._name = name
-        }
-        
-        if profileImageURL != nil {
-            self._profileImageURL = profileImageURL
-        }
-        
-        // initialize to empty
-        self._universityId = nil
-        self._courseIds = Dictionary<String, Int>()
-    }
-    
     init(uid: String, dictionary: Dictionary<String, AnyObject?>) {
         self._id = uid
         self._email = dictionary["email"] as? String
+        self._provider = dictionary["provider"] as? String
+        
+        // Update when saving to Firebase
+        self._createdAt = nil
+        self._updatedAt = nil
 
         if dictionary["name"] != nil {
             self._name = dictionary["name"] as? String

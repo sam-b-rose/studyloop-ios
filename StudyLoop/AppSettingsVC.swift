@@ -46,7 +46,7 @@ class AppSettingsVC: UITableViewController {
         print(indexPath.section, indexPath.row)
         
         if indexPath.section == 0 {
-            if indexPath.row == 2 {
+            if indexPath.row == 3 {
                 performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
             }
         } else if indexPath.section == 2 {
@@ -76,6 +76,13 @@ class AppSettingsVC: UITableViewController {
         tableView.endEditing(true)
     }
     
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == SEGUE_SELECT_UNIVERSITY {
+            let universityVC = segue.destinationViewController as? UniversityVC
+            universityVC!.parentVC = "AppSettingsVC"
+        }
+    }
     /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("AppSettingsCell", forIndexPath: indexPath)

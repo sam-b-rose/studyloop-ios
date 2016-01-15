@@ -72,8 +72,10 @@ class CourseSettingsVC: UITableViewController {
                     DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").childByAppendingPath(courseId).removeValueWithCompletionBlock({
                         error, ref in
                         if error == nil {
+                            
                             self.noticeSuccess("Success!", autoClear: true, autoClearTime: 2)
-                            // refresh CourseVC page
+                            NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
+                            NSUserDefaults.standardUserDefaults().setValue("Select a Course", forKey: KEY_COURSE_TITLE)
                             self.navigationController?.popViewControllerAnimated(true)
                         } else {
                             self.noticeError("Error!", autoClear: true, autoClearTime: 2)
