@@ -21,9 +21,8 @@ class ProgressHUD: UIVisualEffectView {
     let blurEffect = UIBlurEffect(style: .Dark)
     let vibrancyView: UIVisualEffectView
     
-    init(text: String, activityIndicator: Bool) {
+    init(text: String) {
         self.text = text
-        self.activityIndictor.hidden = !(activityIndicator)
         self.vibrancyView = UIVisualEffectView(effect: UIVibrancyEffect(forBlurEffect: blurEffect))
         super.init(effect: blurEffect)
         self.setup()

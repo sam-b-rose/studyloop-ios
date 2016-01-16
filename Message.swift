@@ -17,7 +17,6 @@ class Message {
     private var _courseId: String!
     private var _createdAt: Int?
     private var _createdById: String!
-    private var _createdByName: String!
     private var _messageKey: String!
     private var _messageRef: Firebase!
     
@@ -41,26 +40,14 @@ class Message {
         return _createdById
     }
     
-    var createdByName: String {
-        return _createdByName
-    }
-    
     var messageKey: String {
         return _messageKey
-    }
-    
-    init(text: String, imageUrl: String?, createdByName: String, createdById: String) {
-        self._textValue = text
-        self._imageUrl = imageUrl
-        self._createdByName = createdByName
-        self._createdByName = createdById
     }
     
     init(messageKey: String, dictionary: Dictionary<String, AnyObject>) {
         self._messageKey = messageKey
         self._textValue = dictionary["textValue"] as? String
         self._createdById = dictionary["createdById"] as? String
-        self._createdByName = dictionary["createdByName"] as? String
         self._loopId = dictionary["loopId"] as? String
         self._courseId = dictionary["courseId"] as? String
         

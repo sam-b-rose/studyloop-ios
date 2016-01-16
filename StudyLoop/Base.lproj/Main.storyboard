@@ -412,7 +412,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="124.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="owl-light-bg" translatesAutoresizingMaskIntoConstraints="NO" id="fHX-7j-Mfk">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="owl-light-bg" translatesAutoresizingMaskIntoConstraints="NO" id="fHX-7j-Mfk" customClass="UserImage" customModule="StudyLoop" customModuleProvider="target">
                                                     <rect key="frame" x="250" y="12" width="100" height="100"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="100" id="5h0-hi-6g4"/>
@@ -638,6 +638,7 @@
                     <connections>
                         <outlet property="emailTextField" destination="8Qz-OL-TzC" id="a3n-V7-zzr"/>
                         <outlet property="nameTextField" destination="MMh-XB-h0w" id="INJ-a8-0U8"/>
+                        <outlet property="profileImage" destination="fHX-7j-Mfk" id="2ed-if-oqQ"/>
                         <outlet property="universityLabel" destination="qmP-fo-pR9" id="l3I-wO-vsU"/>
                         <segue destination="HHz-C6-cOx" kind="show" identifier="selectUniversity" id="0ho-Lr-cpF"/>
                     </connections>
@@ -1410,6 +1411,12 @@
                                                         <constraint firstAttribute="width" constant="40" id="aW6-JW-21l"/>
                                                     </constraints>
                                                 </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OYG-w2-OhY">
+                                                    <rect key="frame" x="21" y="22" width="18" height="24"/>
+                                                    <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
+                                                    <color key="textColor" red="0.19607843137254902" green="0.41568627450980389" blue="0.40392156862745099" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First Last" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Vb-NB-y4H">
                                                     <rect key="frame" x="70" y="20" width="489" height="24"/>
                                                     <constraints>
@@ -1419,15 +1426,11 @@
                                                     <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="FL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OYG-w2-OhY">
-                                                    <rect key="frame" x="21" y="21" width="19" height="21"/>
-                                                    <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
-                                                    <color key="textColor" red="0.19607843137254902" green="0.41568627450980389" blue="0.40392156862745099" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="DF1-Gw-E8J" firstAttribute="leading" secondItem="Yt4-hi-0b7" secondAttribute="leadingMargin" constant="2" id="2g8-qr-Kzy"/>
+                                                <constraint firstItem="OYG-w2-OhY" firstAttribute="centerY" secondItem="DF1-Gw-E8J" secondAttribute="centerY" id="Nh5-Zh-oEM"/>
+                                                <constraint firstItem="OYG-w2-OhY" firstAttribute="centerX" secondItem="DF1-Gw-E8J" secondAttribute="centerX" id="Rk8-VO-pMn"/>
                                                 <constraint firstItem="DF1-Gw-E8J" firstAttribute="centerY" secondItem="Yt4-hi-0b7" secondAttribute="centerY" id="baF-1y-nca"/>
                                                 <constraint firstItem="0Vb-NB-y4H" firstAttribute="leading" secondItem="DF1-Gw-E8J" secondAttribute="trailing" constant="20" id="cTs-4H-rEk"/>
                                                 <constraint firstItem="0Vb-NB-y4H" firstAttribute="trailing" secondItem="Yt4-hi-0b7" secondAttribute="trailingMargin" id="gZI-KM-aay"/>
@@ -1440,6 +1443,8 @@
                                             <variation key="default">
                                                 <mask key="constraints">
                                                     <exclude reference="t6y-tt-1km"/>
+                                                    <exclude reference="pkd-3U-7eQ"/>
+                                                    <exclude reference="uwi-68-Ddg"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>

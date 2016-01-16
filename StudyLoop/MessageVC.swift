@@ -23,8 +23,6 @@ class LoopVC: SLKTextViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // self.pleaseWait()
-        
         self.bounces = true
         self.shakeToClearEnabled = true
         self.keyboardPanningEnabled = true
@@ -66,8 +64,8 @@ class LoopVC: SLKTextViewController {
                 self.createUserMaps({
                     result in
                     if result == true {
+                        print("Finished loading user images", result)
                         self.tableView.reloadData()
-                        // self.clearAllNotice()
                     }
                 })
             }
@@ -78,7 +76,7 @@ class LoopVC: SLKTextViewController {
         let userGroup = dispatch_group_create()
         
         for user in loop.userIds {
-        dispatch_group_enter(userGroup)
+            dispatch_group_enter(userGroup)
             if userImageMap[user] == nil {
                 DataService.ds.REF_USERS.childByAppendingPath(user).observeSingleEventOfType(.Value, withBlock: {
                     snapshot in
@@ -127,10 +125,11 @@ class LoopVC: SLKTextViewController {
     override func didPressRightButton(sender: AnyObject!) {
         self.textView.refreshFirstResponder()
         
+        let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
+        
         let message: Dictionary<String, AnyObject> = [
             "textValue": "\(self.textView.text!)",
-            "createdById": (StateService.ss.CURRENT_USER?.id)!,
-            "createdByName": (StateService.ss.CURRENT_USER?.name)!,
+            "createdById": userId!,
             "courseId": loop.courseId,
             "loopId": loop.uid,
             "createdAt": kFirebaseServerValueTimestamp
@@ -193,6 +192,7 @@ class LoopVC: SLKTextViewController {
             if let cell = tableView.dequeueReusableCellWithIdentifier("LoopMessageCell") as? LoopMessageCell {
                 let imgUrl = self.userImageMap[message.createdById]
                 let name = self.userNameMap[message.createdById]
+                
                 cell.configureCell(message.textValue, name: name, imageUrl: imgUrl)
                 return cell
             } else {

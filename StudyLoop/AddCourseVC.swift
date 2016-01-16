@@ -24,6 +24,7 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
     var courseResults = [Course]()
     var query = ""
     let threshold = 0.1
+    let progressHUD = ProgressHUD(text: "Loading")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +36,6 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
         numberInput.delegate = self
         instructorInput.delegate = self
         
-        let progressHUD = ProgressHUD(text: "Loading", activityIndicator: true)
         self.view.addSubview(progressHUD)
         
         // Get Course Data
@@ -44,13 +44,17 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
             StateService.ss.getCourses({
                 result in
                 print(result)
-                progressHUD.hide()
+                self.progressHUD.hide()
             })
         }
         
         if let topItem = self.navigationController?.navigationBar.topItem {
             topItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         }
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        progressHUD.hide()
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

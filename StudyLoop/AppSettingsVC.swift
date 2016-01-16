@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 import KYDrawerController
 
 class AppSettingsVC: UITableViewController {
@@ -14,8 +15,10 @@ class AppSettingsVC: UITableViewController {
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var universityLabel: UILabel!
+    @IBOutlet weak var profileImage: UserImage!
     
     var currentUser: User?
+    var request: Request?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +35,7 @@ class AppSettingsVC: UITableViewController {
                 self.currentUser = User(uid: snapshot.key, dictionary: userDict)
                 self.nameTextField.text = self.currentUser?.name
                 self.emailTextField.text = self.currentUser?.email
+                self.profileImage.getImage(self.currentUser!)
             }
         })
         
@@ -39,6 +43,10 @@ class AppSettingsVC: UITableViewController {
         if let topItem = self.navigationController?.navigationBar.topItem {
             topItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         }
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        request?.cancel()
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

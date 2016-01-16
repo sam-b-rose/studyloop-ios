@@ -117,7 +117,6 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                             if userIndex != nil {
                                 loop.hasCurrentUser = true
                             }
-                            print(loop.hasCurrentUser)
                             self.loops.append(loop)
                         }
                     }
