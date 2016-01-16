@@ -135,6 +135,7 @@ class LoopVC: SLKTextViewController {
             "createdAt": kFirebaseServerValueTimestamp
         ]
         
+        DataService.ds.REF_QUEUES.childByAppendingPath("loop-messages").childByAppendingPath("tasks").childByAutoId().setValue(message)
         DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid).childByAutoId().setValue(message, withCompletionBlock: {
             error, ref in
             if error != nil {
@@ -209,6 +210,7 @@ class LoopVC: SLKTextViewController {
         if(segue.identifier == SEGUE_LOOP_SETTINGS) {
             let loopSettingsVC = segue.destinationViewController as! LoopSettingsVC
             loopSettingsVC.loopId = self.loop.uid
+            loopSettingsVC.userIds = self.loop.userIds
         }
     }
     

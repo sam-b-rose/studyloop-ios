@@ -11,6 +11,7 @@ import UIKit
 class LoopSettingsVC: UITableViewController {
     
     var loopId: String!
+    var userIds: [String]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +26,7 @@ class LoopSettingsVC: UITableViewController {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
         if indexPath.row == 0 {
-            performSegueWithIdentifier(SEGUE_LOOP_MEMBERS, sender: nil)
+            performSegueWithIdentifier(SEGUE_MEMBERS, sender: nil)
         }
         
         if indexPath.row == 1 {
@@ -95,9 +96,9 @@ class LoopSettingsVC: UITableViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if(segue.identifier == SEGUE_LOOP_MEMBERS) {
-            let loopMembersVC = segue.destinationViewController as! LoopMembersVC
-            loopMembersVC.loopId = self.loopId
+        if(segue.identifier == SEGUE_MEMBERS && self.userIds != nil) {
+            let loopMembersVC = segue.destinationViewController as! MembersVC
+            loopMembersVC.userIds = self.userIds!
         }
     }
     

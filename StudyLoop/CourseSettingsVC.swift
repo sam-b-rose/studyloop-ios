@@ -10,9 +10,21 @@ import UIKit
 
 class CourseSettingsVC: UITableViewController {
     
+    var userIds = [String]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String {
+            DataService.ds.REF_COURSES.childByAppendingPath(courseId).childByAppendingPath("userIds").observeEventType(.Value, withBlock: {
+                snapshot in
+                if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
+                    for (key, _) in userDict {
+                        self.userIds.append(key)
+                    }
+                }
+            })
+        }
         
         // Hide the Back Navigation button text
         if let topItem = self.navigationController?.navigationBar.topItem {
@@ -23,10 +35,15 @@ class CourseSettingsVC: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         if indexPath.section == 0 {
+            if indexPath.row == 0 {
+                performSegueWithIdentifier(SEGUE_MEMBERS, sender: nil)
+            }
+            
             if indexPath.row == 1 {
                 leaveCourse()
             }
         }
+
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
@@ -85,6 +102,13 @@ class CourseSettingsVC: UITableViewController {
                     self.noticeError("Error!", autoClear: true, autoClearTime: 2)
                 }
             })
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == SEGUE_MEMBERS && self.userIds.count > 0) {
+            let membersVC = segue.destinationViewController as! MembersVC
+            membersVC.userIds = userIds
         }
     }
 

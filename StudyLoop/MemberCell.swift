@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Alamofire
 
-class LoopMemberCell: UITableViewCell {
+class MemberCell: UITableViewCell {
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var initialsLabel: UILabel!
@@ -31,9 +31,16 @@ class LoopMemberCell: UITableViewCell {
 
     }
     
-    func configureCell(user: User) {
-        nameLabel.text = user.name
-        let initialsArr = user.name.characters.split{$0 == " "}.map(String.init)
+    func configureCell(var userName: String?, profileImageURL: String?) {
+        
+        if userName != nil {
+            nameLabel.text = userName
+        } else {
+            nameLabel.text = "Removed User"
+            userName = "Removed User"
+        }
+        
+        let initialsArr = userName!.characters.split{$0 == " "}.map(String.init)
         let firstInitial = getFirstLetter(initialsArr[0])
         var secondInitial = ""
         if initialsArr.count > 1 {
@@ -43,16 +50,16 @@ class LoopMemberCell: UITableViewCell {
         initialsLabel.text = initials
         print(initials)
         
-        if user.profileImageURL != nil {
+        if profileImageURL != nil {
             initialsLabel.hidden = true
-            if let img = LoopVC.imageCache.objectForKey(user.profileImageURL!) as? UIImage {
+            if let img = LoopVC.imageCache.objectForKey(profileImageURL!) as? UIImage {
                 self.userAvatar.image = img
             } else {
-                request = Alamofire.request(.GET, user.profileImageURL!).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, err in
+                request = Alamofire.request(.GET, profileImageURL!).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, err in
                     if err == nil {
                         let img = UIImage(data: data!)!
                         self.userAvatar.image = img
-                        LoopMembersVC.imageCache.setObject(img, forKey: user.profileImageURL!)
+                        MembersVC.imageCache.setObject(img, forKey: profileImageURL!)
                     } else {
                         print("There was an error!", err)
                     }
