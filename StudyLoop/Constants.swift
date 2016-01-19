@@ -11,7 +11,8 @@ import UIKit
 
 let SHADOW_COLOR: CGFloat = 157.0 / 255.0
 
-// Firebase Timestamp
+// Firebase
+let URL_BASE = "https://studyloop-stage.firebaseio.com"
 let kFirebaseServerValueTimestamp = [".sv":"timestamp"]
 
 // Keys

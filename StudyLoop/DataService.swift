@@ -9,8 +9,6 @@
 import Foundation
 import Firebase
 
-let URL_BASE = "https://studyloop-stage.firebaseio.com"
-
 class DataService {
     static let ds = DataService()
     

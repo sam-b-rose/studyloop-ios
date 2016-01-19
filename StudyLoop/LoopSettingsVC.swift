@@ -83,18 +83,15 @@ class LoopSettingsVC: UITableViewController {
                             .removeValueWithCompletionBlock({
                                 error, ref in
                                 if error == nil {
-                                    let notification = MPGNotification(title: "Success!", subtitle: "You have been removed from the loop", backgroundColor: SL_GREEN, iconImage: nil)
-                                    notification.swipeToDismissEnabled = false
-                                    notification.duration = 2
-                                    notification.show()
+                                    NotificationService.noti.success("You have been removed from the loop.")
                                     
                                     self.navigationController?.popToRootViewControllerAnimated(true)
                                 } else {
-                                    self.showError()
+                                    NotificationService.noti.error()
                                 }
                             })
                     } else {
-                        self.showError()
+                        NotificationService.noti.error()
                     }
                 })
         }

@@ -91,30 +91,20 @@ class CourseSettingsVC: UITableViewController {
                         error, ref in
                         if error == nil {
                             let courseTitle = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE_TITLE) as? String
-                            let notification = MPGNotification(title: "Success!", subtitle: "You have been removed from \(courseTitle!)", backgroundColor: SL_GREEN, iconImage: nil)
-                            notification.swipeToDismissEnabled = false
-                            notification.duration = 2
-                            notification.show()
+                            NotificationService.noti.success("You have been removed from \(courseTitle!).")
                             
                             NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
                             NSUserDefaults.standardUserDefaults().setValue("Select a Course", forKey: KEY_COURSE_TITLE)
                             self.navigationController?.popViewControllerAnimated(true)
                         } else {
-                            self.showError()
+                            NotificationService.noti.error()
                         }
                     })
                 } else {
-                    self.showError()
+                    NotificationService.noti.error()
                 }
             })
         }
-    }
-    
-    func showError() {
-        let notification = MPGNotification(title: "Error!", subtitle: "Failed to leave course.", backgroundColor: SL_RED, iconImage: nil)
-        notification.swipeToDismissEnabled = false
-        notification.duration = 2
-        notification.show()
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

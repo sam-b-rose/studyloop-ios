@@ -20,11 +20,10 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
     @IBOutlet weak var majorInput: MaterialTextField!
     @IBOutlet weak var numberInput: MaterialTextField!
     @IBOutlet weak var instructorInput: MaterialTextField!
-    
-    var courses = [Course]()
-    var courseResults = [Course]()
+
     var query = ""
     let threshold = 0.1
+    var courseResults = [Course]()
     let progressHUD = ProgressHUD(text: "Loading")
     
     override func viewDidLoad() {
@@ -40,9 +39,9 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
         self.view.addSubview(progressHUD)
         
         // Get Course Data
-        if(StateService.ss.COURSES?.count == 0) {
+        if CourseService.cs.COURSES?.count < 1 {
             progressHUD.show()
-            StateService.ss.getCourses({
+            CourseService.cs.getCourses({
                 result in
                 print(result)
                 self.progressHUD.hide()
@@ -80,30 +79,14 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let courseId = courseResults[indexPath.row].uid
+        let courseTitle = courseResults[indexPath.row].title
+        
         if let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String {
-            DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").childByAppendingPath(courseId).setValue(true, withCompletionBlock: {
-                error, ref in
-                
-                if error == nil {
-                    DataService.ds.REF_COURSES.childByAppendingPath(courseId).childByAppendingPath("userIds").childByAppendingPath(userId).setValue(true)
-                    NSUserDefaults.standardUserDefaults().setObject(courseId, forKey: KEY_COURSE)
-                    NSUserDefaults.standardUserDefaults().setObject(self.courseResults[indexPath.row].title, forKey: KEY_COURSE_TITLE)
-                    
-                    let notification = MPGNotification(title: "Success!", subtitle: "You have been added to \(self.courseResults[indexPath.row].title)", backgroundColor: SL_GREEN, iconImage: nil)
-                    notification.duration = 2
-                    notification.swipeToDismissEnabled = false
-                    notification.show()
-                } else {
-                    let notification = MPGNotification(title: "Error!", subtitle: "Failed to add you to \(self.courseResults[indexPath.row].title)", backgroundColor: SL_RED, iconImage: nil)
-                    notification.swipeToDismissEnabled = false
-                    notification.duration = 2
-                    notification.show()
-                }
-                
-            })
+            CourseService.cs.addUserToCourse(courseId, courseTitle: courseTitle, userId: userId)
         } else {
             print("Failed to get User Defaults for courseId and userId")
         }
+        
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
@@ -166,7 +149,7 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         if majorInput.text != "" || numberInput.text != "" || instructorInput.text != "" {
             query = [majorInput.text!, numberInput.text!, instructorInput.text!].joinWithSeparator(" ").lowercaseString
-            let filtered = StateService.ss.COURSES!.filter({ course in
+            let filtered = CourseService.cs.COURSES!.filter({ course in
                 var comp = [String]()
                 
                 if majorInput.text != "" {
