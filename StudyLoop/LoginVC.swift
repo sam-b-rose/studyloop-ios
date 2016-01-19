@@ -12,14 +12,27 @@ import FBSDKLoginKit
 import Firebase
 
 class LoginVC: UIViewController {
-    
+
+    @IBOutlet weak var titleLbl: UILabel!
+    @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
+    @IBOutlet weak var loginBtn: UIButton!
+    @IBOutlet weak var registerBtn: UIButton!
     
     var handle: UInt?
+    var isRegistering = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Hide name field initially
+        hideNameFields()
+        
+        //Looks for single or multiple taps.
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        view.addGestureRecognizer(tap)
+        tap.cancelsTouchesInView = false
         
         // TODO: Do something with Device ID
         // let deviceId = UIDevice.currentDevice().identifierForVendor!.UUIDString
@@ -48,6 +61,30 @@ class LoginVC: UIViewController {
         DataService.ds.REF_BASE.removeAuthEventObserverWithHandle(handle!)
     }
     
+    func hideNameFields() {
+        nameField.frame.size.height = 0
+        nameField.hidden = true
+        
+        // Change Button text
+        loginBtn.setTitle("Login", forState: .Normal)
+        registerBtn.setTitle("Not registered? Sign up!", forState: .Normal)
+    }
+    
+    func showNameFields() {
+        nameField.frame.size.height = 35
+        nameField.hidden = false
+        
+        // Change Button text
+        loginBtn.setTitle("Register", forState: .Normal)
+        registerBtn.setTitle("Already have an account? Login!", forState: .Normal)
+
+    }
+    
+    //Calls this function when the tap is recognized.
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
     
     func checkUserData(authData: FAuthData) {
         // check for if user exists and if they have a university selected
@@ -102,7 +139,15 @@ class LoginVC: UIViewController {
         })
     }
     
+    
     @IBAction func attempLogin(sender: UIButton!) {
+        
+        if isRegistering {
+            if nameField.text == "" {
+                self.showErrorAlert("Could not register", msg: "Please include your full name.")
+                return
+            }
+        }
         
         if let email = emailField.text where email != "", let pwd = passwordField.text where pwd != "" {
             
@@ -124,22 +169,37 @@ class LoginVC: UIViewController {
                             
                         })
                     } else {
-                        self.showErrorAlert("Could not login", msg: "Please check your username and password")
+                        self.showErrorAlert("Could not login", msg: "Please check your username and password.")
                     }
                 }
             })
             
         } else {
-            showErrorAlert("Email and Password Required", msg: "You must enter an email and a password")
+            showErrorAlert("Email and Password Required", msg: "You must enter an email and a password.")
         }
     }
     
+    @IBAction func didTapRegisterBtn(sender: AnyObject) {
+        if isRegistering {
+            showNameFields()
+        } else {
+            hideNameFields()
+        }
+        isRegistering = !isRegistering
+    }
+    
     func createUser(authData: FAuthData, completion: (result: String) -> Void) {
-        // TODO: Change to user input name
-        let name = (authData.providerData["displayName"] != nil) ? authData.providerData["displayName"] : authData.providerData["email"]
+        let name: String!
+        
+        if nameField.text != "" {
+            name = nameField.text
+        } else {
+            name = (authData.providerData["displayName"] != nil) ? authData.providerData["displayName"] as? String: authData.providerData["email"] as? String
+        }
+    
         let user: Dictionary<String, AnyObject> = [
             "id": authData.uid as String,
-            "name": name as! NSString as String,
+            "name": name,
             "provider": authData.provider as String,
             "email": authData.providerData["email"] as! String,
             "profileImageURL": authData.providerData["profileImageURL"] as! String,
@@ -163,6 +223,5 @@ class LoginVC: UIViewController {
         alert.addAction(action)
         presentViewController(alert, animated: true, completion: nil)
     }
-    
 }
 

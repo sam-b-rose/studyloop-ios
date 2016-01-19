@@ -20,8 +20,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var loops = [Loop]()
     var selectedLoop: Loop! = nil
-    let attributesMenu = [NSFontAttributeName: UIFont.ioniconOfSize(26)] as Dictionary!
-    let attributesPlus = [NSFontAttributeName: UIFont.ioniconOfSize(18)] as Dictionary!
+    let attributes = [NSFontAttributeName: UIFont.ioniconOfSize(26)] as Dictionary!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,9 +31,9 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.registerClass(LoopCell.self, forCellReuseIdentifier: "LoopCell")
         
         // Set navigation menu title and icons
-        settingBtn.setTitleTextAttributes(attributesPlus, forState: .Normal)
+        settingBtn.setTitleTextAttributes(attributes, forState: .Normal)
         settingBtn.title = ""
-        menuBtn.setTitleTextAttributes(attributesMenu, forState: .Normal)
+        menuBtn.setTitleTextAttributes(attributes, forState: .Normal)
         menuBtn.title = String.ioniconWithName(.Navicon)
         
     }
@@ -46,7 +45,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String {
             noCourseLbl.hidden = true
             addLoopBtn.hidden = false
-            settingBtn.title = String.ioniconWithName(.IosGear)
+            settingBtn.title = String.ioniconWithName(.More)
             getLoops(courseId)
         } else {
             print("No course selected")
