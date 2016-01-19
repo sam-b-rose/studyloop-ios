@@ -35,3 +35,12 @@ let SEGUE_MEMBERS = "members"
 
 // Status Codes
 let STATUS_ACCOUNT_NONEXSIT = -8
+
+// Colors
+let SL_BLACK = UIColor(red:0.07, green:0.08, blue:0.09, alpha:1)
+let SL_GRAY = UIColor(red:0.39, green:0.42, blue:0.5, alpha:1)
+let SL_LIGHT = UIColor(red:0.87, green:0.94, blue:0.94, alpha:1)
+let SL_WHITE = UIColor(red:0.94, green:0.94, blue:0.95, alpha:1)
+let SL_CORAL = UIColor(red:0.2, green:0.42, blue:0.4, alpha:1)
+let SL_GREEN = UIColor(red:0, green:0.87, blue:0.74, alpha:1)
+let SL_RED = UIColor(red:1, green:0.44, blue:0.42, alpha:1)

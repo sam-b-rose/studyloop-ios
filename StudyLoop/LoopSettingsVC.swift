@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MPGNotification
 
 class LoopSettingsVC: UITableViewController {
     
@@ -82,17 +83,28 @@ class LoopSettingsVC: UITableViewController {
                             .removeValueWithCompletionBlock({
                                 error, ref in
                                 if error == nil {
-                                    print("removed user from loop")
+                                    let notification = MPGNotification(title: "Success!", subtitle: "You have been removed from the loop", backgroundColor: SL_GREEN, iconImage: nil)
+                                    notification.swipeToDismissEnabled = false
+                                    notification.duration = 2
+                                    notification.show()
+                                    
                                     self.navigationController?.popToRootViewControllerAnimated(true)
                                 } else {
-                                    self.noticeError("Error!", autoClear: true, autoClearTime: 2)
+                                    self.showError()
                                 }
                             })
                     } else {
-                        self.noticeError("Error!", autoClear: true, autoClearTime: 2)
+                        self.showError()
                     }
                 })
         }
+    }
+    
+    func showError() {
+        let notification = MPGNotification(title: "Error!", subtitle: "Failed to leave course.", backgroundColor: SL_RED, iconImage: nil)
+        notification.swipeToDismissEnabled = false
+        notification.duration = 2
+        notification.show()
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

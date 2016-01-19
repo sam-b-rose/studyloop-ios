@@ -23,7 +23,7 @@ class MemberCell: UITableViewCell {
         
         userAvatar.layer.cornerRadius = 20
         userAvatar.clipsToBounds = true
-        userAvatar.backgroundColor = UIColor(red:0.87, green:0.94, blue:0.94, alpha:1)
+        userAvatar.backgroundColor = SL_LIGHT
     }
     
     override func setSelected(selected: Bool, animated: Bool) {

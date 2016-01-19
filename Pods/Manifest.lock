@@ -3,6 +3,7 @@ PODS:
   - Firebase (2.4.3)
   - FuzzySearch (1.1.0)
   - KYDrawerController (1.1.2)
+  - MPGNotification (1.2.4)
   - SlackTextViewController (1.8)
   - SnapKit (0.18.0)
 
@@ -11,6 +12,7 @@ DEPENDENCIES:
   - Firebase (>= 2.4.3)
   - FuzzySearch (~> 1.1)
   - KYDrawerController
+  - MPGNotification (~> 1.2)
   - SlackTextViewController
   - SnapKit
 
@@ -19,6 +21,7 @@ SPEC CHECKSUMS:
   Firebase: 48179995b561e2262c5d4060ecdffca45fbbff8b
   FuzzySearch: 3521e8252654b857fd02b630d399f0ca884b09d4
   KYDrawerController: 222c4d07ed09fa7842011d36d73e3599dcbccab3
+  MPGNotification: f0e3924087afa9b3eccd5ce624e03965ae31ae61
   SlackTextViewController: 0300adee2931fdbe72488990336f0937dbed048e
   SnapKit: e1f090a6d47b1dd4bd89b73f72b6746a7835ef3c
 

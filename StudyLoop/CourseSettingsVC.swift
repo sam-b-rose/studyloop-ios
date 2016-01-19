@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MPGNotification
 
 class CourseSettingsVC: UITableViewController {
     
@@ -89,20 +90,31 @@ class CourseSettingsVC: UITableViewController {
                     DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").childByAppendingPath(courseId).removeValueWithCompletionBlock({
                         error, ref in
                         if error == nil {
+                            let courseTitle = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE_TITLE) as? String
+                            let notification = MPGNotification(title: "Success!", subtitle: "You have been removed from \(courseTitle!)", backgroundColor: SL_GREEN, iconImage: nil)
+                            notification.swipeToDismissEnabled = false
+                            notification.duration = 2
+                            notification.show()
                             
-                            self.noticeSuccess("Success!", autoClear: true, autoClearTime: 2)
                             NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
                             NSUserDefaults.standardUserDefaults().setValue("Select a Course", forKey: KEY_COURSE_TITLE)
                             self.navigationController?.popViewControllerAnimated(true)
                         } else {
-                            self.noticeError("Error!", autoClear: true, autoClearTime: 2)
+                            self.showError()
                         }
                     })
                 } else {
-                    self.noticeError("Error!", autoClear: true, autoClearTime: 2)
+                    self.showError()
                 }
             })
         }
+    }
+    
+    func showError() {
+        let notification = MPGNotification(title: "Error!", subtitle: "Failed to leave course.", backgroundColor: SL_RED, iconImage: nil)
+        notification.swipeToDismissEnabled = false
+        notification.duration = 2
+        notification.show()
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

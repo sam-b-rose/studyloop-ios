@@ -36,7 +36,7 @@ class LoopVC: SLKTextViewController {
         
         // Set up UI controls
         self.leftButton.setImage(UIImage(named: "icn_upload"), forState: UIControlState.Normal)
-        self.leftButton.tintColor = UIColor.grayColor()
+        self.leftButton.tintColor = SL_GRAY
         self.rightButton.setTitle("Send", forState: UIControlState.Normal)
         
         // Navbar Stuff

@@ -17,7 +17,7 @@ class LoopMessageCell: UITableViewCell {
     lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "NotoSans", size: 17)
-        label.textColor = UIColor(red:0, green:0.87, blue:0.74, alpha:1)
+        label.textColor = SL_GREEN
         return label
     }()
     
@@ -31,7 +31,7 @@ class LoopMessageCell: UITableViewCell {
     lazy var initialsLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "NotoSans", size: 17)
-        label.textColor = UIColor(red:0.2, green:0.42, blue:0.4, alpha:1)
+        label.textColor = SL_CORAL
         label.textAlignment = .Center
         return label
     }()
@@ -122,7 +122,7 @@ class LoopMessageCell: UITableViewCell {
             }
         } else {
             initialsLabel.hidden = false
-            userAvatar.backgroundColor = UIColor(red:0.87, green:0.94, blue:0.94, alpha:1)
+            userAvatar.backgroundColor = SL_LIGHT
             userAvatar.image = nil
         }
     }

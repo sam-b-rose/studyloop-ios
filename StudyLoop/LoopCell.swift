@@ -32,7 +32,7 @@ class LoopCell: UITableViewCell {
     lazy var loopLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "NotoSans", size: 17)
-        label.textColor = UIColor(red:0.07, green:0.08, blue:0.09, alpha:1)
+        label.textColor = SL_BLACK
         return label
     }()
     

@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43F633B3903DE39E43C0B694E1C46B06"
-               BlueprintName = "KYDrawerController"
-               ReferencedContainer = "container:Pods.xcodeproj"
-               BuildableName = "KYDrawerController.framework">
+               BuildableIdentifier = 'primary'
+               BlueprintIdentifier = '6A2F621C89189EE592C9377E'
+               BlueprintName = 'KYDrawerController'
+               ReferencedContainer = 'container:Pods.xcodeproj'
+               BuildableName = 'KYDrawerController.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

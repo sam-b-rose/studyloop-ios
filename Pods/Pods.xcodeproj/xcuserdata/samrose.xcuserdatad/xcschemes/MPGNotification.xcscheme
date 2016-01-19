@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '136894814F822710BD3811E6'
-               BlueprintName = 'FuzzySearch'
+               BlueprintIdentifier = 'F197D7B7C956380DFD79459F'
+               BlueprintName = 'MPGNotification'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'FuzzySearch.framework'>
+               BuildableName = 'MPGNotification.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

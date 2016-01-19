@@ -11,6 +11,7 @@ import Firebase
 import Alamofire
 import KYDrawerController
 import FuzzySearch
+import MPGNotification
 
 class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     
@@ -82,9 +83,23 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
         if let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String {
             DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").childByAppendingPath(courseId).setValue(true, withCompletionBlock: {
                 error, ref in
-                DataService.ds.REF_COURSES.childByAppendingPath(courseId).childByAppendingPath("userIds").childByAppendingPath(userId).setValue(true)
-                NSUserDefaults.standardUserDefaults().setObject(courseId, forKey: KEY_COURSE)
-                NSUserDefaults.standardUserDefaults().setObject(self.courseResults[indexPath.row].title, forKey: KEY_COURSE_TITLE)
+                
+                if error == nil {
+                    DataService.ds.REF_COURSES.childByAppendingPath(courseId).childByAppendingPath("userIds").childByAppendingPath(userId).setValue(true)
+                    NSUserDefaults.standardUserDefaults().setObject(courseId, forKey: KEY_COURSE)
+                    NSUserDefaults.standardUserDefaults().setObject(self.courseResults[indexPath.row].title, forKey: KEY_COURSE_TITLE)
+                    
+                    let notification = MPGNotification(title: "Success!", subtitle: "You have been added to \(self.courseResults[indexPath.row].title)", backgroundColor: SL_GREEN, iconImage: nil)
+                    notification.duration = 2
+                    notification.swipeToDismissEnabled = false
+                    notification.show()
+                } else {
+                    let notification = MPGNotification(title: "Error!", subtitle: "Failed to add you to \(self.courseResults[indexPath.row].title)", backgroundColor: SL_RED, iconImage: nil)
+                    notification.swipeToDismissEnabled = false
+                    notification.duration = 2
+                    notification.show()
+                }
+                
             })
         } else {
             print("Failed to get User Defaults for courseId and userId")
@@ -183,7 +198,7 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
             
             tableView.reloadData()
         }
-
+        
     }
     
     override func didReceiveMemoryWarning() {

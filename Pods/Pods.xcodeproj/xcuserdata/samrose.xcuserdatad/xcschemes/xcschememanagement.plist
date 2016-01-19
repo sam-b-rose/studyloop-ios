@@ -24,6 +24,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>MPGNotification.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-StudyLoop.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -47,7 +52,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3DB762661D0437C991908BCD24C12C9A</key>
+		<key>133C5F25930B37812E996420B8817CD1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -62,17 +67,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5F2A06DEE8A8A36C8F2B5CDFFE418AF0</key>
+		<key>6168C9DCF8290B7EA904B3BECFF832AF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A59315E68717939FF3CC711930F7B4ED</key>
+		<key>ACE4F4F1E353D04AB86B2EF15DB13A00</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>B7AC9326D819482593FE118E915409D7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D865725F116AB43391C47B6313267797</key>
 		<dict>
 			<key>primary</key>
 			<true/>
