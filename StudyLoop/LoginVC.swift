@@ -46,6 +46,7 @@ class LoginVC: UIViewController {
                 // user authenticated
                 print("From LoginVC", authData.uid)
                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
+                self.updateProfilePicture(authData)
                 self.checkUserData(authData)
             } else {
                 // No user is signed in
@@ -61,29 +62,76 @@ class LoginVC: UIViewController {
         DataService.ds.REF_BASE.removeAuthEventObserverWithHandle(handle!)
     }
     
+    
+    
+    // VIEW HELPERS
+    
     func hideNameFields() {
+        titleLbl.text = "Login"
         nameField.frame.size.height = 0
         nameField.hidden = true
-        
-        // Change Button text
         loginBtn.setTitle("Login", forState: .Normal)
         registerBtn.setTitle("Not registered? Sign up!", forState: .Normal)
     }
     
     func showNameFields() {
+        titleLbl.text = "Register"
         nameField.frame.size.height = 35
         nameField.hidden = false
-        
-        // Change Button text
         loginBtn.setTitle("Register", forState: .Normal)
         registerBtn.setTitle("Already have an account? Login!", forState: .Normal)
 
     }
     
-    //Calls this function when the tap is recognized.
     func dismissKeyboard() {
-        //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
+    }
+    
+    func showErrorAlert(title: String, msg: String) {
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: .Alert)
+        let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+        alert.addAction(action)
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    // DATA LOGIC
+    
+    func updateProfilePicture(authData: FAuthData) {
+        if let imageUrl = authData.providerData["profileImageURL"] as? String {
+            UserService.us.REF_USER_CURRENT.childByAppendingPath("profileImageURL").setValue(imageUrl)
+        }
+    }
+    
+    func createUser(authData: FAuthData, completion: (result: String) -> Void) {
+        let name: String!
+        
+        if nameField.text != "" {
+            name = nameField.text
+        } else {
+            name = (authData.providerData["displayName"] != nil) ? authData.providerData["displayName"] as? String: authData.providerData["email"] as? String
+        }
+        
+        let user: Dictionary<String, AnyObject> = [
+            "id": authData.uid as String,
+            "name": name,
+            "provider": authData.provider as String,
+            "email": authData.providerData["email"] as! String,
+            "profileImageURL": authData.providerData["profileImageURL"] as! String,
+            "createdAt": kFirebaseServerValueTimestamp as Dictionary<String, String>,
+            "updatedAt": kFirebaseServerValueTimestamp as Dictionary<String, String>
+        ]
+        
+        DataService.ds.createFirebaseUser(authData.uid, user: user)
+        
+        // Set User Defaults just incase
+        NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
+        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
+        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
+        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UNIVESITY)
+        completion(result: "Finished creating user")
     }
     
     func checkUserData(authData: FAuthData) {
@@ -91,6 +139,9 @@ class LoginVC: UIViewController {
         DataService.ds.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: { snapshot in
             if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
                 let currentUser = User(uid: snapshot.key, dictionary: userDict)
+                
+                // Update the users Profile Picture
+                
                 
                 // TODO: Remove need for StateService
                 StateService.ss.setUser(currentUser)
@@ -116,6 +167,11 @@ class LoginVC: UIViewController {
         })
         
     }
+    
+    
+    
+    
+    // BUTTON ACTIONS
     
     @IBAction func fbBtnPressed(sender: UIButton!) {
         let facebookLogin = FBSDKLoginManager()
@@ -186,42 +242,6 @@ class LoginVC: UIViewController {
             hideNameFields()
         }
         isRegistering = !isRegistering
-    }
-    
-    func createUser(authData: FAuthData, completion: (result: String) -> Void) {
-        let name: String!
-        
-        if nameField.text != "" {
-            name = nameField.text
-        } else {
-            name = (authData.providerData["displayName"] != nil) ? authData.providerData["displayName"] as? String: authData.providerData["email"] as? String
-        }
-    
-        let user: Dictionary<String, AnyObject> = [
-            "id": authData.uid as String,
-            "name": name,
-            "provider": authData.provider as String,
-            "email": authData.providerData["email"] as! String,
-            "profileImageURL": authData.providerData["profileImageURL"] as! String,
-            "createdAt": kFirebaseServerValueTimestamp as Dictionary<String, String>,
-            "updatedAt": kFirebaseServerValueTimestamp as Dictionary<String, String>
-        ]
-        
-        DataService.ds.createFirebaseUser(authData.uid, user: user)
-        
-        // Set User Defaults just incase
-        NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
-        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
-        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
-        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UNIVESITY)
-        completion(result: "Finished creating user")
-    }
-    
-    func showErrorAlert(title: String, msg: String) {
-        let alert = UIAlertController(title: title, message: msg, preferredStyle: .Alert)
-        let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-        alert.addAction(action)
-        presentViewController(alert, animated: true, completion: nil)
     }
 }
 
