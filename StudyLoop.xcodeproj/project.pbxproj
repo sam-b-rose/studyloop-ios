@@ -12,6 +12,8 @@
 		6F1466F61C0B461D00528DE3 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1466F51C0B461D00528DE3 /* DataService.swift */; };
 		6F19BE301C1A6AA1004DC7A5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F19BE2F1C1A6AA1004DC7A5 /* User.swift */; };
 		6F26B0991C468AEF00F2CF41 /* LoopSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F26B0981C468AEF00F2CF41 /* LoopSettingsVC.swift */; };
+		6F2C4D6C1C4E5E080029B8FD /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F2C4D6B1C4E5E080029B8FD /* GameKit.framework */; };
+		6F2C4D6E1C4E5E0D0029B8FD /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F2C4D6D1C4E5E0D0029B8FD /* StoreKit.framework */; };
 		6F6BD57F1C3CB0FA005DB6A3 /* AddLoopVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6BD57E1C3CB0FA005DB6A3 /* AddLoopVC.swift */; };
 		6F7BC4811C340DA80014BD18 /* StateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7BC4801C340DA80014BD18 /* StateService.swift */; };
 		6F7BC4831C3423990014BD18 /* AddCourseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7BC4821C3423990014BD18 /* AddCourseVC.swift */; };
@@ -84,6 +86,8 @@
 		6F1466F51C0B461D00528DE3 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		6F19BE2F1C1A6AA1004DC7A5 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		6F26B0981C468AEF00F2CF41 /* LoopSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopSettingsVC.swift; sourceTree = "<group>"; };
+		6F2C4D6B1C4E5E080029B8FD /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		6F2C4D6D1C4E5E0D0029B8FD /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		6F6BD57E1C3CB0FA005DB6A3 /* AddLoopVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddLoopVC.swift; sourceTree = "<group>"; };
 		6F7BC4801C340DA80014BD18 /* StateService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateService.swift; sourceTree = "<group>"; };
 		6F7BC4821C3423990014BD18 /* AddCourseVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCourseVC.swift; sourceTree = "<group>"; };
@@ -149,7 +153,9 @@
 				6FE810C21C0B3AE300B1ABA8 /* FBSDKLoginKit.framework in Frameworks */,
 				6FE810C11C0B3AE300B1ABA8 /* FBSDKCoreKit.framework in Frameworks */,
 				6FE810C31C0B3AE300B1ABA8 /* FBSDKShareKit.framework in Frameworks */,
+				6F2C4D6E1C4E5E0D0029B8FD /* StoreKit.framework in Frameworks */,
 				0A12DB4E71DA66C64D6D8C50 /* Pods_StudyLoop.framework in Frameworks */,
+				6F2C4D6C1C4E5E080029B8FD /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,6 +179,8 @@
 		54FDDDF8CCA7B8037AF6596F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6F2C4D6D1C4E5E0D0029B8FD /* StoreKit.framework */,
+				6F2C4D6B1C4E5E080029B8FD /* GameKit.framework */,
 				D755C00352E28EAE43CA0CB3 /* Pods_StudyLoop.framework */,
 			);
 			name = Frameworks;
@@ -413,6 +421,18 @@
 				TargetAttributes = {
 					6FE810681C0AA35300B1ABA8 = {
 						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = B3A7ST59NS;
+						SystemCapabilities = {
+							com.apple.GameCenter = {
+								enabled = 1;
+							};
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					6FE8107F1C0AA35300B1ABA8 = {
 						CreatedOnToolsVersion = 7.1.1;
@@ -638,7 +658,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Alex Klibisz (U28YN6T44M)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -660,6 +680,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "3632ebb2-0bff-4fde-ac85-a2ebbeb175d5";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -682,7 +703,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Alex Klibisz (U28YN6T44M)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -697,6 +718,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "3632ebb2-0bff-4fde-ac85-a2ebbeb175d5";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -707,14 +729,17 @@
 			baseConfigurationReference = E9077534BC5A5F2D4E8BEBFE /* Pods-StudyLoop.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Alex Klibisz (U28YN6T44M)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/StudyLoop",
 				);
 				INFOPLIST_FILE = StudyLoop/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.studyloop.StudyLoop;
+				PRODUCT_BUNDLE_IDENTIFIER = com.getstudyloop.StudyLoop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "3632ebb2-0bff-4fde-ac85-a2ebbeb175d5";
 			};
 			name = Debug;
 		};
@@ -723,14 +748,17 @@
 			baseConfigurationReference = 1B2666FF8D7DD041D321A4C1 /* Pods-StudyLoop.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Alex Klibisz (U28YN6T44M)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/StudyLoop",
 				);
 				INFOPLIST_FILE = StudyLoop/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.studyloop.StudyLoop;
+				PRODUCT_BUNDLE_IDENTIFIER = com.getstudyloop.StudyLoop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "3632ebb2-0bff-4fde-ac85-a2ebbeb175d5";
 			};
 			name = Release;
 		};
