@@ -19,7 +19,7 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
     @IBOutlet weak var searchBtn: MaterialButton!
     @IBOutlet weak var majorInput: MaterialTextField!
     @IBOutlet weak var numberInput: MaterialTextField!
-    @IBOutlet weak var instructorInput: MaterialTextField!
+    // @IBOutlet weak var instructorInput: MaterialTextField!
 
     var query = ""
     let threshold = 0.1
@@ -34,7 +34,7 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         majorInput.delegate = self
         numberInput.delegate = self
-        instructorInput.delegate = self
+        // instructorInput.delegate = self
         
         self.view.addSubview(progressHUD)
         
@@ -97,8 +97,8 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
         numberInput.frame.size.height = 0
         numberInput.hidden = true
         
-        instructorInput.frame.size.height = 0
-        instructorInput.hidden = true
+        // instructorInput.frame.size.height = 0
+        // instructorInput.hidden = true
         
         searchBtn.setTitle("Search Again", forState: .Normal)
     }
@@ -112,8 +112,8 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
         numberInput.frame.size.height = textFieldHeight
         numberInput.hidden = false
         
-        instructorInput.frame.size.height = textFieldHeight
-        instructorInput.hidden = false
+        // instructorInput.frame.size.height = textFieldHeight
+        // instructorInput.hidden = false
         
         searchBtn.setTitle("Search", forState: .Normal)
     }
@@ -143,12 +143,12 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
     }
     
     func searchCourses() {
-        print("search for :", majorInput.text!, numberInput.text!, instructorInput.text)
+        print("search for :", majorInput.text!, numberInput.text!)
         dismissKeyboard()
         hideTextFields()
         
-        if majorInput.text != "" || numberInput.text != "" || instructorInput.text != "" {
-            query = [majorInput.text!, numberInput.text!, instructorInput.text!].joinWithSeparator(" ").lowercaseString
+        if majorInput.text != "" || numberInput.text != "" {
+            query = [majorInput.text!, numberInput.text!].joinWithSeparator(" ").lowercaseString
             let filtered = CourseService.cs.COURSES!.filter({ course in
                 var comp = [String]()
                 
@@ -160,9 +160,9 @@ class AddCourseVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
                     comp.append(String(course.number))
                 }
                 
-                if instructorInput.text != "" {
-                    comp.append(course.instructor)
-                }
+//                if instructorInput.text != "" {
+//                    comp.append(course.instructor)
+//                }
                 
                 let compStr = comp.joinWithSeparator(" ").lowercaseString
                 let score = FuzzySearch.score(originalString: query, stringToMatch: compStr)

@@ -18,6 +18,7 @@
 		6F7512631C4E6AA300B26229 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7512621C4E6AA300B26229 /* NotificationService.swift */; };
 		6F7512651C4E6CE500B26229 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7512641C4E6CE500B26229 /* UserService.swift */; };
 		6F7512671C4E6DC400B26229 /* CourseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7512661C4E6DC400B26229 /* CourseService.swift */; };
+		6F7512691C4F31C800B26229 /* ForgotPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7512681C4F31C800B26229 /* ForgotPasswordVC.swift */; };
 		6F7BC4811C340DA80014BD18 /* StateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7BC4801C340DA80014BD18 /* StateService.swift */; };
 		6F7BC4831C3423990014BD18 /* AddCourseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7BC4821C3423990014BD18 /* AddCourseVC.swift */; };
 		6F8B0E101C44834F008C5D54 /* AppSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8B0E0F1C44834F008C5D54 /* AppSettingsVC.swift */; };
@@ -95,6 +96,7 @@
 		6F7512621C4E6AA300B26229 /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		6F7512641C4E6CE500B26229 /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		6F7512661C4E6DC400B26229 /* CourseService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseService.swift; sourceTree = "<group>"; };
+		6F7512681C4F31C800B26229 /* ForgotPasswordVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordVC.swift; sourceTree = "<group>"; };
 		6F7BC4801C340DA80014BD18 /* StateService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateService.swift; sourceTree = "<group>"; };
 		6F7BC4821C3423990014BD18 /* AddCourseVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCourseVC.swift; sourceTree = "<group>"; };
 		6F8B0E0F1C44834F008C5D54 /* AppSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettingsVC.swift; sourceTree = "<group>"; };
@@ -321,6 +323,7 @@
 				6FAF96951C38AACA00B6860F /* CourseVC.swift */,
 				6FF1E18A1C45B0C100E0A00B /* CourseSettingsVC.swift */,
 				6F91EF171C2E31E500BDD395 /* DrawerVC.swift */,
+				6F7512681C4F31C800B26229 /* ForgotPasswordVC.swift */,
 				6FE8106E1C0AA35300B1ABA8 /* LoginVC.swift */,
 				6F26B0981C468AEF00F2CF41 /* LoopSettingsVC.swift */,
 				6FAC846C1C48851700C9861E /* MembersVC.swift */,
@@ -595,6 +598,7 @@
 				6F7512651C4E6CE500B26229 /* UserService.swift in Sources */,
 				6FAF969A1C38BA8400B6860F /* Loop.swift in Sources */,
 				6FAC84691C47447B00C9861E /* MessageVC.swift in Sources */,
+				6F7512691C4F31C800B26229 /* ForgotPasswordVC.swift in Sources */,
 				6FABA9351C32B8370094067D /* MenuItem.swift in Sources */,
 				6FF1E18B1C45B0C100E0A00B /* CourseSettingsVC.swift in Sources */,
 				6FD49A4C1C34EC5A0052C6EC /* Course.swift in Sources */,

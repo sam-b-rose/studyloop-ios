@@ -17,17 +17,22 @@ class LoginVC: UIViewController {
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
-    @IBOutlet weak var loginBtn: UIButton!
+    @IBOutlet weak var loginBtn: MaterialButton!
+    @IBOutlet weak var facebookBtn: MaterialButton!
     @IBOutlet weak var registerBtn: UIButton!
+    @IBOutlet weak var forgotBtn: UIButton!
     
     var handle: UInt?
+    
+    // States
     var isRegistering = false
+    var isForgotPassword = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Hide name field initially
-        hideNameFields()
+        loginState()
         
         //Looks for single or multiple taps.
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
@@ -44,9 +49,8 @@ class LoginVC: UIViewController {
         handle = DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
             if authData != nil {
                 // user authenticated
-                print("From LoginVC", authData.uid)
+                print("From LoginVC", authData.providerData)
                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
-                self.updateProfilePicture(authData)
                 self.checkUserData(authData)
             } else {
                 // No user is signed in
@@ -58,6 +62,10 @@ class LoginVC: UIViewController {
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(true)
+
+        // Clear Login info
+        self.resetLoginScreen()
+
         print("Removing Auth Observer")
         DataService.ds.REF_BASE.removeAuthEventObserverWithHandle(handle!)
     }
@@ -66,34 +74,61 @@ class LoginVC: UIViewController {
     
     // VIEW HELPERS
     
-    func hideNameFields() {
+    func loginState() {
         titleLbl.text = "Login"
         nameField.frame.size.height = 0
         nameField.hidden = true
+        passwordField.hidden = false
+        passwordField.frame.size.height = 35
         loginBtn.setTitle("Login", forState: .Normal)
+        facebookBtn.hidden = false
+        forgotBtn.hidden = false
+        forgotBtn.setTitle("Forgot password?", forState: .Normal)
         registerBtn.setTitle("Not registered? Sign up!", forState: .Normal)
     }
     
-    func showNameFields() {
+    func registerState() {
         titleLbl.text = "Register"
         nameField.frame.size.height = 35
         nameField.hidden = false
+        passwordField.hidden = false
+        passwordField.frame.size.height = 35
         loginBtn.setTitle("Register", forState: .Normal)
+        facebookBtn.hidden = true
+        forgotBtn.hidden = true
         registerBtn.setTitle("Already have an account? Login!", forState: .Normal)
-
+    }
+    
+    func forgotPasswordState() {
+        titleLbl.text = "Enter your email to receive a temporary password."
+        nameField.hidden = true
+        nameField.frame.size.height = 0
+        passwordField.hidden = true
+        passwordField.frame.size.height = 0
+        forgotBtn.setTitle("Cancel", forState: .Normal)
+        loginBtn.setTitle("Send", forState: .Normal)
+        facebookBtn.hidden = true
+        isForgotPassword = true
+    }
+    
+    func resetLoginScreen() {
+        nameField.text = ""
+        emailField.text = ""
+        passwordField.text = ""
+        loginState()
     }
     
     func dismissKeyboard() {
         view.endEditing(true)
     }
     
-    func showErrorAlert(title: String, msg: String) {
+    func showAlert(title: String, msg: String) {
         let alert = UIAlertController(title: title, message: msg, preferredStyle: .Alert)
         let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
         alert.addAction(action)
         presentViewController(alert, animated: true, completion: nil)
     }
-    
+
     
     
     
@@ -138,11 +173,11 @@ class LoginVC: UIViewController {
         // check for if user exists and if they have a university selected
         DataService.ds.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: { snapshot in
             if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
+                
+                // Update profile pic from authData
+                self.updateProfilePicture(authData)
+                
                 let currentUser = User(uid: snapshot.key, dictionary: userDict)
-                
-                // Update the users Profile Picture
-                
-                
                 // TODO: Remove need for StateService
                 StateService.ss.setUser(currentUser)
                 
@@ -154,7 +189,12 @@ class LoginVC: UIViewController {
                     self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
                 } else {
                     NSUserDefaults.standardUserDefaults().setValue(currentUser.universityId, forKey: KEY_UNIVESITY)
-                    self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                    if let tempPassword = authData.providerData["isTemporaryPassword"] as? Int where tempPassword == 1 {
+                        // change password
+                        //self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                    } else {
+                        self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                    }
                 }
             } else {
                 print("No user in database")
@@ -173,7 +213,7 @@ class LoginVC: UIViewController {
     
     // BUTTON ACTIONS
     
-    @IBAction func fbBtnPressed(sender: UIButton!) {
+    @IBAction func fbBtnPressed(sender: MaterialButton!) {
         let facebookLogin = FBSDKLoginManager()
         
         facebookLogin.logInWithReadPermissions(["email"], fromViewController: self, handler: { (facebookResutl: FBSDKLoginManagerLoginResult!, facebookError: NSError!) -> Void in
@@ -196,52 +236,90 @@ class LoginVC: UIViewController {
     }
     
     
-    @IBAction func attempLogin(sender: UIButton!) {
+    @IBAction func didTapPrimaryBtn(sender: MaterialButton!) {
         
-        if isRegistering {
-            if nameField.text == "" {
-                self.showErrorAlert("Could not register", msg: "Please include your full name.")
-                return
+        if isForgotPassword {
+            // reset password
+            if let email = emailField.text where email != "" {
+                DataService.ds.REF_BASE.resetPasswordForUser(email, withCompletionBlock: {
+                error in
+                    if error == nil {
+                        self.showAlert("Password Reset", msg: "You have been sent a temporary password. Login with this password, then go to Settings to change your password.")
+                        self.resetLoginScreen()
+                    }
+                })
+            } else {
+                self.showAlert("Email Required", msg: "You must provide the email associated with your StudyLoop account in order to reset your password")
             }
-        }
-        
-        if let email = emailField.text where email != "", let pwd = passwordField.text where pwd != "" {
-            
-            DataService.ds.REF_BASE.authUser(email, password: pwd, withCompletionBlock: { error, authData in
-                if error != nil {
-                    print(error)
-                    print(error.code)
-                    
-                    if error.code == STATUS_ACCOUNT_NONEXSIT {
-                        DataService.ds.REF_BASE.createUser(email, password: pwd, withValueCompletionBlock: { error, result in
-                            if error != nil {
-                                self.showErrorAlert("Could not create account", msg: "Problem creating accound. Try something else")
+        } else {
+            // attemptlogin
+            if let email = emailField.text where email != "", let pwd = passwordField.text where pwd != "" {
+                
+                DataService.ds.REF_BASE.authUser(email, password: pwd, withCompletionBlock: { error, authData in
+                    if error != nil {
+                        print(error)
+                        print(error.code)
+                        
+                        if error.code == STATUS_ACCOUNT_NONEXSIT {
+                            
+                            if self.isRegistering {
+                                if self.nameField.text != "" {
+                                    DataService.ds.REF_BASE.createUser(email, password: pwd, withValueCompletionBlock: { error, result in
+                                        if error != nil {
+                                            self.showAlert("Could not create account", msg: "Problem creating accound. Try something else")
+                                        } else {
+                                            DataService.ds.REF_BASE.authUser(email, password: pwd, withCompletionBlock: {
+                                                error, authData in
+                                                print("Authed new user with email / password")
+                                            })
+                                        }
+                                        
+                                    })
+                                } else {
+                                    self.showAlert("Could not register new user", msg: "Please include your full name.")
+                                }
                             } else {
-                                DataService.ds.REF_BASE.authUser(email, password: pwd, withCompletionBlock: {
-                                    error, authData in
-                                    print("Authed new user with email / password")
-                                })
+                                self.showAlert("User does not exist.", msg: "Please register before logging in.")
                             }
                             
-                        })
-                    } else {
-                        self.showErrorAlert("Could not login", msg: "Please check your username and password.")
+                        } else {
+                            self.showAlert("Could not login", msg: "Please check your username and password.")
+                        }
                     }
-                }
-            })
-            
+                })
+                
+            } else {
+                showAlert("Email and Password Required", msg: "You must enter an email and a password.")
+            }
+        }
+    }
+    
+    @IBAction func didTapFogotBtn(sender: AnyObject) {
+        //performSegueWithIdentifier(SEGUE_FORGOT_PASSWORD, sender: nil)
+        isForgotPassword = !isForgotPassword
+        
+        if isForgotPassword == true {
+            forgotPasswordState()
         } else {
-            showErrorAlert("Email and Password Required", msg: "You must enter an email and a password.")
+            loginState()
         }
     }
     
     @IBAction func didTapRegisterBtn(sender: AnyObject) {
-        if isRegistering {
-            showNameFields()
-        } else {
-            hideNameFields()
-        }
         isRegistering = !isRegistering
+        
+        if isRegistering == true {
+            registerState()
+        } else {
+            loginState()
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == SEGUE_SELECT_UNIVERSITY {
+            let universityVC = segue.destinationViewController as? UniversityVC
+            universityVC!.previousVC = "LoginVC"
+        }
     }
 }
 

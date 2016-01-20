@@ -29,13 +29,20 @@ class AppSettingsVC: UITableViewController {
         tap.cancelsTouchesInView = false
         
         // Get Current User Data
-        DataService.ds.REF_USER_CURRENT.observeEventType(.Value, withBlock: {
+        UserService.us.REF_USER_CURRENT.observeEventType(.Value, withBlock: {
             snapshot in
             if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
                 self.currentUser = User(uid: snapshot.key, dictionary: userDict)
                 self.nameTextField.text = self.currentUser?.name
                 self.emailTextField.text = self.currentUser?.email
                 self.profileImage.getImage(self.currentUser!)
+                
+                DataService.ds.REF_UNIVERSITIES.childByAppendingPath(self.currentUser?.universityId).observeSingleEventOfType(.Value, withBlock: {
+                    snapshot in
+                    if let universityDict = snapshot.value as? Dictionary<String, AnyObject> {
+                        self.universityLabel.text = universityDict["shortName"] as? String
+                    }
+                })
             }
         })
         
@@ -51,7 +58,6 @@ class AppSettingsVC: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        print(indexPath.section, indexPath.row)
         
         if indexPath.section == 0 {
             if indexPath.row == 3 {
@@ -61,11 +67,11 @@ class AppSettingsVC: UITableViewController {
             if indexPath.row == 1 {
                 // Logout
                 print("logout")
-                DataService.ds.REF_BASE.unauth()
-                resetUserDefaults()
-                if let drawerController = navigationController?.parentViewController as? KYDrawerController {
-                    drawerController.dismissViewControllerAnimated(true, completion: nil)
-                }
+                logoutUser()
+            }
+        } else if indexPath.section == 3 {
+            if indexPath.row == 0 {
+                showDeleteConfirmation()
             }
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -84,68 +90,60 @@ class AppSettingsVC: UITableViewController {
         tableView.endEditing(true)
     }
     
+    func logoutUser() {
+        DataService.ds.REF_BASE.unauth()
+        resetUserDefaults()
+        if let drawerController = navigationController?.parentViewController as? KYDrawerController {
+            drawerController.dismissViewControllerAnimated(true, completion: nil)
+        }
+    }
+    
+    func showDeleteConfirmation() {
+        let alert = UIAlertController(title: "Delete Account", message: "Are you sure you want to delete your account?", preferredStyle: .Alert)
+        
+        alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
+            textField.placeholder = "Password"
+            textField.secureTextEntry = true
+        })
+        
+        let delete = UIAlertAction(title: "Delete", style: .Default)  {
+            _ in
+            
+            if let pass = alert.textFields![0] as? UITextField {
+                UserService.us.REF_USER_CURRENT.removeValueWithCompletionBlock({
+                    error, ref in
+                    
+                    if error == nil {
+                        DataService.ds.REF_BASE.removeUser(self.currentUser?.email, password: pass.text) {
+                            error in
+                        
+                            if error == nil {
+                                DataService.ds.REF_BASE.unauth()
+                                self.resetUserDefaults()
+                                if let drawerController = self.navigationController?.parentViewController as? KYDrawerController {
+                                    drawerController.dismissViewControllerAnimated(true, completion: nil)
+                                }
+                            }
+                        }
+                    } else {
+                        print(error)
+                    }
+                })
+            }
+        }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        let preferredAction = cancel
+        
+        alert.addAction(delete)
+        alert.addAction(preferredAction)
+        presentViewController(alert, animated: true, completion: nil)
+    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == SEGUE_SELECT_UNIVERSITY {
             let universityVC = segue.destinationViewController as? UniversityVC
-            universityVC!.parentVC = "AppSettingsVC"
+            universityVC!.previousVC = "AppSettingsVC"
         }
     }
-    /*
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("AppSettingsCell", forIndexPath: indexPath)
-        
-        if indexPath.row != 2 {
-            cell.selectionStyle = UITableViewCellSelectionStyle.None
-        }
-        
-        return cell
-    }
-    */
-    
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return false if you do not want the specified item to be editable.
-    return true
-    }
-    */
-    
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-    if editingStyle == .Delete {
-    // Delete the row from the data source
-    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-    } else if editingStyle == .Insert {
-    // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }
-    }
-    */
-    
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-    
-    }
-    */
-    
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return false if you do not want the item to be re-orderable.
-    return true
-    }
-    */
-    
-    /*
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    // Get the new view controller using segue.destinationViewController.
-    // Pass the selected object to the new view controller.
-    }
-    */
-    
 }

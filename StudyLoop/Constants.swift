@@ -24,6 +24,7 @@ let KEY_COURSE_TITLE = "courseTitle"
 // Segues
 let SEGUE_LOGGED_IN = "loggedIn"
 let SEGUE_LOGGED_OUT = "loggedOut"
+let SEGUE_FORGOT_PASSWORD = "forgotPassword"
 let SEGUE_SETTINGS = "appSettings"
 let SEGUE_COURSE_SETTINGS = "courseSettings"
 let SEGUE_LOOP_SETTINGS = "loopSettings"

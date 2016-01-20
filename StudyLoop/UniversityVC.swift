@@ -14,7 +14,7 @@ class UniversityVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     @IBOutlet weak var tableView: UITableView!
     
     var universities = [University]()
-    var parentVC: String?
+    var previousVC: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,17 +71,28 @@ class UniversityVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let key = universities[indexPath.row].universityKey
-        DataService.ds.REF_USER_CURRENT.childByAppendingPath("universityId").setValue(key, withCompletionBlock: {
+        UserService.us.REF_USER_CURRENT.childByAppendingPath("universityId").setValue(key, withCompletionBlock: {
             error, ref in
             if error == nil {
-                self.dismissViewControllerAnimated(true, completion: nil)
                 print("Set the univeristy to \(key)")
-                //self.navigationController!.popViewControllerAnimated(true)
+                
+                print(self.previousVC)
+                
+                if self.previousVC == "LoginVC" {
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                } else if self.previousVC == "AppSettingsVC" {
+                    self.navigationController?.popViewControllerAnimated(true)
+                }
+                
             } else {
                 print("Error setting university")
             }
         })
-         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
+        DataService.ds.REF_UNIVERSITIES.childByAppendingPath(key).childByAppendingPath("userIds").childByAppendingPath(userId).setValue(true)
+        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     override func didReceiveMemoryWarning() {
