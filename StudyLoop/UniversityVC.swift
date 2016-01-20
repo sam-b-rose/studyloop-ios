@@ -32,8 +32,6 @@ class UniversityVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             self.universities = []
             if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
                 for snap in snapshots {
-                    print("SNAP: \(snap)")
-                    
                     if let universitiesDict = snap.value as? Dictionary<String, AnyObject> {
                         let key = snap.key
                         print(key, universitiesDict)

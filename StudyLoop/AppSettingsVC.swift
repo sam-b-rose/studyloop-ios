@@ -37,6 +37,10 @@ class AppSettingsVC: UITableViewController {
                 self.emailTextField.text = self.currentUser?.email
                 self.profileImage.getImage(self.currentUser!)
                 
+                if self.currentUser?.provider == "facebook" {
+                    self.emailTextField.userInteractionEnabled = false
+                }
+                
                 DataService.ds.REF_UNIVERSITIES.childByAppendingPath(self.currentUser?.universityId).observeSingleEventOfType(.Value, withBlock: {
                     snapshot in
                     if let universityDict = snapshot.value as? Dictionary<String, AnyObject> {
@@ -64,6 +68,8 @@ class AppSettingsVC: UITableViewController {
                 performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
             } else if indexPath.row == 4 {
                 performSegueWithIdentifier(SEGUE_CHANGE_PWD, sender: nil)
+            } else if indexPath.row == 5 {
+                saveUserInfo()
             }
         } else if indexPath.section == 2 {
             if indexPath.row == 1 {
@@ -111,27 +117,27 @@ class AppSettingsVC: UITableViewController {
         let delete = UIAlertAction(title: "Delete", style: .Default)  {
             _ in
             
-            if let pass = alert.textFields![0] as? UITextField {
-                UserService.us.REF_USER_CURRENT.removeValueWithCompletionBlock({
-                    error, ref in
-                    
-                    if error == nil {
-                        DataService.ds.REF_BASE.removeUser(self.currentUser?.email, password: pass.text) {
-                            error in
+            let pass = alert.textFields![0]
+            UserService.us.REF_USER_CURRENT.removeValueWithCompletionBlock({
+                error, ref in
+                
+                if error == nil {
+                    DataService.ds.REF_BASE.removeUser(self.currentUser?.email, password: pass.text) {
+                        error in
                         
-                            if error == nil {
-                                DataService.ds.REF_BASE.unauth()
-                                self.resetUserDefaults()
-                                if let drawerController = self.navigationController?.parentViewController as? KYDrawerController {
-                                    drawerController.dismissViewControllerAnimated(true, completion: nil)
-                                }
+                        if error == nil {
+                            DataService.ds.REF_BASE.unauth()
+                            self.resetUserDefaults()
+                            if let drawerController = self.navigationController?.parentViewController as? KYDrawerController {
+                                drawerController.dismissViewControllerAnimated(true, completion: nil)
                             }
                         }
-                    } else {
-                        print(error)
                     }
-                })
-            }
+                } else {
+                    print(error)
+                }
+            })
+            
         }
         
         let cancel = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
@@ -140,6 +146,24 @@ class AppSettingsVC: UITableViewController {
         alert.addAction(delete)
         alert.addAction(preferredAction)
         presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func saveUserInfo() {
+        if let name = nameTextField.text where name != "",
+            let email = emailTextField.text where email != "" {
+                let user: Dictionary<String, AnyObject> = [
+                    "updatedAt": kFirebaseServerValueTimestamp,
+                    "email": email,
+                    "name": name
+                ]
+                
+                UserService.us.REF_USER_CURRENT.updateChildValues(user, withCompletionBlock: {
+                    error, ref in
+                    if error == nil {
+                        NotificationService.noti.success("Profile has been updated.")
+                    }
+                })
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

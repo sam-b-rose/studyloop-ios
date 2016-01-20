@@ -48,6 +48,8 @@
             <string>NotoSans</string>
             <string>NotoSans</string>
             <string>NotoSans</string>
+            <string>NotoSans</string>
+            <string>NotoSans</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -635,42 +637,13 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Notifications" id="Qwj-Ex-8Qr">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="appSettingsCell" id="5Ev-Eg-oJJ">
-                                        <rect key="frame" x="0.0" y="444.5" width="600" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5Ev-Eg-oJJ" id="v6P-bk-cJF">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mute all notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFY-W9-usE">
-                                                    <rect key="frame" x="18" y="11" width="159" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="x37-zf-YUm">
-                                                    <rect key="frame" x="533" y="6" width="51" height="31"/>
-                                                </switch>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="x37-zf-YUm" firstAttribute="centerY" secondItem="v6P-bk-cJF" secondAttribute="centerY" id="EhD-E3-Kcf"/>
-                                                <constraint firstAttribute="leadingMargin" secondItem="hFY-W9-usE" secondAttribute="leading" constant="-10" id="VJv-fR-hJC"/>
-                                                <constraint firstItem="hFY-W9-usE" firstAttribute="centerY" secondItem="v6P-bk-cJF" secondAttribute="centerY" id="bQc-nk-LQc"/>
-                                                <constraint firstItem="x37-zf-YUm" firstAttribute="trailing" secondItem="v6P-bk-cJF" secondAttribute="trailingMargin" constant="-10" id="wMM-qw-9tx"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
                             <tableViewSection id="vk0-mD-iQY">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="appSettingsCell" id="VGc-lj-aZW">
-                                        <rect key="frame" x="0.0" y="524.5" width="600" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="appSettingsCell" id="VGc-lj-aZW">
+                                        <rect key="frame" x="0.0" y="430.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VGc-lj-aZW" id="gHq-5l-Xlx">
-                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wna-AF-LVi">
@@ -709,7 +682,7 @@
                                         </constraints>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="appSettingsCell" id="JaB-CN-7qg">
-                                        <rect key="frame" x="0.0" y="568.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="474.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JaB-CN-7qg" id="oba-NA-aFP">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -736,7 +709,7 @@
                             <tableViewSection id="xNQ-3W-I3G">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="appSettingsCell" id="CIT-n5-CMY">
-                                        <rect key="frame" x="0.0" y="648.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="554.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CIT-n5-CMY" id="vOA-CM-h6w">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -1507,20 +1480,31 @@
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="NTV-Gd-lh8">
                                                     <rect key="frame" x="533" y="6" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="notificationValueChanged:" destination="Wcd-md-rc7" eventType="valueChanged" id="qeU-01-jSf"/>
+                                                    </connections>
                                                 </switch>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mute all notifications for this course" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9jU-BY-gFr">
-                                                    <rect key="frame" x="18" y="11" width="273" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mute course" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9jU-BY-gFr">
+                                                    <rect key="frame" x="18" y="10" width="507" height="24"/>
+                                                    <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="NTV-Gd-lh8" firstAttribute="centerY" secondItem="xLG-FA-WUz" secondAttribute="centerY" id="1Y5-jz-uum"/>
+                                                <constraint firstItem="NTV-Gd-lh8" firstAttribute="leading" secondItem="9jU-BY-gFr" secondAttribute="trailing" constant="8" id="Fb8-of-zh5"/>
                                                 <constraint firstAttribute="leadingMargin" secondItem="9jU-BY-gFr" secondAttribute="leading" constant="-10" id="Gt7-o8-fbr"/>
+                                                <constraint firstItem="9jU-BY-gFr" firstAttribute="leading" secondItem="xLG-FA-WUz" secondAttribute="leadingMargin" constant="10" id="IrX-h8-TCe"/>
                                                 <constraint firstItem="9jU-BY-gFr" firstAttribute="centerY" secondItem="xLG-FA-WUz" secondAttribute="centerY" id="OyB-D1-6tY"/>
+                                                <constraint firstItem="NTV-Gd-lh8" firstAttribute="leading" secondItem="9jU-BY-gFr" secondAttribute="trailing" constant="419" id="hMV-uj-JGY"/>
                                                 <constraint firstItem="NTV-Gd-lh8" firstAttribute="trailing" secondItem="xLG-FA-WUz" secondAttribute="trailingMargin" constant="-10" id="xV9-Ga-wYd"/>
                                             </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="hMV-uj-JGY"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -1609,20 +1593,34 @@
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="jsJ-Ow-xoe">
                                                     <rect key="frame" x="533" y="6" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="notificationDidChange:" destination="Qte-EA-2uA" eventType="valueChanged" id="SYP-PG-Daw"/>
+                                                    </connections>
                                                 </switch>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mute all notifications for this loop" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T6m-Qa-ro0">
-                                                    <rect key="frame" x="18" y="11" width="254" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mute loop" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T6m-Qa-ro0">
+                                                    <rect key="frame" x="18" y="10.5" width="507" height="23.5"/>
+                                                    <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
+                                                    <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="jsJ-Ow-xoe" firstAttribute="trailing" secondItem="ute-jw-rYx" secondAttribute="trailingMargin" constant="-10" id="2DB-Oi-jlH"/>
+                                                <constraint firstItem="jsJ-Ow-xoe" firstAttribute="leading" secondItem="T6m-Qa-ro0" secondAttribute="trailing" id="AKN-Mk-wlk"/>
+                                                <constraint firstItem="T6m-Qa-ro0" firstAttribute="leading" secondItem="ute-jw-rYx" secondAttribute="leadingMargin" constant="10" id="D9J-ge-oV7"/>
                                                 <constraint firstItem="jsJ-Ow-xoe" firstAttribute="centerY" secondItem="ute-jw-rYx" secondAttribute="centerY" id="F7H-pY-jOE"/>
+                                                <constraint firstItem="T6m-Qa-ro0" firstAttribute="leading" secondItem="ute-jw-rYx" secondAttribute="leadingMargin" constant="10" id="LPq-3V-dn7"/>
+                                                <constraint firstItem="jsJ-Ow-xoe" firstAttribute="leading" secondItem="T6m-Qa-ro0" secondAttribute="trailing" constant="8" id="Lqp-va-Ubu"/>
                                                 <constraint firstAttribute="leadingMargin" secondItem="T6m-Qa-ro0" secondAttribute="leading" constant="-10" id="N3N-v6-yR8"/>
                                                 <constraint firstItem="T6m-Qa-ro0" firstAttribute="centerY" secondItem="ute-jw-rYx" secondAttribute="centerY" id="teV-SD-nX8"/>
                                             </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="LPq-3V-dn7"/>
+                                                    <exclude reference="N3N-v6-yR8"/>
+                                                    <exclude reference="AKN-Mk-wlk"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>

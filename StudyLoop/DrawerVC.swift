@@ -33,10 +33,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         imageView.image = image
         navigationItem.titleView = imageView
         
-        // NSNotificationCenter.defaultCenter().addObserver(self, selector: "getUsersCourses:",name:"loadCourses", object: nil)
-        
         DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").observeEventType(.Value, withBlock: { snapshot in
-            //print(snapshot.value)
             
             self.items = []
             if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
@@ -87,12 +84,10 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             switch indexPath.row {
             case (items.count - 2):
                 // Add Course
-                print("add course")
                 mainNavigation.topViewController?.performSegueWithIdentifier(SEGUE_ADD_COURSE, sender: nil)
                 break
             case (items.count - 1):
                 // Settings
-                print("settings")
                 mainNavigation.topViewController?.performSegueWithIdentifier(SEGUE_SETTINGS, sender: nil)
                 break
             default:

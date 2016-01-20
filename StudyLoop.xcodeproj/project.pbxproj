@@ -12,7 +12,6 @@
 		6F1466F61C0B461D00528DE3 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1466F51C0B461D00528DE3 /* DataService.swift */; };
 		6F19BE301C1A6AA1004DC7A5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F19BE2F1C1A6AA1004DC7A5 /* User.swift */; };
 		6F26B0991C468AEF00F2CF41 /* LoopSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F26B0981C468AEF00F2CF41 /* LoopSettingsVC.swift */; };
-		6F2C4D6C1C4E5E080029B8FD /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F2C4D6B1C4E5E080029B8FD /* GameKit.framework */; };
 		6F2C4D6E1C4E5E0D0029B8FD /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F2C4D6D1C4E5E0D0029B8FD /* StoreKit.framework */; };
 		6F6BD57F1C3CB0FA005DB6A3 /* AddLoopVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6BD57E1C3CB0FA005DB6A3 /* AddLoopVC.swift */; };
 		6F7512631C4E6AA300B26229 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7512621C4E6AA300B26229 /* NotificationService.swift */; };
@@ -90,7 +89,6 @@
 		6F1466F51C0B461D00528DE3 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		6F19BE2F1C1A6AA1004DC7A5 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		6F26B0981C468AEF00F2CF41 /* LoopSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopSettingsVC.swift; sourceTree = "<group>"; };
-		6F2C4D6B1C4E5E080029B8FD /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		6F2C4D6D1C4E5E0D0029B8FD /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		6F6BD57E1C3CB0FA005DB6A3 /* AddLoopVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddLoopVC.swift; sourceTree = "<group>"; };
 		6F7512621C4E6AA300B26229 /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -163,7 +161,6 @@
 				6FE810C31C0B3AE300B1ABA8 /* FBSDKShareKit.framework in Frameworks */,
 				6F2C4D6E1C4E5E0D0029B8FD /* StoreKit.framework in Frameworks */,
 				0A12DB4E71DA66C64D6D8C50 /* Pods_StudyLoop.framework in Frameworks */,
-				6F2C4D6C1C4E5E080029B8FD /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -188,7 +185,6 @@
 			isa = PBXGroup;
 			children = (
 				6F2C4D6D1C4E5E0D0029B8FD /* StoreKit.framework */,
-				6F2C4D6B1C4E5E080029B8FD /* GameKit.framework */,
 				D755C00352E28EAE43CA0CB3 /* Pods_StudyLoop.framework */,
 			);
 			name = Frameworks;
@@ -436,7 +432,7 @@
 						DevelopmentTeam = B3A7ST59NS;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.InAppPurchase = {
 								enabled = 1;

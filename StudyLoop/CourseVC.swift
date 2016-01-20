@@ -48,7 +48,6 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             settingBtn.title = String.ioniconWithName(.More)
             getLoops(courseId)
         } else {
-            print("No course selected")
             loops.removeAll()
             tableView.reloadData()
             noCourseLbl.hidden = false
@@ -58,7 +57,6 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         if let courseTitle = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE_TITLE) as? String {
-            print(courseTitle)
             navigationItem.title = courseTitle
         } else {
             navigationItem.title = "Select a Course"
@@ -75,7 +73,6 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let loop = loops[indexPath.row]
-        
         if let cell = tableView.dequeueReusableCellWithIdentifier("LoopCell") as? LoopCell {
             cell.loopLabel.text = loop.subject
             cell.lastLabel.text = loop.lastMessage

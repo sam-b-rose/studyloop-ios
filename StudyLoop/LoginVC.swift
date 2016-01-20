@@ -50,7 +50,7 @@ class LoginVC: UIViewController {
         handle = DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
             if authData != nil {
                 // user authenticated
-                print("From LoginVC", authData.providerData)
+                print("From LoginVC")
                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
                 self.checkUserData(authData)
             } else {

@@ -7,10 +7,17 @@
 //
 
 import Foundation
+import Firebase
 import MPGNotification
 
 class NotificationService {
     static let noti = NotificationService()
+    
+    private var _REF_NOTIFICATIONS = Firebase(url: "\(URL_BASE)/notifications")
+    
+    var REF_NOTIFICATIONS: Firebase {
+        return _REF_NOTIFICATIONS
+    }
     
     func success(message: String) {
         let notification = MPGNotification(title: "Success!", subtitle: message, backgroundColor: SL_WHITE, iconImage: nil)
