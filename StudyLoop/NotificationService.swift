@@ -13,7 +13,7 @@ class NotificationService {
     static let noti = NotificationService()
     
     func success(message: String) {
-        let notification = MPGNotification(title: "Success!", subtitle: message, backgroundColor: SL_LIGHT, iconImage: nil)
+        let notification = MPGNotification(title: "Success!", subtitle: message, backgroundColor: SL_WHITE, iconImage: nil)
         notification.titleColor = SL_BLACK
         notification.subtitleColor = SL_BLACK
         notification.swipeToDismissEnabled = false

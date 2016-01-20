@@ -76,8 +76,6 @@ class UniversityVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             if error == nil {
                 print("Set the univeristy to \(key)")
                 
-                print(self.previousVC)
-                
                 if self.previousVC == "LoginVC" {
                     self.dismissViewControllerAnimated(true, completion: nil)
                 } else if self.previousVC == "AppSettingsVC" {

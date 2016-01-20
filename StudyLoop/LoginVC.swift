@@ -23,6 +23,7 @@ class LoginVC: UIViewController {
     @IBOutlet weak var forgotBtn: UIButton!
     
     var handle: UInt?
+    var userEmail: String?
     
     // States
     var isRegistering = false
@@ -85,6 +86,8 @@ class LoginVC: UIViewController {
         forgotBtn.hidden = false
         forgotBtn.setTitle("Forgot password?", forState: .Normal)
         registerBtn.setTitle("Not registered? Sign up!", forState: .Normal)
+        isRegistering = false
+        isForgotPassword = false
     }
     
     func registerState() {
@@ -97,6 +100,8 @@ class LoginVC: UIViewController {
         facebookBtn.hidden = true
         forgotBtn.hidden = true
         registerBtn.setTitle("Already have an account? Login!", forState: .Normal)
+        isRegistering = true
+        isForgotPassword = false
     }
     
     func forgotPasswordState() {
@@ -108,6 +113,7 @@ class LoginVC: UIViewController {
         forgotBtn.setTitle("Cancel", forState: .Normal)
         loginBtn.setTitle("Send", forState: .Normal)
         facebookBtn.hidden = true
+        isRegistering = false
         isForgotPassword = true
     }
     
@@ -191,7 +197,8 @@ class LoginVC: UIViewController {
                     NSUserDefaults.standardUserDefaults().setValue(currentUser.universityId, forKey: KEY_UNIVESITY)
                     if let tempPassword = authData.providerData["isTemporaryPassword"] as? Int where tempPassword == 1 {
                         // change password
-                        //self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                        self.userEmail = userDict["email"] as? String
+                        self.performSegueWithIdentifier(SEGUE_CHANGE_PWD, sender: nil)
                     } else {
                         self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                     }
@@ -245,7 +252,8 @@ class LoginVC: UIViewController {
                 error in
                     if error == nil {
                         self.showAlert("Password Reset", msg: "You have been sent a temporary password. Login with this password, then go to Settings to change your password.")
-                        self.resetLoginScreen()
+                        self.loginState()
+                        self.passwordField.text = ""
                     }
                 })
             } else {
@@ -319,6 +327,10 @@ class LoginVC: UIViewController {
         if segue.identifier == SEGUE_SELECT_UNIVERSITY {
             let universityVC = segue.destinationViewController as? UniversityVC
             universityVC!.previousVC = "LoginVC"
+        } else if segue.identifier == SEGUE_CHANGE_PWD {
+            let changePasswordVC = segue.destinationViewController as? ChangePasswordVC
+            changePasswordVC!.userEmail = userEmail
+            changePasswordVC!.previousVC = "LoginVC"
         }
     }
 }

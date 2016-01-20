@@ -62,6 +62,8 @@ class AppSettingsVC: UITableViewController {
         if indexPath.section == 0 {
             if indexPath.row == 3 {
                 performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+            } else if indexPath.row == 4 {
+                performSegueWithIdentifier(SEGUE_CHANGE_PWD, sender: nil)
             }
         } else if indexPath.section == 2 {
             if indexPath.row == 1 {
@@ -144,6 +146,10 @@ class AppSettingsVC: UITableViewController {
         if segue.identifier == SEGUE_SELECT_UNIVERSITY {
             let universityVC = segue.destinationViewController as? UniversityVC
             universityVC!.previousVC = "AppSettingsVC"
+        } else if segue.identifier == SEGUE_CHANGE_PWD {
+            let changePasswordVC = segue.destinationViewController as? ChangePasswordVC
+            changePasswordVC!.userEmail = currentUser?.email
+            changePasswordVC!.previousVC = "AppSettingsVC"
         }
     }
 }
