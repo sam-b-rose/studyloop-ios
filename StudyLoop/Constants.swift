@@ -20,6 +20,7 @@ let KEY_UID = "uid"
 let KEY_UNIVESITY = "university"
 let KEY_COURSE = "course"
 let KEY_COURSE_TITLE = "courseTitle"
+let KEY_LOOP = "loop"
 
 // Segues
 let SEGUE_LOGGED_IN = "loggedIn"

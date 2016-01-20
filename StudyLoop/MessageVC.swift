@@ -18,6 +18,9 @@ class LoopVC: SLKTextViewController {
     var userNameMap = [String: String]()
     static var imageCache = NSCache()
     
+    var timer: NSTimer? = nil
+    let currentUserId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
+    
     let attributes = [NSFontAttributeName: UIFont.ioniconOfSize(26)] as Dictionary!
     
     override func viewDidLoad() {
@@ -54,6 +57,42 @@ class LoopVC: SLKTextViewController {
         self.tableView.estimatedRowHeight = 64.0
         self.tableView.separatorStyle = .None
         self.tableView.registerClass(LoopMessageCell.self, forCellReuseIdentifier: "LoopMessageCell")
+        
+        // Monitor User Activity
+        ActivityService.act.REF_LOOP.childByAppendingPath(loop.uid).observeEventType(.ChildChanged, withBlock: {
+            snapshot in
+    
+            if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
+                self.checkIfTyping(snapshot.key, user: userDict)
+            }
+        })
+    }
+    
+    override func textView(textView: SLKTextView!, shouldChangeTextInRange range: NSRange, replacementText text: String!) -> Bool {
+        timer?.invalidate()
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("updateTypingIndicator:"), userInfo: textView, repeats: false)
+        return true
+    }
+    
+    func updateTypingIndicator(timer: NSTimer) {
+        if let textView = timer.userInfo! as? SLKTextView {
+            if textView.text != "" {
+                ActivityService.act.setUserActivity(loop.uid, userId: currentUserId!, key: "typingAt", value: kFirebaseServerValueTimestamp)
+            } else {
+                ActivityService.act.setUserActivity(loop.uid, userId: currentUserId!, key: "typingAt", value: 0)
+            }
+        }
+    }
+    
+    
+    func checkIfTyping(uid: String, user: Dictionary<String, AnyObject>) {
+        if currentUserId != uid {
+            if let typing = user["typingAt"] as? Int where typing > 0 {
+                showTypingIndicator(uid)
+            } else {
+                hideTypingIndicator(uid)
+            }
+        }
     }
     
     func watchLoop() {
@@ -167,12 +206,16 @@ class LoopVC: SLKTextViewController {
         })
     }
     
-    func showTypingIndicator(member: String) {
-        self.typingIndicatorView.insertUsername(member)
+    func showTypingIndicator(uid: String) {
+        if let userName = userNameMap[uid] {
+            self.typingIndicatorView.insertUsername(userName)
+        }
     }
     
-    func hideTypingIndicator(member: String) {
-        self.typingIndicatorView.removeUsername(member)
+    func hideTypingIndicator(uid: String) {
+        if let userName = userNameMap[uid] {
+            self.typingIndicatorView.removeUsername(userName)
+        }
     }
     
     func goToLoopSettings() {
