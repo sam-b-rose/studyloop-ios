@@ -43,19 +43,8 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         Event.register(EVENT_NEW_LOOP) {
-            self.tableView.reloadData()
-        }
-    }
-    
-    override func viewDidDisappear(animated: Bool) {
-        let loopIds = loops.map { $0.uid }
-        print("Loop Ids: ", loopIds)
-        print(NotificationService.noti.newLoops)
-        for(key, val) in NotificationService.noti.newLoops {
-            print(key, val)
-            if loopIds.indexOf(val) != nil {
-                NotificationService.noti.removeNotification(key)
-            }
+            self.viewDidAppear(true)
+            //self.tableView.reloadData()
         }
     }
 
@@ -81,6 +70,15 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             navigationItem.title = courseTitle
         } else {
             navigationItem.title = "Select a Course"
+        }
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        let loopIds = loops.map { $0.uid }
+        for(key, val) in NotificationService.noti.newLoops {
+            if loopIds.indexOf(val) != nil {
+                NotificationService.noti.removeNotification(key)
+            }
         }
     }
         
@@ -137,6 +135,11 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                         }
                     }
                 }
+                
+                self.loops.sortInPlace {
+                    return $0.createdAt > $1.createdAt
+                }
+                
                 self.tableView.reloadData()
             })
     }

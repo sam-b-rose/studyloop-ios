@@ -10,13 +10,6 @@ import UIKit
 
 class LoopCell: UITableViewCell {
     
-//    lazy var border: CALayer = {
-//        let border = CALayer()
-//        border.backgroundColor = SL_GRAY.colorWithAlphaComponent(0.3).CGColor
-//        border.frame = CGRect(x: 15, y: 0, width: self.frame.width - 15, height: 0.5)
-//        return border
-//    }()
-    
     lazy var loopLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "NotoSans", size: 17)
@@ -54,7 +47,6 @@ class LoopCell: UITableViewCell {
         self.addSubview(self.loopLabel)
         self.addSubview(self.newMessageInidcator)
         self.addSubview(self.lastLabel)
-        //self.layer.addSublayer(border)
         
         loopLabel.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(self).offset(10)

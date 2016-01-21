@@ -61,12 +61,13 @@ class LoopVC: SLKTextViewController {
         // Monitor User Activity
         ActivityService.act.REF_LOOP.childByAppendingPath(loop.uid).observeEventType(.ChildChanged, withBlock: {
             snapshot in
-    
             if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
                 self.checkIfTyping(snapshot.key, user: userDict)
             }
         })
-        
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
         // Remove Notifications
         for (key,val) in NotificationService.noti.newMessages {
             if val == loop.uid {
@@ -162,8 +163,7 @@ class LoopVC: SLKTextViewController {
             self.tableView.reloadData()
             if self.messages.count > 0 {
                 self.scrollToBottomMessage()
-                // Slacks Scroll
-                // self.tableView.slk_scrollToBottomAnimated(true)
+                ActivityService.act.setUserActivity(self.loop.uid, userId: self.currentUserId!, key: "typingAt", value: 0)
             }
         }
     }
