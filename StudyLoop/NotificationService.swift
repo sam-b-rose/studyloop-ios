@@ -27,19 +27,19 @@ class NotificationService: Evented {
     
     var courseActivity: [String:String] {
         willSet(newCourse) {
-            self.emit("COURSES")
+            self.emit(EVENT_COURSE_ALERT)
         }
     }
     
     var newMessages: [String:String] {
         willSet(newMessage) {
-            self.emit("LOOP_MESSAGE_RECEIVED")
+            self.emit(EVENT_NEW_MESSAGE)
         }
     }
     
     var newLoops: [String:String] {
         willSet(newLoop) {
-            self.emit("LOOP_CREATED")
+            self.emit(EVENT_NEW_LOOP)
         }
     }
     
@@ -72,9 +72,9 @@ class NotificationService: Evented {
                             let key = snap.key
                             self.courseActivity[key] = data["courseId"] as? String
                             
-                            if type == "LOOP_CREATED" {
+                            if type == EVENT_NEW_LOOP {
                                 self.newLoops[key] = data["id"] as? String
-                            } else if type == "LOOP_MESSAGE_RECEIVED" {
+                            } else if type == EVENT_NEW_MESSAGE {
                                 self.newMessages[key] = data["loopId"] as? String
                             }
                         }
@@ -96,6 +96,7 @@ class NotificationService: Evented {
 //            break
 //        }
 //        courseActivity.removeValueForKey(uid)
+        print("Removing Notification", uid)
         REF_NOTIFICATIONS_USER.childByAppendingPath(uid).removeValue()
     }
     

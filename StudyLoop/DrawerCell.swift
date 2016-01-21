@@ -39,8 +39,6 @@ class DrawerCell: UITableViewCell {
             let courses = NotificationService.noti.courseActivity.map { "\($1)" }
             let hasNotification = courses.indexOf(item.courseId)
             
-            "\(item.title) has Notification: \(hasNotification)".log_debug()
-            
             if hasNotification != nil {
                 menuIcon.hidden = false
                 menuIcon.textColor = SL_RED

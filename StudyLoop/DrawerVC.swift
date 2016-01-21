@@ -34,11 +34,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         navigationItem.titleView = imageView
         
         // Watch for notifications for Courses
-        let courseEvt = "COURSES"
-        
-        Event.register(courseEvt) {
-            "Watching for course activity!".log()
-            "\(NotificationService.noti.courseActivity)".log()
+        Event.register(EVENT_COURSE_ALERT) {
             self.tableView.reloadData()
         }
 

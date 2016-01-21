@@ -38,15 +38,27 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         
         // Watch for notifications for Courses
-        let messageEvt = "LOOP_MESSAGE_RECEIVED"
+        Event.register(EVENT_NEW_MESSAGE) {
+            self.tableView.reloadData()
+        }
         
-        Event.register(messageEvt) {
-            "Watching for loop activity!".log()
-            "\(NotificationService.noti.newMessages)".log()
+        Event.register(EVENT_NEW_LOOP) {
             self.tableView.reloadData()
         }
     }
     
+    override func viewDidDisappear(animated: Bool) {
+        let loopIds = loops.map { $0.uid }
+        print("Loop Ids: ", loopIds)
+        print(NotificationService.noti.newLoops)
+        for(key, val) in NotificationService.noti.newLoops {
+            print(key, val)
+            if loopIds.indexOf(val) != nil {
+                NotificationService.noti.removeNotification(key)
+            }
+        }
+    }
+
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         
