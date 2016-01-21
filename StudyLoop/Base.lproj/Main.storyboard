@@ -50,6 +50,7 @@
             <string>NotoSans</string>
             <string>NotoSans</string>
             <string>NotoSans</string>
+            <string>NotoSans</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -369,25 +370,54 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Homework 6" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EB6-7B-MMS">
-                                                    <rect key="frame" x="8" y="0.0" width="584" height="60"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FUv-8A-ktA">
+                                                    <rect key="frame" x="20" y="20" width="560" height="24"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Loop Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jX0-Oo-ljH">
+                                                            <rect key="frame" x="0.0" y="0.0" width="530" height="24"/>
+                                                            <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
+                                                            <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="0.89956896549999998" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Icon" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1vF-f2-aL6">
+                                                            <rect key="frame" x="530" y="0.0" width="30" height="24"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="33" id="Gpw-qu-4me"/>
+                                                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="33" id="M5v-iA-Zyt"/>
+                                                                <constraint firstAttribute="width" constant="30" id="YDN-Z5-en2"/>
+                                                                <constraint firstAttribute="width" constant="30" id="lot-ee-qqD"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
+                                                            <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="0.90000000000000002" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                            <variation key="default">
+                                                                <mask key="constraints">
+                                                                    <exclude reference="lot-ee-qqD"/>
+                                                                    <exclude reference="M5v-iA-Zyt"/>
+                                                                    <exclude reference="Gpw-qu-4me"/>
+                                                                </mask>
+                                                            </variation>
+                                                        </label>
+                                                    </subviews>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="60" id="WnX-AR-5XZ"/>
+                                                        <constraint firstItem="jX0-Oo-ljH" firstAttribute="top" secondItem="FUv-8A-ktA" secondAttribute="top" id="DPK-JE-7Sz"/>
+                                                        <constraint firstAttribute="bottom" secondItem="jX0-Oo-ljH" secondAttribute="bottom" id="Diz-Yb-mLp"/>
+                                                        <constraint firstItem="jX0-Oo-ljH" firstAttribute="leading" secondItem="FUv-8A-ktA" secondAttribute="leading" id="ucl-xd-mpF"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="DPK-JE-7Sz"/>
+                                                            <exclude reference="ucl-xd-mpF"/>
+                                                            <exclude reference="Diz-Yb-mLp"/>
+                                                        </mask>
+                                                    </variation>
+                                                </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="EB6-7B-MMS" firstAttribute="trailing" secondItem="pRA-Me-cEI" secondAttribute="trailingMargin" id="NEK-n7-g1H"/>
-                                                <constraint firstItem="EB6-7B-MMS" firstAttribute="leading" secondItem="pRA-Me-cEI" secondAttribute="leadingMargin" id="Une-K9-0yd"/>
-                                                <constraint firstItem="EB6-7B-MMS" firstAttribute="centerY" secondItem="pRA-Me-cEI" secondAttribute="centerY" id="be0-hh-t4I"/>
+                                                <constraint firstItem="FUv-8A-ktA" firstAttribute="leading" secondItem="pRA-Me-cEI" secondAttribute="leadingMargin" constant="12" id="POA-Ki-vTs"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="FUv-8A-ktA" secondAttribute="trailing" constant="12" id="eX4-9b-En6"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="loopName" destination="EB6-7B-MMS" id="PI4-Gt-y6X"/>
-                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -906,7 +936,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="fn2-HD-mh5">
                         <rect key="frame" x="0.0" y="64" width="600" height="686"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
                             <tableViewSection headerTitle="Old Password" id="2sf-Fe-WAh">
                                 <cells>

@@ -90,16 +90,20 @@ class LoopMessageCell: UITableViewCell {
         bodyLabel.text = text
         
         if name != nil {
+            
+            // TODO: Users initials not working
             nameLabel.text = name
             let initialsArr = name!.characters.split{$0 == " "}.map(String.init)
             let firstInitial = getFirstLetter(initialsArr[0])
             var secondInitial = ""
+            
             if initialsArr.count > 1 {
                 secondInitial = getFirstLetter(initialsArr[1])
             }
+            
             let initials = "\(firstInitial)\(secondInitial)"
             initialsLabel.text = initials
-            print(initials)
+//            print("Initials:", initials)
         } else {
             nameLabel.text = "Removed User"
             initialsLabel.text = "RM"

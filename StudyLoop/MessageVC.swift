@@ -66,6 +66,13 @@ class LoopVC: SLKTextViewController {
                 self.checkIfTyping(snapshot.key, user: userDict)
             }
         })
+        
+        // Remove Notifications
+        for (key,val) in NotificationService.noti.newMessages {
+            if val == loop.uid {
+                NotificationService.noti.removeNotification(key)
+            }
+        }
     }
     
     override func textView(textView: SLKTextView!, shouldChangeTextInRange range: NSRange, replacementText text: String!) -> Bool {

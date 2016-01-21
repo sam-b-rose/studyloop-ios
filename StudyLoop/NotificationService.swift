@@ -10,17 +10,37 @@ import Foundation
 import Firebase
 import MPGNotification
 
-class NotificationService {
-    static let noti = NotificationService()
-    var handle: UInt!
-    var newMessages = [String]()
-    var newLoops = [String]()
-    var courseActivity = [String]()
-    
-    private var _REF_NOTIFICATIONS = Firebase(url: "\(URL_BASE)/notifications")
+protocol Evented {
+    func emit(message: String) -> Bool
+}
 
+class NotificationService: Evented {
+    
+    static let noti = NotificationService()
+    private var _REF_NOTIFICATIONS = Firebase(url: "\(URL_BASE)/notifications")
+    
     var REF_NOTIFICATIONS: Firebase {
         return _REF_NOTIFICATIONS
+    }
+    
+    private var _handle: UInt!
+    
+    var courseActivity: [String:String] {
+        willSet(newCourse) {
+            self.emit("COURSES")
+        }
+    }
+    
+    var newMessages: [String:String] {
+        willSet(newMessage) {
+            self.emit("LOOP_MESSAGE_RECEIVED")
+        }
+    }
+    
+    var newLoops: [String:String] {
+        willSet(newLoop) {
+            self.emit("LOOP_CREATED")
+        }
     }
     
     var REF_NOTIFICATIONS_USER: Firebase {
@@ -28,22 +48,34 @@ class NotificationService {
         return REF_NOTIFICATIONS.childByAppendingPath(uid)
     }
     
+    init() {
+        self.newLoops = [String:String]()
+        self.newMessages = [String:String]()
+        self.courseActivity = [String:String]()
+    }
+    
     func getNotifications() {
-        handle = REF_NOTIFICATIONS_USER.observeEventType(.Value, withBlock: {
+        _handle = REF_NOTIFICATIONS_USER.observeEventType(.Value, withBlock: {
             snapshot in
+            
+            self.courseActivity.removeAll()
+            self.newMessages.removeAll()
+            self.newLoops.removeAll()
+            
             if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
                 for snap in snapshots {
                     if let notiDict = snap.value as? Dictionary<String, AnyObject> {
-                        // Create Notification Object
                         // Append to Notification Array
                         print(notiDict)
+                        
                         if let type = notiDict["type"] as? String, let data = notiDict["data"] as? Dictionary<String, AnyObject> {
-                            self.courseActivity.append(data["courseId"] as! String)
+                            let key = snap.key
+                            self.courseActivity[key] = data["courseId"] as? String
                             
                             if type == "LOOP_CREATED" {
-                                self.newLoops.append(data["id"] as! String)
-                            } else if type == "LOOP MESSAGE_RECEIVED" {
-                                self.newMessages.append(data["loopId"] as! String)
+                                self.newLoops[key] = data["id"] as? String
+                            } else if type == "LOOP_MESSAGE_RECEIVED" {
+                                self.newMessages[key] = data["loopId"] as? String
                             }
                         }
                     }
@@ -52,9 +84,23 @@ class NotificationService {
         })
     }
     
+    func removeNotification(uid: String) {
+//        switch type {
+//        case "LOOP_MESSAGE_RECEIVED":
+//            newMessages.removeValueForKey(uid)
+//            break
+//        case "LOOP_CREATED":
+//            newLoops.removeValueForKey(uid)
+//            break
+//        default:
+//            break
+//        }
+//        courseActivity.removeValueForKey(uid)
+        REF_NOTIFICATIONS_USER.childByAppendingPath(uid).removeValue()
+    }
+    
     func removeNotificationObserver() {
-        print("removed notification observer")
-        REF_NOTIFICATIONS_USER.removeAuthEventObserverWithHandle(handle!)
+        REF_NOTIFICATIONS_USER.removeAuthEventObserverWithHandle(_handle!)
     }
     
     func success(message: String) {
@@ -73,5 +119,11 @@ class NotificationService {
         notification.swipeToDismissEnabled = false
         notification.duration = 2
         notification.show()
+    }
+    
+    func emit(notificationType: String) -> Bool {
+        notificationType.log_debug()
+        Event.emit(notificationType)
+        return true
     }
 }

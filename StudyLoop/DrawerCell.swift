@@ -22,22 +22,27 @@ class DrawerCell: UITableViewCell {
     
     func configureCell(item: MenuItem) {
         self.item = item
-        self.itemLabel.text = item.title
+        itemLabel.text = item.title
+        
+        // Icon Defaults
+        menuIcon.hidden = true
+        menuIcon.textColor = SL_BLACK
+        menuIcon.font = UIFont.ioniconOfSize(17)
         
         if item.title == "Add Course" {
-            menuIcon.font = UIFont.ioniconOfSize(17)
-            menuIcon.textColor = SL_BLACK
+            menuIcon.hidden = false
             menuIcon.text = String.ioniconWithCode("ion-plus")
         } else if item.title == "Settings" {
-            menuIcon.font = UIFont.ioniconOfSize(17)
-            menuIcon.textColor = SL_BLACK
+            menuIcon.hidden = false
             menuIcon.text = String.ioniconWithCode("ion-ios-gear")
         } else {
-            let hasNotification = NotificationService.noti.courseActivity.indexOf(item.courseId)
-            if hasNotification == nil {
-                menuIcon.hidden = true
-            } else {
-                menuIcon.font = UIFont.ioniconOfSize(17)
+            let courses = NotificationService.noti.courseActivity.map { "\($1)" }
+            let hasNotification = courses.indexOf(item.courseId)
+            
+            "\(item.title) has Notification: \(hasNotification)".log_debug()
+            
+            if hasNotification != nil {
+                menuIcon.hidden = false
                 menuIcon.textColor = SL_RED
                 menuIcon.text = String.ioniconWithCode("ion-record")
             }

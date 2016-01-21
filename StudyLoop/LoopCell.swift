@@ -9,30 +9,19 @@
 import UIKit
 
 class LoopCell: UITableViewCell {
-
-//    @IBOutlet weak var loopName: UILabel!
-//    
-//    var loop: Loop!
-//    
-//    override func awakeFromNib() {
-//        super.awakeFromNib()
-//    }
-//    
-//    override func setSelected(selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//        
-//        // Configure the view for the selected state
-//    }
-//    
-//    func configureCell(loop: Loop) {
-//        self.loop = loop
-//        self.loopName.text = loop.subject
-//    }
     
     lazy var loopLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "NotoSans", size: 17)
         label.textColor = SL_BLACK
+        return label
+    }()
+    
+    lazy var newMessageInidcator: UILabel = {
+        let label = UILabel()
+        label.textColor = SL_RED
+        label.font = UIFont.ioniconOfSize(17)
+        label.text = String.ioniconWithName(.Record)
         return label
     }()
     
@@ -56,11 +45,17 @@ class LoopCell: UITableViewCell {
     
     func configureSubviews() {
         self.addSubview(self.loopLabel)
+        self.addSubview(self.newMessageInidcator)
         self.addSubview(self.lastLabel)
         
         loopLabel.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(self).offset(10)
             make.left.equalTo(self).offset(20)
+            make.right.equalTo(self.newMessageInidcator).offset(-20)
+        }
+        
+        newMessageInidcator.snp_makeConstraints { (make) -> Void in
+            make.centerY.equalTo(self)
             make.right.equalTo(self).offset(-20)
         }
         
@@ -69,6 +64,29 @@ class LoopCell: UITableViewCell {
             make.left.equalTo(self).offset(20)
             make.right.equalTo(self).offset(-20)
             make.bottom.equalTo(self).offset(-10)
+        }
+    }
+    
+    func configureCell(loop: Loop) {
+        loopLabel.text = loop.subject
+        lastLabel.text = loop.lastMessage
+ 
+        let loops = NotificationService.noti.newMessages.map { "\($1)" }
+        let hasNewMessage = loops.indexOf(loop.uid)
+        
+        if hasNewMessage != nil {
+            newMessageInidcator.hidden = false
+        } else {
+            newMessageInidcator.hidden = true
+        }
+        
+        let newLoops = NotificationService.noti.newLoops.map { "\($1)" }
+        let isNewLoop = newLoops.indexOf(loop.uid)
+        
+        if isNewLoop != nil {
+            self.backgroundColor = SL_LIGHT
+        } else {
+            self.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0)
         }
     }
 

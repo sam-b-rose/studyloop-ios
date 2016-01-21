@@ -11,6 +11,8 @@
 		6F1106971C4DD3280033B034 /* SwiftNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1106961C4DD3280033B034 /* SwiftNotice.swift */; };
 		6F1466F61C0B461D00528DE3 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1466F51C0B461D00528DE3 /* DataService.swift */; };
 		6F19BE301C1A6AA1004DC7A5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F19BE2F1C1A6AA1004DC7A5 /* User.swift */; };
+		6F2226FE1C50F36100D028BD /* Loggable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2226FD1C50F36100D028BD /* Loggable.swift */; };
+		6F2227001C50F40E00D028BD /* Pubsub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2226FF1C50F40E00D028BD /* Pubsub.swift */; };
 		6F26B0991C468AEF00F2CF41 /* LoopSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F26B0981C468AEF00F2CF41 /* LoopSettingsVC.swift */; };
 		6F2C4D6E1C4E5E0D0029B8FD /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F2C4D6D1C4E5E0D0029B8FD /* StoreKit.framework */; };
 		6F6BD57F1C3CB0FA005DB6A3 /* AddLoopVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6BD57E1C3CB0FA005DB6A3 /* AddLoopVC.swift */; };
@@ -89,6 +91,8 @@
 		6F1106961C4DD3280033B034 /* SwiftNotice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftNotice.swift; sourceTree = "<group>"; };
 		6F1466F51C0B461D00528DE3 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		6F19BE2F1C1A6AA1004DC7A5 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		6F2226FD1C50F36100D028BD /* Loggable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loggable.swift; sourceTree = "<group>"; };
+		6F2226FF1C50F40E00D028BD /* Pubsub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pubsub.swift; sourceTree = "<group>"; };
 		6F26B0981C468AEF00F2CF41 /* LoopSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopSettingsVC.swift; sourceTree = "<group>"; };
 		6F2C4D6D1C4E5E0D0029B8FD /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		6F6BD57E1C3CB0FA005DB6A3 /* AddLoopVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddLoopVC.swift; sourceTree = "<group>"; };
@@ -338,6 +342,8 @@
 				6F1106961C4DD3280033B034 /* SwiftNotice.swift */,
 				6FE810AF1C0B21F100B1ABA8 /* Constants.swift */,
 				6FB034901C41448700648876 /* Ionicons.swift */,
+				6F2226FD1C50F36100D028BD /* Loggable.swift */,
+				6F2226FF1C50F40E00D028BD /* Pubsub.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -586,12 +592,14 @@
 				6F96319D1C138EC000D1DA88 /* Message.swift in Sources */,
 				6F7BC4831C3423990014BD18 /* AddCourseVC.swift in Sources */,
 				6FAF96981C38B85000B6860F /* LoopCell.swift in Sources */,
+				6F2227001C50F40E00D028BD /* Pubsub.swift in Sources */,
 				6FAC846D1C48851700C9861E /* MembersVC.swift in Sources */,
 				6FDB4BE61C4056680064B50D /* LoopMessageCell.swift in Sources */,
 				6F6BD57F1C3CB0FA005DB6A3 /* AddLoopVC.swift in Sources */,
 				6F75126B1C4FB31400B26229 /* ChangePasswordVC.swift in Sources */,
 				6F26B0991C468AEF00F2CF41 /* LoopSettingsVC.swift in Sources */,
 				6FAF96941C385F2C00B6860F /* UserImage.swift in Sources */,
+				6F2226FE1C50F36100D028BD /* Loggable.swift in Sources */,
 				6F19BE301C1A6AA1004DC7A5 /* User.swift in Sources */,
 				6FAC846F1C48871A00C9861E /* MemberCell.swift in Sources */,
 				6FB034911C41448700648876 /* Ionicons.swift in Sources */,

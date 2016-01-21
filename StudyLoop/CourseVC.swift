@@ -36,6 +36,15 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         menuBtn.setTitleTextAttributes(attributes, forState: .Normal)
         menuBtn.title = String.ioniconWithName(.Navicon)
         
+        
+        // Watch for notifications for Courses
+        let messageEvt = "LOOP_MESSAGE_RECEIVED"
+        
+        Event.register(messageEvt) {
+            "Watching for loop activity!".log()
+            "\(NotificationService.noti.newMessages)".log()
+            self.tableView.reloadData()
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -74,8 +83,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let loop = loops[indexPath.row]
         if let cell = tableView.dequeueReusableCellWithIdentifier("LoopCell") as? LoopCell {
-            cell.loopLabel.text = loop.subject
-            cell.lastLabel.text = loop.lastMessage
+            cell.configureCell(loop)
             return cell
         } else {
             return LoopCell()

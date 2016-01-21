@@ -33,6 +33,16 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         imageView.image = image
         navigationItem.titleView = imageView
         
+        // Watch for notifications for Courses
+        let courseEvt = "COURSES"
+        
+        Event.register(courseEvt) {
+            "Watching for course activity!".log()
+            "\(NotificationService.noti.courseActivity)".log()
+            self.tableView.reloadData()
+        }
+
+        
         DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").observeEventType(.Value, withBlock: { snapshot in
             
             self.items = []
