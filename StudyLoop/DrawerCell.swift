@@ -26,12 +26,21 @@ class DrawerCell: UITableViewCell {
         
         if item.title == "Add Course" {
             menuIcon.font = UIFont.ioniconOfSize(17)
+            menuIcon.textColor = SL_BLACK
             menuIcon.text = String.ioniconWithCode("ion-plus")
         } else if item.title == "Settings" {
             menuIcon.font = UIFont.ioniconOfSize(17)
+            menuIcon.textColor = SL_BLACK
             menuIcon.text = String.ioniconWithCode("ion-ios-gear")
         } else {
-            menuIcon.text = ""
+            let hasNotification = NotificationService.noti.courseActivity.indexOf(item.courseId)
+            if hasNotification == nil {
+                menuIcon.hidden = true
+            } else {
+                menuIcon.font = UIFont.ioniconOfSize(17)
+                menuIcon.textColor = SL_RED
+                menuIcon.text = String.ioniconWithCode("ion-record")
+            }
         }
         
         border.backgroundColor = SL_GRAY.colorWithAlphaComponent(0.3).CGColor

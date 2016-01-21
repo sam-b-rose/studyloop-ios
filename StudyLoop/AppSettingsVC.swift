@@ -71,13 +71,13 @@ class AppSettingsVC: UITableViewController {
             } else if indexPath.row == 5 {
                 saveUserInfo()
             }
-        } else if indexPath.section == 2 {
+        } else if indexPath.section == 1 {
             if indexPath.row == 1 {
                 // Logout
                 print("logout")
                 logoutUser()
             }
-        } else if indexPath.section == 3 {
+        } else if indexPath.section == 2 {
             if indexPath.row == 0 {
                 showDeleteConfirmation()
             }
@@ -99,6 +99,7 @@ class AppSettingsVC: UITableViewController {
     }
     
     func logoutUser() {
+        NotificationService.noti.removeNotificationObserver()
         DataService.ds.REF_BASE.unauth()
         resetUserDefaults()
         if let drawerController = navigationController?.parentViewController as? KYDrawerController {

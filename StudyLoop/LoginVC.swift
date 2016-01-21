@@ -148,6 +148,7 @@ class LoginVC: UIViewController {
     
     func createUser(authData: FAuthData, completion: (result: String) -> Void) {
         let name: String!
+        var gender = ""
         
         if nameField.text != "" {
             name = nameField.text
@@ -155,11 +156,16 @@ class LoginVC: UIViewController {
             name = (authData.providerData["displayName"] != nil) ? authData.providerData["displayName"] as? String: authData.providerData["email"] as? String
         }
         
+        if authData.providerData["gender"] != nil {
+            gender = authData.providerData["gender"] as! String
+        }
+        
         let user: Dictionary<String, AnyObject> = [
             "id": authData.uid as String,
             "name": name,
             "provider": authData.provider as String,
             "email": authData.providerData["email"] as! String,
+            "gender": gender,
             "profileImageURL": authData.providerData["profileImageURL"] as! String,
             "createdAt": kFirebaseServerValueTimestamp as Dictionary<String, String>,
             "updatedAt": kFirebaseServerValueTimestamp as Dictionary<String, String>
@@ -200,6 +206,7 @@ class LoginVC: UIViewController {
                         self.userEmail = userDict["email"] as? String
                         self.performSegueWithIdentifier(SEGUE_CHANGE_PWD, sender: nil)
                     } else {
+                        NotificationService.noti.getNotifications()
                         self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                     }
                 }
@@ -331,7 +338,7 @@ class LoginVC: UIViewController {
             let changePasswordVC = segue.destinationViewController as? ChangePasswordVC
             changePasswordVC!.userEmail = userEmail
             changePasswordVC!.previousVC = "LoginVC"
-        }
+    }
     }
 }
 

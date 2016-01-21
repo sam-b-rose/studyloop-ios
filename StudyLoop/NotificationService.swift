@@ -12,11 +12,49 @@ import MPGNotification
 
 class NotificationService {
     static let noti = NotificationService()
+    var handle: UInt!
+    var newMessages = [String]()
+    var newLoops = [String]()
+    var courseActivity = [String]()
     
     private var _REF_NOTIFICATIONS = Firebase(url: "\(URL_BASE)/notifications")
-    
+
     var REF_NOTIFICATIONS: Firebase {
         return _REF_NOTIFICATIONS
+    }
+    
+    var REF_NOTIFICATIONS_USER: Firebase {
+        let uid = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as! String
+        return REF_NOTIFICATIONS.childByAppendingPath(uid)
+    }
+    
+    func getNotifications() {
+        handle = REF_NOTIFICATIONS_USER.observeEventType(.Value, withBlock: {
+            snapshot in
+            if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
+                for snap in snapshots {
+                    if let notiDict = snap.value as? Dictionary<String, AnyObject> {
+                        // Create Notification Object
+                        // Append to Notification Array
+                        print(notiDict)
+                        if let type = notiDict["type"] as? String, let data = notiDict["data"] as? Dictionary<String, AnyObject> {
+                            self.courseActivity.append(data["courseId"] as! String)
+                            
+                            if type == "LOOP_CREATED" {
+                                self.newLoops.append(data["id"] as! String)
+                            } else if type == "LOOP MESSAGE_RECEIVED" {
+                                self.newMessages.append(data["loopId"] as! String)
+                            }
+                        }
+                    }
+                }
+            }
+        })
+    }
+    
+    func removeNotificationObserver() {
+        print("removed notification observer")
+        REF_NOTIFICATIONS_USER.removeAuthEventObserverWithHandle(handle!)
     }
     
     func success(message: String) {

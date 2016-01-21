@@ -11,7 +11,7 @@ import Foundation
 class MenuItem {
     private var _title: String!
     private var _courseId: String!
-    private var _borderTop: Bool!
+    private var _hasNotification: Bool!
     
     var title: String {
         return _title
@@ -21,23 +21,18 @@ class MenuItem {
         return _courseId
     }
     
-    var borderTop: Bool {
-        return _borderTop
+    var hasNotification: Bool {
+        return _hasNotification
     }
     
     init(title: String) {
         self._title = title
-        self._borderTop = false
+        self._hasNotification = false
     }
     
-    init(title: String, courseId: String) {
+    init(title: String, courseId: String, notify: Bool) {
         self._title = title
         self._courseId = courseId
-        self._borderTop = false
-    }
-    
-    init(title: String, borderTop: Bool) {
-        self._title = title
-        self._borderTop = borderTop
+        self._hasNotification = false
     }
 }

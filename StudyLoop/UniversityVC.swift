@@ -33,11 +33,8 @@ class UniversityVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
                 for snap in snapshots {
                     if let universitiesDict = snap.value as? Dictionary<String, AnyObject> {
-                        let key = snap.key
-                        print(key, universitiesDict)
-                        
                         // Create University Object
-                        let university = University(universityKey: key, dictionary: universitiesDict)
+                        let university = University(universityKey: snap.key, dictionary: universitiesDict)
                         self.universities.append(university)
                     }
                 }

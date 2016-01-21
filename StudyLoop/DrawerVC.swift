@@ -41,7 +41,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     //print("SNAP: ", snap)
                     DataService.ds.REF_COURSES.childByAppendingPath(snap.key).observeSingleEventOfType(.Value, withBlock: { snapshot in
                         //print(snapshot)
-                        let course = MenuItem(title: "\(snapshot.value.objectForKey("major")!) \(snapshot.value.objectForKey("number")!)", courseId: snapshot.value.objectForKey("id") as! String)
+                        let course = MenuItem(title: "\(snapshot.value.objectForKey("major")!) \(snapshot.value.objectForKey("number")!)", courseId: snapshot.value.objectForKey("id") as! String, notify: true)
                         self.items.insert(course, atIndex: 0)
                         self.tableView.reloadData()
                     })
@@ -53,7 +53,6 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             
             self.tableView.reloadData()
         })
-        
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -103,7 +102,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func appendDefaltItems() -> [MenuItem] {
         let defaults = [
             MenuItem(title: "Add Course"),
-            MenuItem(title: "Settings", borderTop: true)
+            MenuItem(title: "Settings")
         ]
         return defaults
     }
