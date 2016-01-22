@@ -42,6 +42,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").observeEventType(.Value, withBlock: { snapshot in
             
             self.items = []
+            let currentCourse = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String
             if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
                 for snap in snapshots {
                     //print("SNAP: ", snap)
@@ -50,6 +51,10 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                         let course = MenuItem(title: "\(snapshot.value.objectForKey("major")!) \(snapshot.value.objectForKey("number")!)", courseId: snapshot.value.objectForKey("id") as! String, notify: true)
                         self.items.insert(course, atIndex: 0)
                         self.tableView.reloadData()
+                        
+                        if course.courseId == currentCourse {
+                            NSUserDefaults.standardUserDefaults().setValue(course.title, forKey: KEY_COURSE_TITLE)
+                        }
                     })
                 }
             }

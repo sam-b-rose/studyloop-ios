@@ -20,6 +20,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var loops = [Loop]()
     var selectedLoop: Loop! = nil
+    var handle: UInt!
     let attributes = [NSFontAttributeName: UIFont.ioniconOfSize(26)] as Dictionary!
 
     override func viewDidLoad() {
@@ -43,8 +44,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         Event.register(EVENT_NEW_LOOP) {
-            self.viewDidAppear(true)
-            //self.tableView.reloadData()
+            // do something to reload course loops
         }
     }
 
@@ -56,6 +56,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             noCourseLbl.hidden = true
             addLoopBtn.hidden = false
             settingBtn.title = String.ioniconWithName(.More)
+            ActivityService.act.setLastCourse(courseId)
             getLoops(courseId)
         } else {
             loops.removeAll()
@@ -74,6 +75,9 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     override func viewDidDisappear(animated: Bool) {
+//        DataService.ds.REF_BASE.removeObserverWithHandle(handle)
+        
+        // Remove Notifications about this course
         let loopIds = loops.map { $0.uid }
         for(key, val) in NotificationService.noti.newLoops {
             if loopIds.indexOf(val) != nil {
@@ -91,13 +95,13 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let loop = loops[indexPath.row]
-        if let cell = tableView.dequeueReusableCellWithIdentifier("LoopCell") as? LoopCell {
-            cell.configureCell(loop)
-            return cell
-        } else {
-            return LoopCell()
+        if let loop = loops[indexPath.row] as? Loop {
+            if let cell = tableView.dequeueReusableCellWithIdentifier("LoopCell") as? LoopCell {
+                cell.configureCell(loop)
+                return cell
+            }
         }
+        return LoopCell()
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -115,7 +119,8 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         DataService.ds.REF_LOOPS
             .queryOrderedByChild("courseId")
             .queryEqualToValue(courseId)
-            .observeSingleEventOfType(.Value, withBlock: { snapshot in
+            .observeSingleEventOfType(.Value, withBlock: {
+                snapshot in
                 
                 if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
                     // print("LOOP SNAP: ", snapshot)

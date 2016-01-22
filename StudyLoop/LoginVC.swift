@@ -194,8 +194,12 @@ class LoginVC: UIViewController {
                 StateService.ss.setUser(currentUser)
                 
                 // TODO: Set last course to user-activity/users/[userId]/courseId
-                NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
-                NSUserDefaults.standardUserDefaults().setValue("Select a Course", forKey: KEY_COURSE_TITLE)
+                ActivityService.act.getLastCourse({ (courseId) -> Void in
+                    print("Last Course Selected: ", courseId)
+                    NSUserDefaults.standardUserDefaults().setValue(courseId, forKey: KEY_COURSE)
+                    NSUserDefaults.standardUserDefaults().setValue("", forKey: KEY_COURSE_TITLE)
+
+                })
                 
                 if currentUser.universityId == nil {
                     self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)

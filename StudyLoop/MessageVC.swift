@@ -65,6 +65,9 @@ class LoopVC: SLKTextViewController {
                 self.checkIfTyping(snapshot.key, user: userDict)
             }
         })
+        
+        // Set last loop for current user
+        ActivityService.act.setLastLoop(loop.uid)
     }
     
     override func viewWillDisappear(animated: Bool) {
