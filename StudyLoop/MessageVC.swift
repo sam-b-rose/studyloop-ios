@@ -10,21 +10,27 @@ import UIKit
 import Firebase
 import SlackTextViewController
 
-class LoopVC: SLKTextViewController {
+class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var loop: Loop!
     var messages = [Message]()
     var userImageMap = [String: String]()
     var userNameMap = [String: String]()
+    var imagePicker: UIImagePickerController!
     static var imageCache = NSCache()
     
     var timer: NSTimer? = nil
+    var imageToSend: UIImage!
+    var imageSelected = false
     let currentUserId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
     
     let attributes = [NSFontAttributeName: UIFont.ioniconOfSize(26)] as Dictionary!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+            
+        imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
         
         self.bounces = true
         self.shakeToClearEnabled = true
@@ -77,6 +83,31 @@ class LoopVC: SLKTextViewController {
                 NotificationService.noti.removeNotification(key)
             }
         }
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        imagePicker.dismissViewControllerAnimated(true, completion: nil)
+        imageSelected = true
+        imageToSend = image
+        performSegueWithIdentifier(SEGUE_PREVIEW_IMAGE, sender: nil)
+    }
+    
+    func showModal() {
+        let previewImageVC = PreviewImageVC()
+        previewImageVC.modalPresentationStyle = .OverCurrentContext
+        presentViewController(previewImageVC, animated: true, completion: nil)
+    }
+    
+    func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
+        
+        let scale = newWidth / image.size.width
+        let newHeight = image.size.height * scale
+        UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
+        image.drawInRect(CGRectMake(0, 0, newWidth, newHeight))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
     }
     
     override func textView(textView: SLKTextView!, shouldChangeTextInRange range: NSRange, replacementText text: String!) -> Bool {
@@ -166,15 +197,24 @@ class LoopVC: SLKTextViewController {
             self.tableView.reloadData()
             if self.messages.count > 0 {
                 self.scrollToBottomMessage()
+                self.leftButton.setImage(UIImage(named: "icn_upload"), forState: UIControlState.Normal)
                 ActivityService.act.setUserActivity(self.loop.uid, userId: self.currentUserId!, key: "typingAt", value: 0)
             }
         }
     }
     
+    override func didPressLeftButton(sender: AnyObject!) {
+        print("Select Image")
+        presentViewController(imagePicker, animated: true, completion: nil)
+    }
+    
     override func didPressRightButton(sender: AnyObject!) {
         self.textView.refreshFirstResponder()
-        
         let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
+        
+        if let _ = imageToSend where imageSelected == true {
+            print("Send Image")
+        }
         
         let message: Dictionary<String, AnyObject> = [
             "textValue": "\(self.textView.text!)",
@@ -264,7 +304,9 @@ class LoopVC: SLKTextViewController {
             let loopSettingsVC = segue.destinationViewController as! LoopSettingsVC
             loopSettingsVC.loopId = self.loop.uid
             loopSettingsVC.userIds = self.loop.userIds
+        } else if(segue.identifier == SEGUE_PREVIEW_IMAGE) {
+            let previewImageVC = segue.destinationViewController as! PreviewImageVC
+            previewImageVC.image = self.imageToSend
         }
     }
-    
 }

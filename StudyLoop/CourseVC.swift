@@ -164,7 +164,8 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func addUserToLoop() {
-        DataService.ds.REF_LOOPS.childByAppendingPath(selectedLoop.uid).childByAppendingPath("userIds").childByAppendingPath(StateService.ss.CURRENT_USER?.id).setValue(true)
+        let currentUser = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
+        DataService.ds.REF_LOOPS.childByAppendingPath(selectedLoop.uid).childByAppendingPath("userIds").childByAppendingPath(currentUser).setValue(true)
         DataService.ds.REF_USER_CURRENT.childByAppendingPath("loopIds").childByAppendingPath(selectedLoop.uid).setValue(true)
         self.performSegueWithIdentifier(SEGUE_LOOP, sender: nil)
     }

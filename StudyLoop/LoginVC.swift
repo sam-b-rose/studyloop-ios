@@ -189,11 +189,7 @@ class LoginVC: UIViewController {
                 // Update profile pic from authData
                 self.updateProfilePicture(authData)
                 
-                let currentUser = User(uid: snapshot.key, dictionary: userDict)
-                // TODO: Remove need for StateService
-                StateService.ss.setUser(currentUser)
-                
-                // TODO: Set last course to user-activity/users/[userId]/courseId
+                // Get last course
                 ActivityService.act.getLastCourse({ (courseId) -> Void in
                     print("Last Course Selected: ", courseId)
                     NSUserDefaults.standardUserDefaults().setValue(courseId, forKey: KEY_COURSE)
@@ -201,6 +197,7 @@ class LoginVC: UIViewController {
 
                 })
                 
+                let currentUser = User(uid: snapshot.key, dictionary: userDict)
                 if currentUser.universityId == nil {
                     self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
                 } else {
