@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0A12DB4E71DA66C64D6D8C50 /* Pods_StudyLoop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D755C00352E28EAE43CA0CB3 /* Pods_StudyLoop.framework */; };
-		6F1106971C4DD3280033B034 /* SwiftNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1106961C4DD3280033B034 /* SwiftNotice.swift */; };
 		6F1466F61C0B461D00528DE3 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1466F51C0B461D00528DE3 /* DataService.swift */; };
 		6F19BE301C1A6AA1004DC7A5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F19BE2F1C1A6AA1004DC7A5 /* User.swift */; };
 		6F2226FE1C50F36100D028BD /* Loggable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2226FD1C50F36100D028BD /* Loggable.swift */; };
@@ -45,6 +44,7 @@
 		6FB0348F1C41447600648876 /* ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6FB0348E1C41447600648876 /* ionicons.ttf */; };
 		6FB034911C41448700648876 /* Ionicons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB034901C41448700648876 /* Ionicons.swift */; };
 		6FCCFFDB1C52C8AB0001214F /* PreviewImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FCCFFDA1C52C8AB0001214F /* PreviewImageVC.swift */; };
+		6FCCFFDD1C53ACE10001214F /* ImageSizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FCCFFDC1C53ACE10001214F /* ImageSizer.swift */; };
 		6FD49A4C1C34EC5A0052C6EC /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD49A4B1C34EC5A0052C6EC /* Course.swift */; };
 		6FDB4BE61C4056680064B50D /* LoopMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDB4BE51C4056680064B50D /* LoopMessageCell.swift */; };
 		6FE8106D1C0AA35300B1ABA8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE8106C1C0AA35300B1ABA8 /* AppDelegate.swift */; };
@@ -89,7 +89,6 @@
 
 /* Begin PBXFileReference section */
 		1B2666FF8D7DD041D321A4C1 /* Pods-StudyLoop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StudyLoop.release.xcconfig"; path = "Pods/Target Support Files/Pods-StudyLoop/Pods-StudyLoop.release.xcconfig"; sourceTree = "<group>"; };
-		6F1106961C4DD3280033B034 /* SwiftNotice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftNotice.swift; sourceTree = "<group>"; };
 		6F1466F51C0B461D00528DE3 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		6F19BE2F1C1A6AA1004DC7A5 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		6F2226FD1C50F36100D028BD /* Loggable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loggable.swift; sourceTree = "<group>"; };
@@ -126,6 +125,7 @@
 		6FB0348E1C41447600648876 /* ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ionicons.ttf; sourceTree = "<group>"; };
 		6FB034901C41448700648876 /* Ionicons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ionicons.swift; sourceTree = "<group>"; };
 		6FCCFFDA1C52C8AB0001214F /* PreviewImageVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewImageVC.swift; sourceTree = "<group>"; };
+		6FCCFFDC1C53ACE10001214F /* ImageSizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSizer.swift; sourceTree = "<group>"; };
 		6FD49A4B1C34EC5A0052C6EC /* Course.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
 		6FDB4BE51C4056680064B50D /* LoopMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopMessageCell.swift; sourceTree = "<group>"; };
 		6FE810691C0AA35300B1ABA8 /* StudyLoop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StudyLoop.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -342,11 +342,11 @@
 		6FE810AE1C0B21DC00B1ABA8 /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				6F1106961C4DD3280033B034 /* SwiftNotice.swift */,
 				6FE810AF1C0B21F100B1ABA8 /* Constants.swift */,
 				6FB034901C41448700648876 /* Ionicons.swift */,
 				6F2226FD1C50F36100D028BD /* Loggable.swift */,
 				6F2226FF1C50F40E00D028BD /* Pubsub.swift */,
+				6FCCFFDC1C53ACE10001214F /* ImageSizer.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -580,7 +580,6 @@
 				6FAC846B1C4834F000C9861E /* ProgressHUD.swift in Sources */,
 				6F7512631C4E6AA300B26229 /* NotificationService.swift in Sources */,
 				6F91EF181C2E31E500BDD395 /* DrawerVC.swift in Sources */,
-				6F1106971C4DD3280033B034 /* SwiftNotice.swift in Sources */,
 				6FE810BA1C0B287E00B1ABA8 /* MaterialButton.swift in Sources */,
 				6F90FEFA1C2C2D77001920C4 /* University.swift in Sources */,
 				6F8B0E101C44834F008C5D54 /* AppSettingsVC.swift in Sources */,
@@ -591,6 +590,7 @@
 				6FE810AD1C0B21B500B1ABA8 /* MaterialView.swift in Sources */,
 				6FABA9311C323C580094067D /* UserView.swift in Sources */,
 				6FE810BC1C0B2CB900B1ABA8 /* MaterialTextField.swift in Sources */,
+				6FCCFFDD1C53ACE10001214F /* ImageSizer.swift in Sources */,
 				6FAF96961C38AACA00B6860F /* CourseVC.swift in Sources */,
 				6F96319D1C138EC000D1DA88 /* Message.swift in Sources */,
 				6F7BC4831C3423990014BD18 /* AddCourseVC.swift in Sources */,

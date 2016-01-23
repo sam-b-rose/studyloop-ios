@@ -52,17 +52,17 @@ class MessageCell: UITableViewCell {
         self.likesLbl.text = "\(message.likes)"
         self.messageImg.hidden = true
         
-        if message.imageUrl != nil {
+        if message.attachmentUrl != nil {
             if img != nil {
                 self.messageImg.image = img
                 self.messageImg.hidden = false
             } else {
-                request = Alamofire.request(.GET, message.imageUrl!).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, err in
+                request = Alamofire.request(.GET, message.attachmentUrl!).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, err in
                     if err == nil {
                         let img = UIImage(data: data!)!
                         self.messageImg.image = img
                         self.messageImg.hidden = false
-                        LoopVC.imageCache.setObject(img, forKey: self.message.imageUrl!)
+                        LoopVC.imageCache.setObject(img, forKey: self.message.attachmentUrl!)
                     } else {
                         print("There was an error!", err)
                     }

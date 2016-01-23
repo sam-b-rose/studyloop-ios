@@ -34,6 +34,7 @@ class PreviewImageVC: UIViewController {
         
         previewImageView.image = image
         previewImageView.layer.cornerRadius = 8.0
+        previewImageView.layer.masksToBounds = true
         previewImageView.clipsToBounds = true
     }
     

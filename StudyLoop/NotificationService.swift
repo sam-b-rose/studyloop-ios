@@ -74,8 +74,10 @@ class NotificationService: Evented {
                             
                             if type == EVENT_NEW_LOOP {
                                 self.newLoops[key] = data["id"] as? String
+                                self.newLoop("A new loop has been created!")
                             } else if type == EVENT_NEW_MESSAGE {
                                 self.newMessages[key] = data["loopId"] as? String
+                                self.newMessage("You have an unread message!")
                             }
                         }
                     }
@@ -85,18 +87,7 @@ class NotificationService: Evented {
     }
     
     func removeNotification(uid: String) {
-//        switch type {
-//        case "LOOP_MESSAGE_RECEIVED":
-//            newMessages.removeValueForKey(uid)
-//            break
-//        case "LOOP_CREATED":
-//            newLoops.removeValueForKey(uid)
-//            break
-//        default:
-//            break
-//        }
-//        courseActivity.removeValueForKey(uid)
-        print("Removing Notification", uid)
+//        print("Removing Notification", uid)
         REF_NOTIFICATIONS_USER.childByAppendingPath(uid).removeValue()
     }
     
@@ -104,11 +95,26 @@ class NotificationService: Evented {
         REF_NOTIFICATIONS_USER.removeAuthEventObserverWithHandle(_handle!)
     }
     
+    func newLoop(message: String) {
+        let notification = MPGNotification(title: "New Loop", subtitle: message, backgroundColor: SL_BLACK, iconImage: nil)
+        notification.titleColor = SL_WHITE
+        notification.subtitleColor = SL_WHITE
+        notification.duration = 3
+        notification.show()
+    }
+    
+    func newMessage(message: String) {
+        let notification = MPGNotification(title: "New Message", subtitle: message, backgroundColor: SL_BLACK, iconImage: nil)
+        notification.titleColor = SL_WHITE
+        notification.subtitleColor = SL_WHITE
+        notification.duration = 3
+        notification.show()
+    }
+    
     func success(message: String) {
         let notification = MPGNotification(title: "Success!", subtitle: message, backgroundColor: SL_WHITE, iconImage: nil)
         notification.titleColor = SL_BLACK
         notification.subtitleColor = SL_BLACK
-        notification.swipeToDismissEnabled = false
         notification.duration = 2
         notification.show()
     }
@@ -117,7 +123,6 @@ class NotificationService: Evented {
         let notification = MPGNotification(title: "Error!", subtitle: "There was a problem :(", backgroundColor: SL_RED, iconImage: nil)
         notification.titleColor = SL_WHITE
         notification.subtitleColor = SL_WHITE
-        notification.swipeToDismissEnabled = false
         notification.duration = 2
         notification.show()
     }

@@ -11,7 +11,7 @@ import Firebase
 
 class Message {
     private var _textValue: String!
-    private var _imageUrl: String?
+    private var _attachmentUrl: String?
     private var _likes: Int!
     private var _loopId: String!
     private var _courseId: String!
@@ -24,8 +24,8 @@ class Message {
         return _textValue
     }
     
-    var imageUrl: String? {
-        return _imageUrl
+    var attachmentUrl: String? {
+        return _attachmentUrl
     }
     
     var likes: Int {
@@ -63,8 +63,10 @@ class Message {
             self._likes = 0
         }
 
-        if let imgUrl = dictionary["imageUrl"] as? String {
-            self._imageUrl = imgUrl
+        if let attachment = dictionary["attachment"] as? Dictionary<String, AnyObject> {
+            if let path = attachment["path"] as? String {
+                self._attachmentUrl = path
+            }
         }
         
         self._messageRef = DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(self._messageKey)

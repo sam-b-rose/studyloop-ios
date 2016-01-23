@@ -307,7 +307,7 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
                 let imgUrl = self.userImageMap[message.createdById]
                 let name = self.userNameMap[message.createdById]
                 
-                cell.configureCell(message.textValue, name: name, imageUrl: imgUrl)
+                cell.configureCell(message.textValue, name: name, imageUrl: imgUrl, attachmentUrl: message.attachmentUrl)
                 return cell
             } else {
                 return MessageCell()

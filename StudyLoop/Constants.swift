@@ -15,6 +15,9 @@ let SHADOW_COLOR: CGFloat = 157.0 / 255.0
 let URL_BASE = "https://studyloop-stage.firebaseio.com"
 let kFirebaseServerValueTimestamp = [".sv":"timestamp"]
 
+// Images
+let IMAGE_BASE = "https://s3.amazonaws.com/sl-attachments/"
+
 // Keys
 let KEY_UID = "uid"
 let KEY_UNIVESITY = "university"
