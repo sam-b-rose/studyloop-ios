@@ -33,9 +33,6 @@ class PreviewImageVC: UIViewController {
         cancelBtn.setTitle(String.ioniconWithName(.Close), forState: .Normal)
         
         previewImageView.image = image
-        previewImageView.layer.cornerRadius = 8.0
-        previewImageView.layer.masksToBounds = true
-        previewImageView.clipsToBounds = true
     }
     
     func dismissKeyboard() {

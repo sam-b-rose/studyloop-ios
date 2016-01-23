@@ -43,12 +43,6 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
         self.keyboardPanningEnabled = true
         self.inverted = false
         
-        // Get Loop Data
-        self.loadMessages()
-        
-        // Watch Loop
-        self.watchLoop()
-        
         // Set up UI controls
         self.leftButton.setImage(UIImage(named: "icn_upload"), forState: UIControlState.Normal)
         self.leftButton.tintColor = SL_GRAY
@@ -71,7 +65,7 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
         self.tableView.registerClass(LoopMessageCell.self, forCellReuseIdentifier: "LoopMessageCell")
         
         // Monitor User Activity
-        ActivityService.act.REF_LOOP.childByAppendingPath(loop.uid).observeEventType(.ChildChanged, withBlock: {
+        ActivityService.act.REF_ACTIVITY_LOOP.childByAppendingPath(loop.uid).observeEventType(.ChildChanged, withBlock: {
             snapshot in
             if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
                 self.checkIfTyping(snapshot.key, user: userDict)
@@ -80,6 +74,34 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
         
         // Set last loop for current user
         ActivityService.act.setLastLoop(loop.uid)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        /* Setup Firebase Observables */
+        
+        // Get Messages
+        DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid).observeEventType(.ChildAdded, withBlock: { snapshot in
+            if let messageDict = snapshot.value as? Dictionary<String, AnyObject> {
+                let key = snapshot.key
+                let message = Message(messageKey: key, dictionary: messageDict)
+                self.addMessages(message)
+            }
+        })
+        
+        // Create User Maps
+        DataService.ds.REF_LOOPS.childByAppendingPath(loop.uid).observeEventType(.Value, withBlock: {
+            snapshot in
+            if let loopDict = snapshot.value as? Dictionary<String, AnyObject> {
+                self.loop = Loop(uid: snapshot.key, loopDict: loopDict)
+                self.createUserMaps({
+                    result in
+                    if result == true {
+                        print("Finished loading user images", result)
+                        self.tableView.reloadData()
+                    }
+                })
+            }
+        })
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -91,36 +113,34 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
         }
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-        imagePicker.dismissViewControllerAnimated(true, completion: nil)
+    func createUserMaps(completion: (result: Bool)-> Void) {
+        let userGroup = dispatch_group_create()
         
-        let imageURL = info[UIImagePickerControllerReferenceURL] as! NSURL
-        imageName = imageURL.lastPathComponent!
-        imageToSend = info[UIImagePickerControllerOriginalImage] as! UIImage
+        for user in loop.userIds {
+            dispatch_group_enter(userGroup)
+            if userImageMap[user] == nil {
+                DataService.ds.REF_USERS.childByAppendingPath(user).observeSingleEventOfType(.Value, withBlock: {
+                    snapshot in
+                    if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
+                        self.userImageMap[user] = userDict["profileImageURL"] as? String
+                        self.userNameMap[user] = userDict["name"] as? String
+                    }
+                    dispatch_group_leave(userGroup)
+                })
+            }
+        }
         
-        performSegueWithIdentifier(SEGUE_PREVIEW_IMAGE, sender: nil)
-    }
-    
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        
-        
-    }
-    
-    func sendImage(willSend: Bool, caption: String) {
-        if willSend == true {
-            let image = UIImagePNGRepresentation(imageToSend)
-            let sizeBytes = image!.length
-            let base64Image = "data:image/png;base64," + image!.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
-            let imageData: Dictionary<String, AnyObject> = [
-                "image": base64Image,
-                "size": sizeBytes,
-                "caption": caption
-            ]
-            sendNewMessage(imageData)
+        dispatch_group_notify(userGroup, dispatch_get_main_queue()) {
+            completion(result: true)
         }
     }
     
+    
+    
+    // isTyping indicator helpers 
+    
     override func textView(textView: SLKTextView!, shouldChangeTextInRange range: NSRange, replacementText text: String!) -> Bool {
+        // Watch user text input to update isTyping indicator
         timer?.invalidate()
         timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("updateTypingIndicator:"), userInfo: textView, repeats: false)
         return true
@@ -147,56 +167,61 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
         }
     }
     
-    func watchLoop() {
-        DataService.ds.REF_LOOPS.childByAppendingPath(loop.uid).observeEventType(.Value, withBlock: {
+    func detectTyping() {
+        DataService.ds.REF_LOOPS.childByAppendingPath(loop.uid).childByAppendingPath("typing").observeEventType(.Value, withBlock: {
             snapshot in
-            if let loopDict = snapshot.value as? Dictionary<String, AnyObject> {
-                self.loop = Loop(uid: snapshot.key, loopDict: loopDict)
-                self.createUserMaps({
-                    result in
-                    if result == true {
-                        print("Finished loading user images", result)
-                        self.tableView.reloadData()
-                    }
-                })
-            }
+            print(snapshot)
         })
     }
     
-    func createUserMaps(completion: (result: Bool)-> Void) {
-        let userGroup = dispatch_group_create()
-        
-        for user in loop.userIds {
-            dispatch_group_enter(userGroup)
-            if userImageMap[user] == nil {
-                DataService.ds.REF_USERS.childByAppendingPath(user).observeSingleEventOfType(.Value, withBlock: {
-                    snapshot in
-                    if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
-                        self.userImageMap[user] = userDict["profileImageURL"] as? String
-                        self.userNameMap[user] = userDict["name"] as? String
-                    }
-                    dispatch_group_leave(userGroup)
-                })
-            }
-        }
-        
-        dispatch_group_notify(userGroup, dispatch_get_main_queue()) {
-            completion(result: true)
+    func showTypingIndicator(uid: String) {
+        if let userName = userNameMap[uid] {
+            self.typingIndicatorView.insertUsername(userName)
         }
     }
     
-    // MARK: Message Logic
-    func loadMessages() {
-        self.messages.removeAll()
-        // Get Messages
-        DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid).observeEventType(.ChildAdded, withBlock: { snapshot in
-            if let messageDict = snapshot.value as? Dictionary<String, AnyObject> {
-                let key = snapshot.key
-                let message = Message(messageKey: key, dictionary: messageDict)
-                self.addMessages(message)
-            }
-        })
+    func hideTypingIndicator(uid: String) {
+        if let userName = userNameMap[uid] {
+            self.typingIndicatorView.removeUsername(userName)
+        }
     }
+    
+    
+    
+    // Image Picker
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        imagePicker.dismissViewControllerAnimated(true, completion: nil)
+        
+        let imageURL = info[UIImagePickerControllerReferenceURL] as! NSURL
+        imageName = imageURL.lastPathComponent!
+        imageToSend = info[UIImagePickerControllerOriginalImage] as! UIImage
+        
+        performSegueWithIdentifier(SEGUE_PREVIEW_IMAGE, sender: nil)
+    }
+    
+    func sendImage(willSend: Bool, caption: String) {
+        if willSend == true {
+            let image = UIImageJPEGRepresentation(imageToSend, 0.2)
+            let sizeBytes = image!.length
+            if sizeBytes < 10000000 {
+                let base64Image = "data:image/jpeg;base64," + image!.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+                let imageData: Dictionary<String, AnyObject> = [
+                    "image": base64Image,
+                    "size": sizeBytes,
+                    "caption": caption
+                ]
+                sendNewMessage(imageData)
+            } else {
+                NotificationService.noti.showAlert("Image to Large", msg: "Image attchment is over the max 10MB limit.", uiView: self)
+            }
+            
+        }
+    }
+    
+
+    
+    // Message Logic
     
     func addMessages(message: Message) {
         self.messages.append(message)
@@ -211,16 +236,6 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
                 ActivityService.act.setUserActivity(self.loop.uid, userId: self.currentUserId!, key: "typingAt", value: 0)
             }
         }
-    }
-    
-    override func didPressLeftButton(sender: AnyObject!) {
-        presentViewController(imagePicker, animated: true, completion: nil)
-    }
-    
-    override func didPressRightButton(sender: AnyObject!) {
-        self.textView.refreshFirstResponder()
-        sendNewMessage(nil)
-        super.didPressRightButton(sender)
     }
     
     func sendNewMessage(imageData: Dictionary<String, AnyObject>?) {
@@ -241,7 +256,7 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
             message["queueId"] = queueId
             message["sizeBytes"] = imageData!["size"]
             message["textValue"] = imageData!["caption"]
-            message["type"] = "image/png"
+            message["type"] = "image/jpeg"
             DataService.ds.REF_QUEUES.childByAppendingPath("loop-message-attachments").childByAppendingPath("tasks").childByAutoId().setValue(message)
         } else {
             DataService.ds.REF_QUEUES.childByAppendingPath("loop-messages").childByAppendingPath("tasks").childByAutoId().setValue(message)
@@ -257,48 +272,48 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
         }
     }
     
-    // MARK: UI Logic
+    override func didPressLeftButton(sender: AnyObject!) {
+        presentViewController(imagePicker, animated: true, completion: nil)
+    }
+    
+    override func didPressRightButton(sender: AnyObject!) {
+        self.textView.refreshFirstResponder()
+        sendNewMessage(nil)
+        super.didPressRightButton(sender)
+    }
+    
+    
+    
+    // UI Logic
+    
     // Scroll to bottom of table view for messages
     func scrollToBottomMessage() {
         if self.messages.count == 0 {
             return
         }
+        
         let bottomMessageIndex = NSIndexPath(forRow: self.tableView.numberOfRowsInSection(0) - 1,
             inSection: 0)
         self.tableView.scrollToRowAtIndexPath(bottomMessageIndex, atScrollPosition: .Bottom,
             animated: true)
     }
     
-    func detectTyping() {
-        DataService.ds.REF_LOOPS.childByAppendingPath(loop.uid).childByAppendingPath("typing").observeEventType(.Value, withBlock: {
-            snapshot in
-            print(snapshot)
-        })
-    }
-    
-    func showTypingIndicator(uid: String) {
-        if let userName = userNameMap[uid] {
-            self.typingIndicatorView.insertUsername(userName)
-        }
-    }
-    
-    func hideTypingIndicator(uid: String) {
-        if let userName = userNameMap[uid] {
-            self.typingIndicatorView.removeUsername(userName)
-        }
-    }
-    
     func goToLoopSettings() {
         performSegueWithIdentifier(SEGUE_LOOP_SETTINGS, sender: nil)
     }
     
-    // MARK: UITableView Delegate
-    // Return number of rows in the table
+    
+    
+    // UITableView Functions
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.messages.count
     }
     
-    // Create table view rows
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath)
         -> UITableViewCell {
             let message = messages[indexPath.row]
@@ -314,10 +329,9 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
             }
     }
     
-    // MARK: UITableViewDataSource Delegate
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
+    
+    
+    // Segue Prep
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if(segue.identifier == SEGUE_LOOP_SETTINGS) {

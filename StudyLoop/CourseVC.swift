@@ -22,7 +22,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var selectedLoop: Loop! = nil
     var handle: UInt!
     let attributes = [NSFontAttributeName: UIFont.ioniconOfSize(26)] as Dictionary!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -47,7 +47,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             // do something to reload course loops
         }
     }
-
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         
@@ -75,7 +75,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     override func viewDidDisappear(animated: Bool) {
-//        DataService.ds.REF_BASE.removeObserverWithHandle(handle)
+        //        DataService.ds.REF_BASE.removeObserverWithHandle(handle)
         
         // Remove Notifications about this course
         let loopIds = loops.map { $0.uid }
@@ -85,7 +85,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             }
         }
     }
-        
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -95,11 +95,11 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if let loop = loops[indexPath.row] as? Loop {
-            if let cell = tableView.dequeueReusableCellWithIdentifier("LoopCell") as? LoopCell {
-                cell.configureCell(loop)
-                return cell
-            }
+        let loop = loops[indexPath.row]
+        
+        if let cell = tableView.dequeueReusableCellWithIdentifier("LoopCell") as? LoopCell {
+            cell.configureCell(loop)
+            return cell
         }
         return LoopCell()
     }
@@ -129,7 +129,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                             
                             // Create Loop Object
                             let loop = Loop(uid: snap.key, loopDict: loopDict)
-
+                            
                             // Check if user is in loop
                             let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
                             let userIndex = loop.userIds.indexOf((userId)!)
@@ -142,7 +142,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 }
                 
                 self.loops.sortInPlace {
-                    return $0.createdAt > $1.createdAt
+                    return Int($0.createdAt) > Int($1.createdAt)
                 }
                 
                 self.tableView.reloadData()

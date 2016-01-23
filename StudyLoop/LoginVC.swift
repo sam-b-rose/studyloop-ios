@@ -12,7 +12,7 @@ import FBSDKLoginKit
 import Firebase
 
 class LoginVC: UIViewController {
-
+    
     @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var emailField: UITextField!
@@ -49,6 +49,7 @@ class LoginVC: UIViewController {
         
         handle = DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
             if authData != nil {
+                ActivityService.act.showActivityIndicator(true, uiView: self.view)
                 // user authenticated
                 print("From LoginVC")
                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
@@ -63,10 +64,10 @@ class LoginVC: UIViewController {
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(true)
-
+        
         // Clear Login info
         self.resetLoginScreen()
-
+        
         print("Removing Auth Observer")
         DataService.ds.REF_BASE.removeAuthEventObserverWithHandle(handle!)
     }
@@ -128,14 +129,6 @@ class LoginVC: UIViewController {
         view.endEditing(true)
     }
     
-    func showAlert(title: String, msg: String) {
-        let alert = UIAlertController(title: title, message: msg, preferredStyle: .Alert)
-        let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-        alert.addAction(action)
-        presentViewController(alert, animated: true, completion: nil)
-    }
-
-    
     
     
     // DATA LOGIC
@@ -191,10 +184,9 @@ class LoginVC: UIViewController {
                 
                 // Get last course
                 ActivityService.act.getLastCourse({ (courseId) -> Void in
-                    print("Last Course Selected: ", courseId)
                     NSUserDefaults.standardUserDefaults().setValue(courseId, forKey: KEY_COURSE)
                     NSUserDefaults.standardUserDefaults().setValue("", forKey: KEY_COURSE_TITLE)
-
+                    
                 })
                 
                 let currentUser = User(uid: snapshot.key, dictionary: userDict)
@@ -208,6 +200,7 @@ class LoginVC: UIViewController {
                         self.performSegueWithIdentifier(SEGUE_CHANGE_PWD, sender: nil)
                     } else {
                         NotificationService.noti.getNotifications()
+                        ActivityService.act.hideActivityIndicatior()
                         self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                     }
                 }
@@ -257,15 +250,15 @@ class LoginVC: UIViewController {
             // reset password
             if let email = emailField.text where email != "" {
                 DataService.ds.REF_BASE.resetPasswordForUser(email, withCompletionBlock: {
-                error in
+                    error in
                     if error == nil {
-                        self.showAlert("Password Reset", msg: "You have been sent a temporary password. Login with this password, then go to Settings to change your password.")
+                        NotificationService.noti.showAlert("Password Reset", msg: "You have been sent a temporary password. Login with this password, then go to Settings to change your password.", uiView: self)
                         self.loginState()
                         self.passwordField.text = ""
                     }
                 })
             } else {
-                self.showAlert("Email Required", msg: "You must provide the email associated with your StudyLoop account in order to reset your password")
+                NotificationService.noti.showAlert("Email Required", msg: "You must provide the email associated with your StudyLoop account in order to reset your password.", uiView: self)
             }
         } else {
             // attemptlogin
@@ -282,7 +275,7 @@ class LoginVC: UIViewController {
                                 if self.nameField.text != "" {
                                     DataService.ds.REF_BASE.createUser(email, password: pwd, withValueCompletionBlock: { error, result in
                                         if error != nil {
-                                            self.showAlert("Could not create account", msg: "Problem creating accound. Try something else")
+                                            NotificationService.noti.showAlert("Could not create account", msg: "Problem creating accound. Try something else", uiView: self)
                                         } else {
                                             DataService.ds.REF_BASE.authUser(email, password: pwd, withCompletionBlock: {
                                                 error, authData in
@@ -292,20 +285,20 @@ class LoginVC: UIViewController {
                                         
                                     })
                                 } else {
-                                    self.showAlert("Could not register new user", msg: "Please include your full name.")
+                                    NotificationService.noti.showAlert("Could not register new user", msg: "Please include your full name.", uiView: self)
                                 }
                             } else {
-                                self.showAlert("User does not exist.", msg: "Please register before logging in.")
+                                NotificationService.noti.showAlert("User does not exist.", msg: "Please register before logging in.", uiView: self)
                             }
                             
                         } else {
-                            self.showAlert("Could not login", msg: "Please check your username and password.")
+                            NotificationService.noti.showAlert("Could not login", msg: "Please check your username and password.", uiView: self)
                         }
                     }
                 })
                 
             } else {
-                showAlert("Email and Password Required", msg: "You must enter an email and a password.")
+                NotificationService.noti.showAlert("Email and Password Required", msg: "You must enter an email and a password.", uiView: self)
             }
         }
     }
@@ -339,7 +332,7 @@ class LoginVC: UIViewController {
             let changePasswordVC = segue.destinationViewController as? ChangePasswordVC
             changePasswordVC!.userEmail = userEmail
             changePasswordVC!.previousVC = "LoginVC"
-    }
+        }
     }
 }
 

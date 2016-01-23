@@ -10,6 +10,7 @@ import Foundation
 import Firebase
 
 class CourseService {
+    
     static let cs = CourseService()
     
     private var _REF_COURSES = Firebase(url: "\(URL_BASE)/courses")
@@ -29,6 +30,10 @@ class CourseService {
         return user!
     }
     
+    
+    
+    // Course Data helpers
+
     func addUserToCourse(courseId: String, courseTitle: String, userId: String) {
         DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").childByAppendingPath(courseId).setValue(true, withCompletionBlock: {
             error, ref in

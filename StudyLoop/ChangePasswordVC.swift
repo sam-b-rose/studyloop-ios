@@ -56,21 +56,14 @@ class ChangePasswordVC: UITableViewController {
                             })
                         } else {
                             print(error)
-                            self.showAlert("Incorrect password", msg: "Old password was incorrect.")
+                            NotificationService.noti.showAlert("Incorrect password", msg: "Old password was incorrect.", uiView: self)
                         }
                     }
                 } else {
-                    showAlert("Password doesn't match", msg: "Make sure your new password is the same for both fields.")
+                    NotificationService.noti.showAlert("Password doesn't match", msg: "Make sure your new password is the same for both fields.", uiView: self)
                 }
         } else {
-            self.showAlert("Not complete", msg: "Make sure to fill out every field.")
+            NotificationService.noti.showAlert("Not complete", msg: "Make sure to fill out every field.", uiView: self)
         }
-    }
-    
-    func showAlert(title: String, msg: String) {
-        let alert = UIAlertController(title: title, message: msg, preferredStyle: .Alert)
-        let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-        alert.addAction(action)
-        presentViewController(alert, animated: true, completion: nil)
     }
 }

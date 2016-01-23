@@ -11,7 +11,7 @@ import Foundation
 class Loop {
     private var _uid: String!
     private var _courseId: String!
-    private var _createdAt: Int!
+    private var _createdAt: String!
     private var _subject: String!
     private var _universityId: String!
     private var _lastMessage: String!
@@ -30,7 +30,7 @@ class Loop {
         return _subject
     }
     
-    var createdAt: Int {
+    var createdAt: String {
         return _createdAt
     }
     
@@ -60,7 +60,7 @@ class Loop {
         return _userIds
     }
     
-    init(uid: String, courseId: String, createdAt: Int, subject: String, universityId: String, lastMessage: String, userIds: Dictionary<String, Int>) {
+    init(uid: String, courseId: String, createdAt: String, subject: String, universityId: String, lastMessage: String, userIds: Dictionary<String, Int>) {
         self._uid = uid
         self._courseId = courseId
         self._createdAt = createdAt
@@ -79,7 +79,7 @@ class Loop {
     init(uid: String, loopDict: Dictionary<String, AnyObject>) {
         self._uid = uid
         self._courseId = loopDict["courseId"] as? String
-        self._createdAt = loopDict["createdAt"] as? Int
+        self._createdAt = loopDict["createdAt"] as? String
         self._subject = loopDict["subject"] as? String
         self._universityId = loopDict["universityId"] as? String
         self._hasCurrentUser = false

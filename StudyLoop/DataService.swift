@@ -18,7 +18,7 @@ class DataService {
     private var _REF_LOOP_MESSAGES = Firebase(url: "\(URL_BASE)/loop-messages")
     private var _REF_LOOPS = Firebase(url: "\(URL_BASE)/loops")
     private var _REF_MAJORS = Firebase(url: "\(URL_BASE)/majors")
-    private var _REF_UID_MAPPING = Firebase(url: "\(URL_BASE)/uid-mapping")
+    private var _REF_DEVICE_IDS = Firebase(url: "\(URL_BASE)/device-ids")
     private var _REF_UNIVERSITIES = Firebase(url: "\(URL_BASE)/universities")
     private var _REF_USERS = Firebase(url: "\(URL_BASE)/users")
     
@@ -46,8 +46,8 @@ class DataService {
         return _REF_LOOPS
     }
     
-    var REF_UID_MAPPING: Firebase {
-        return _REF_UID_MAPPING
+    var REF_DEVICE_IDS: Firebase {
+        return _REF_DEVICE_IDS
     }
     
     var REF_USERS: Firebase {

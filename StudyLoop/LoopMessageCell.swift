@@ -4,7 +4,7 @@
 //
 //  Created by Sam Rose on 1/8/16.
 //  Copyright © 2016 StudyLoop. All rights reserved.
-//
+//*
 
 import UIKit
 import SnapKit
@@ -44,11 +44,8 @@ class LoopMessageCell: UITableViewCell {
     }()
     
     lazy var attachmentImage: UIImageView = {
-        let attachment = UIImageView(image: UIImage(named: "owl-light-bg"))
+        let attachment = UIImageView(image: nil)
         attachment.contentMode = .ScaleAspectFit
-        attachment.layer.cornerRadius = 8
-        attachment.clipsToBounds = true
-        attachment.layer.masksToBounds = true
         return attachment
     }()
     

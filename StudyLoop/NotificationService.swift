@@ -17,13 +17,22 @@ protocol Evented {
 class NotificationService: Evented {
     
     static let noti = NotificationService()
+    private var handle: UInt!
+    
+    // Firebase REFs
     private var _REF_NOTIFICATIONS = Firebase(url: "\(URL_BASE)/notifications")
     
     var REF_NOTIFICATIONS: Firebase {
         return _REF_NOTIFICATIONS
     }
+
+    var REF_NOTIFICATIONS_USER: Firebase {
+        let uid = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as! String
+        return REF_NOTIFICATIONS.childByAppendingPath(uid)
+    }
     
-    private var _handle: UInt!
+    
+    // Evented Notification Dictionaries
     
     var courseActivity: [String:String] {
         willSet(newCourse) {
@@ -42,10 +51,10 @@ class NotificationService: Evented {
             self.emit(EVENT_NEW_LOOP)
         }
     }
-    
-    var REF_NOTIFICATIONS_USER: Firebase {
-        let uid = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as! String
-        return REF_NOTIFICATIONS.childByAppendingPath(uid)
+
+    func emit(notificationType: String) -> Bool {
+        Event.emit(notificationType)
+        return true
     }
     
     init() {
@@ -54,8 +63,11 @@ class NotificationService: Evented {
         self.courseActivity = [String:String]()
     }
     
+    
+    // Notification Data helpers
+    
     func getNotifications() {
-        _handle = REF_NOTIFICATIONS_USER.observeEventType(.Value, withBlock: {
+        handle = REF_NOTIFICATIONS_USER.observeEventType(.Value, withBlock: {
             snapshot in
             
             self.courseActivity.removeAll()
@@ -87,13 +99,15 @@ class NotificationService: Evented {
     }
     
     func removeNotification(uid: String) {
-//        print("Removing Notification", uid)
         REF_NOTIFICATIONS_USER.childByAppendingPath(uid).removeValue()
     }
     
     func removeNotificationObserver() {
-        REF_NOTIFICATIONS_USER.removeAuthEventObserverWithHandle(_handle!)
+        REF_NOTIFICATIONS_USER.removeAuthEventObserverWithHandle(handle!)
     }
+    
+    
+    // MPG Notification objects
     
     func newLoop(message: String) {
         let notification = MPGNotification(title: "New Loop", subtitle: message, backgroundColor: SL_BLACK, iconImage: nil)
@@ -127,9 +141,15 @@ class NotificationService: Evented {
         notification.show()
     }
     
-    func emit(notificationType: String) -> Bool {
-        notificationType.log_debug()
-        Event.emit(notificationType)
-        return true
+    
+    
+    
+    // Generic UIAlert
+
+    func showAlert(title: String, msg: String, uiView: UIViewController) {
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: .Alert)
+        let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+        alert.addAction(action)
+        uiView.presentViewController(alert, animated: true, completion: nil)
     }
 }
