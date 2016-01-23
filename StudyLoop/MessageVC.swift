@@ -10,7 +10,11 @@ import UIKit
 import Firebase
 import SlackTextViewController
 
-class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+protocol ModalViewControllerDelegate {
+    func sendImage(var willSend : Bool, var caption : String)
+}
+
+class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, ModalViewControllerDelegate {
     
     var loop: Loop!
     var messages = [Message]()
@@ -21,14 +25,16 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
     
     var timer: NSTimer? = nil
     var imageToSend: UIImage!
-    var imageSelected = false
+    var imageName = ""
     let currentUserId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
     
     let attributes = [NSFontAttributeName: UIFont.ioniconOfSize(26)] as Dictionary!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-            
+        
+        print("Loop Id", loop.uid)
+        
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         
@@ -85,29 +91,33 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
         }
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         imagePicker.dismissViewControllerAnimated(true, completion: nil)
-        imageSelected = true
-        imageToSend = image
+        
+        let imageURL = info[UIImagePickerControllerReferenceURL] as! NSURL
+        imageName = imageURL.lastPathComponent!
+        imageToSend = info[UIImagePickerControllerOriginalImage] as! UIImage
+        
         performSegueWithIdentifier(SEGUE_PREVIEW_IMAGE, sender: nil)
     }
     
-    func showModal() {
-        let previewImageVC = PreviewImageVC()
-        previewImageVC.modalPresentationStyle = .OverCurrentContext
-        presentViewController(previewImageVC, animated: true, completion: nil)
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        
+        
     }
     
-    func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
-        
-        let scale = newWidth / image.size.width
-        let newHeight = image.size.height * scale
-        UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
-        image.drawInRect(CGRectMake(0, 0, newWidth, newHeight))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage
+    func sendImage(willSend: Bool, caption: String) {
+        if willSend == true {
+            let image = UIImagePNGRepresentation(imageToSend)
+            let sizeBytes = image!.length
+            let base64Image = "data:image/png;base64," + image!.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+            let imageData: Dictionary<String, AnyObject> = [
+                "image": base64Image,
+                "size": sizeBytes,
+                "caption": caption
+            ]
+            sendNewMessage(imageData)
+        }
     }
     
     override func textView(textView: SLKTextView!, shouldChangeTextInRange range: NSRange, replacementText text: String!) -> Bool {
@@ -169,7 +179,7 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
                 })
             }
         }
-    
+        
         dispatch_group_notify(userGroup, dispatch_get_main_queue()) {
             completion(result: true)
         }
@@ -204,37 +214,47 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
     }
     
     override func didPressLeftButton(sender: AnyObject!) {
-        print("Select Image")
         presentViewController(imagePicker, animated: true, completion: nil)
     }
     
     override func didPressRightButton(sender: AnyObject!) {
         self.textView.refreshFirstResponder()
-        let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
-        
-        if let _ = imageToSend where imageSelected == true {
-            print("Send Image")
-        }
-        
-        let message: Dictionary<String, AnyObject> = [
+        sendNewMessage(nil)
+        super.didPressRightButton(sender)
+    }
+    
+    func sendNewMessage(imageData: Dictionary<String, AnyObject>?) {
+        var message: Dictionary<String, AnyObject> = [
             "textValue": "\(self.textView.text!)",
-            "createdById": userId!,
+            "createdById": currentUserId!,
             "courseId": loop.courseId,
             "loopId": loop.uid,
             "createdAt": kFirebaseServerValueTimestamp
         ]
         
-        DataService.ds.REF_QUEUES.childByAppendingPath("loop-messages").childByAppendingPath("tasks").childByAutoId().setValue(message)
-        DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid).childByAutoId().setValue(message, withCompletionBlock: {
-            error, ref in
-            if error != nil {
-                print("Error sending message")
-            } else {
-                self.textView.text = ""
-                // DataService.ds.REF_LOOPS.childByAppendingPath(self.loop.uid).setValue(["lastMessage" : message])
-            }
-        })
-        super.didPressRightButton(sender)
+        if imageData != nil {
+            let time = NSDate().timeIntervalSince1970
+            let queueId: String! = "\(currentUserId!)_\(time)_\(imageName)"
+            
+            message["name"] = imageName
+            message["dataURI"] = imageData!["image"]
+            message["queueId"] = queueId
+            message["sizeBytes"] = imageData!["size"]
+            message["textValue"] = imageData!["caption"]
+            message["type"] = "image/png"
+            DataService.ds.REF_QUEUES.childByAppendingPath("loop-message-attachments").childByAppendingPath("tasks").childByAutoId().setValue(message)
+        } else {
+            DataService.ds.REF_QUEUES.childByAppendingPath("loop-messages").childByAppendingPath("tasks").childByAutoId().setValue(message)
+            DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid).childByAutoId().setValue(message, withCompletionBlock: {
+                error, ref in
+                if error != nil {
+                    print("Error sending message")
+                } else {
+                    self.textView.text = ""
+                    // DataService.ds.REF_LOOPS.childByAppendingPath(self.loop.uid).setValue(["lastMessage" : message])
+                }
+            })
+        }
     }
     
     // MARK: UI Logic
@@ -306,6 +326,8 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
             loopSettingsVC.userIds = self.loop.userIds
         } else if(segue.identifier == SEGUE_PREVIEW_IMAGE) {
             let previewImageVC = segue.destinationViewController as! PreviewImageVC
+            previewImageVC.delegate = self
+            previewImageVC.modalPresentationStyle = .OverCurrentContext
             previewImageVC.image = self.imageToSend
         }
     }

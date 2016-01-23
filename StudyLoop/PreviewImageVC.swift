@@ -10,6 +10,8 @@ import UIKit
 
 class PreviewImageVC: UIViewController {
 
+    var delegate:ModalViewControllerDelegate!
+
     @IBOutlet weak var sendBtn: UIButton!
     @IBOutlet weak var cancelBtn: UIButton!
     @IBOutlet weak var previewImageView: UIImageView!
@@ -40,11 +42,12 @@ class PreviewImageVC: UIViewController {
     }
     
     @IBAction func didTapCancelBtn(sender: AnyObject) {
+        delegate?.sendImage(false, caption: "")
         dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func didTapSendBtn(sender: AnyObject) {
-        print("Send Message with caption", captionField.text)
-        dismissViewControllerAnimated(true, completion: nil)
+        delegate?.sendImage(true, caption: captionField.text!)
+        dismissViewControllerAnimated(true,completion: nil)
     }
 }
