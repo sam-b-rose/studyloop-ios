@@ -36,7 +36,63 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         settingBtn.title = ""
         menuBtn.setTitleTextAttributes(attributes, forState: .Normal)
         menuBtn.title = String.ioniconWithName(.Navicon)
-        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        // Load last viewed course or selected course
+        if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String {
+            noCourseLbl.hidden = true
+            addLoopBtn.hidden = false
+            settingBtn.title = String.ioniconWithName(.More)
+            ActivityService.act.setLastCourse(courseId)
+            
+            // Get Loops in Course
+            handle = DataService.ds.REF_LOOPS
+                .queryOrderedByChild("courseId")
+                .queryEqualToValue(courseId)
+                .observeEventType(.Value, withBlock: {
+                    snapshot in
+                    
+                    // Clear current loops
+                    self.loops.removeAll()
+                    
+                    // Add new set of loops
+                    if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
+                        for snap in snapshots {
+                            if let loopDict = snap.value as? Dictionary<String, AnyObject> {
+                                
+                                // Create Loop Object
+                                let loop = Loop(uid: snap.key, loopDict: loopDict)
+                                
+                                // Check if user is in loop
+                                let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
+                                let userIndex = loop.userIds.indexOf((userId)!)
+                                if userIndex != nil {
+                                    loop.hasCurrentUser = true
+                                }
+                                self.loops.append(loop)
+                            }
+                        }
+                    }
+                    
+                    self.loops.sortInPlace {
+                        return $0.createdAt > $1.createdAt
+                    }
+                    
+                    self.tableView.reloadData()
+                })
+        } else {
+            loops.removeAll()
+            tableView.reloadData()
+            noCourseLbl.hidden = false
+            addLoopBtn.hidden = true
+            settingBtn.title = ""
+            NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
+        }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
         
         // Watch for notifications for Courses
         Event.register(EVENT_NEW_MESSAGE) {
@@ -45,26 +101,6 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         Event.register(EVENT_NEW_LOOP) {
             // do something to reload course loops
-        }
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(true)
-        
-        // Load last viewed course or selected course
-        if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String {
-            noCourseLbl.hidden = true
-            addLoopBtn.hidden = false
-            settingBtn.title = String.ioniconWithName(.More)
-            ActivityService.act.setLastCourse(courseId)
-            getLoops(courseId)
-        } else {
-            loops.removeAll()
-            tableView.reloadData()
-            noCourseLbl.hidden = false
-            addLoopBtn.hidden = true
-            settingBtn.title = ""
-            NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
         }
         
         if let courseTitle = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE_TITLE) as? String {
@@ -75,7 +111,9 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     override func viewDidDisappear(animated: Bool) {
-        //        DataService.ds.REF_BASE.removeObserverWithHandle(handle)
+        
+        //Remove Firebase observer handler
+        DataService.ds.REF_BASE.removeObserverWithHandle(handle)
         
         // Remove Notifications about this course
         let loopIds = loops.map { $0.uid }
@@ -105,49 +143,20 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        selectedLoop = loops[indexPath.row]
         
-        if selectedLoop.hasCurrentUser == true {
-            self.performSegueWithIdentifier(SEGUE_LOOP, sender: nil)
+        if indexPath.row < loops.count && loops.count > 0 {
+            selectedLoop = loops[indexPath.row]
+            
+            if selectedLoop.hasCurrentUser == true {
+                self.performSegueWithIdentifier(SEGUE_LOOP, sender: nil)
+            } else {
+                joinLoop()
+            }
         } else {
-            joinLoop()
+            print("Selected row index is out of range. Selected \(indexPath.row) and only \(loops.count) in Loops)")
+            
         }
-        
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-    }
-    
-    func getLoops(courseId: String) {
-        self.loops.removeAll()
-        DataService.ds.REF_LOOPS
-            .queryOrderedByChild("courseId")
-            .queryEqualToValue(courseId)
-            .observeSingleEventOfType(.Value, withBlock: {
-                snapshot in
-                
-                if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
-                    for snap in snapshots {
-                        if let loopDict = snap.value as? Dictionary<String, AnyObject> {
-                            
-                            // Create Loop Object
-                            let loop = Loop(uid: snap.key, loopDict: loopDict)
-                            
-                            // Check if user is in loop
-                            let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
-                            let userIndex = loop.userIds.indexOf((userId)!)
-                            if userIndex != nil {
-                                loop.hasCurrentUser = true
-                            }
-                            self.loops.append(loop)
-                        }
-                    }
-                }
-                
-                self.loops.sortInPlace {
-                    return $0.createdAt > $1.createdAt
-                }
-                
-                self.tableView.reloadData()
-            })
     }
     
     func joinLoop() {

@@ -11,7 +11,7 @@ import Foundation
 class Loop {
     private var _uid: String!
     private var _courseId: String!
-    private var _createdAt: Int!
+    private var _createdAt: Double!
     private var _subject: String!
     private var _universityId: String!
     private var _lastMessage: String!
@@ -30,7 +30,7 @@ class Loop {
         return _subject
     }
     
-    var createdAt: Int {
+    var createdAt: Double {
         return _createdAt
     }
     
@@ -73,10 +73,10 @@ class Loop {
             self._lastMessage = ""
         }
         
-        if let created = loopDict["createdAt"] as? Int {
+        if let created = loopDict["createdAt"] as? Double {
             self._createdAt = created
         } else if let created = loopDict["createdAt"] as? String {
-            self._createdAt = Int(created)
+            self._createdAt = Double(created)
             
         }
         

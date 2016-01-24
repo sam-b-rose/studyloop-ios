@@ -21,6 +21,14 @@ class LoopMessageCell: UITableViewCell {
         return label
     }()
     
+    lazy var timeLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "NotoSans", size: 10)
+        label.textColor = SL_GRAY
+        label.textAlignment = .Right
+        return label
+    }()
+    
     lazy var bodyLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "NotoSans", size: 17)
@@ -64,6 +72,7 @@ class LoopMessageCell: UITableViewCell {
         self.addSubview(self.userAvatar)
         self.addSubview(self.initialsLabel)
         self.addSubview(self.nameLabel)
+        self.addSubview(self.timeLabel)
         self.addSubview(self.bodyLabel)
         self.addSubview(self.attachmentImage)
         
@@ -74,22 +83,20 @@ class LoopMessageCell: UITableViewCell {
             make.height.equalTo(40)
         }
         
+        initialsLabel.snp_makeConstraints { (make) -> Void in
+            make.center.equalTo(self.userAvatar)
+        }
+        
         nameLabel.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(self).offset(15)
             make.left.equalTo(self.userAvatar.snp_right).offset(10)
-            make.right.equalTo(self).offset(-20)
+            make.right.equalTo(self.timeLabel.snp_left).offset(-10)
         }
         
-        attachmentImage.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(self.bodyLabel.snp_bottom).offset(10)
-            make.left.equalTo(self.userAvatar.snp_right).offset(20)
+        timeLabel.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(self).offset(20)
+            make.left.equalTo(self.nameLabel.snp_right).offset(10)
             make.right.equalTo(self).offset(-20)
-            make.height.lessThanOrEqualTo(150)
-            make.bottom.equalTo(self).offset(-10)
-        }
-        
-        initialsLabel.snp_makeConstraints { (make) -> Void in
-            make.center.equalTo(self.userAvatar)
         }
         
         bodyLabel.snp_makeConstraints { (make) -> Void in
@@ -98,11 +105,22 @@ class LoopMessageCell: UITableViewCell {
             make.right.equalTo(self).offset(-20)
             make.bottom.equalTo(self.attachmentImage.snp_top).offset(-10)
         }
+        
+        attachmentImage.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(self.bodyLabel.snp_bottom).offset(10)
+            make.left.equalTo(self.userAvatar.snp_right).offset(20)
+            make.right.equalTo(self).offset(-20)
+            make.height.equalTo(150)
+            make.bottom.equalTo(self).offset(-10)
+        }
     }
     
-    func configureCell(text: String, name: String?, imageUrl: String?, attachmentUrl: String?) {
+    func configureCell(text: String, name: String?, createdAt: Double, imageUrl: String?, attachmentUrl: String?) {
         self.selectionStyle = .None
         bodyLabel.text = text
+        
+        let time = TimeUtils.tu.timeStringFromUnixTime(createdAt)
+        timeLabel.text = StringUtils.su.trimLeadingZeroes(time)
         
         if name != nil {
             nameLabel.text = name
@@ -131,6 +149,7 @@ class LoopMessageCell: UITableViewCell {
                 self.attachmentImage.hidden = false
             } else {
                 let fullUrl = IMAGE_BASE + attachmentUrl!
+                // ActivityService.act.showActivityIndicator(true, uiView: self.attachmentImage)
                 request = Alamofire.request(.GET, fullUrl).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, err in
                     if err == nil {
                         let img = UIImage(data: data!)!
@@ -146,7 +165,6 @@ class LoopMessageCell: UITableViewCell {
             
             self.attachmentImage.snp_updateConstraints(closure: { (make) -> Void in
                 make.height.equalTo(150)
-//                make.bottom.equalTo(self).offset(-10)
             })
             
         } else {
@@ -155,7 +173,6 @@ class LoopMessageCell: UITableViewCell {
             
             self.attachmentImage.snp_updateConstraints(closure: { (make) -> Void in
                 make.height.equalTo(0)
-//                make.bottom.equalTo(self).offset(0)
             })
         }
         

@@ -114,7 +114,13 @@ class NotificationService: Evented {
         notification.titleColor = SL_WHITE
         notification.subtitleColor = SL_WHITE
         notification.duration = 3
-        notification.show()
+        notification.setButtonConfiguration(MPGNotificationButtonConfigration.OneButton, withButtonTitles: ["Dismiss"])
+        notification.showWithButtonHandler { (notification, buttonIndex) -> Void in
+            if buttonIndex == notification.firstButton.tag || buttonIndex == notification.backgroundView.tag {
+                print("remove the notification")
+                //self.removeNotification("")
+            }
+        }
     }
     
     func newMessage(message: String) {
@@ -122,13 +128,20 @@ class NotificationService: Evented {
         notification.titleColor = SL_WHITE
         notification.subtitleColor = SL_WHITE
         notification.duration = 3
-        notification.show()
+        notification.setButtonConfiguration(MPGNotificationButtonConfigration.OneButton, withButtonTitles: ["Dismiss"])
+        notification.showWithButtonHandler { (notification, buttonIndex) -> Void in
+            if buttonIndex == notification.firstButton.tag || buttonIndex == notification.backgroundView.tag {
+                print("remove the notification")
+                //self.removeNotification("")
+            }
+        }
     }
     
     func success(message: String) {
         let notification = MPGNotification(title: "Success!", subtitle: message, backgroundColor: SL_WHITE, iconImage: nil)
         notification.titleColor = SL_BLACK
         notification.subtitleColor = SL_BLACK
+        notification.swipeToDismissEnabled = false
         notification.duration = 2
         notification.show()
     }
@@ -137,6 +150,7 @@ class NotificationService: Evented {
         let notification = MPGNotification(title: "Error!", subtitle: "There was a problem :(", backgroundColor: SL_RED, iconImage: nil)
         notification.titleColor = SL_WHITE
         notification.subtitleColor = SL_WHITE
+        notification.swipeToDismissEnabled = false
         notification.duration = 2
         notification.show()
     }

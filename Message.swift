@@ -15,7 +15,7 @@ class Message {
     private var _likes: Int!
     private var _loopId: String!
     private var _courseId: String!
-    private var _createdAt: Int?
+    private var _createdAt: Double!
     private var _createdById: String!
     private var _messageKey: String!
     private var _messageRef: Firebase!
@@ -32,7 +32,7 @@ class Message {
         return _likes
     }
     
-    var createdAt: Int? {
+    var createdAt: Double {
         return _createdAt
     }
     
@@ -51,10 +51,10 @@ class Message {
         self._loopId = dictionary["loopId"] as? String
         self._courseId = dictionary["courseId"] as? String
         
-        if let createdAt = dictionary["createdAt"] as? Int {
+        if let createdAt = dictionary["createdAt"] as? Double {
             self._createdAt = createdAt
-        } else {
-            self._createdAt = nil
+        } else if let createdAt = dictionary["createdAt"] as? String {
+            self._createdAt = Double(createdAt)
         }
         
         if let likes = dictionary["likes"] as? Int {

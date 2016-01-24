@@ -170,7 +170,7 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
     func detectTyping() {
         DataService.ds.REF_LOOPS.childByAppendingPath(loop.uid).childByAppendingPath("typing").observeEventType(.Value, withBlock: {
             snapshot in
-            print(snapshot)
+            print("Is user typing: ", snapshot)
         })
     }
     
@@ -322,7 +322,7 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
                 let imgUrl = self.userImageMap[message.createdById]
                 let name = self.userNameMap[message.createdById]
                 
-                cell.configureCell(message.textValue, name: name, imageUrl: imgUrl, attachmentUrl: message.attachmentUrl)
+                cell.configureCell(message.textValue, name: name, createdAt: message.createdAt, imageUrl: imgUrl, attachmentUrl: message.attachmentUrl)
                 return cell
             } else {
                 return MessageCell()
