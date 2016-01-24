@@ -37,9 +37,12 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         Event.register(EVENT_COURSE_ALERT) {
             self.tableView.reloadData()
         }
-
-        
-        DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").observeEventType(.Value, withBlock: { snapshot in
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        DataService.ds.REF_USER_CURRENT
+            .childByAppendingPath("courseIds")
+            .observeEventType(.Value, withBlock: { snapshot in
             
             self.items = []
             let currentCourse = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String

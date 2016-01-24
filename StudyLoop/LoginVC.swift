@@ -35,13 +35,14 @@ class LoginVC: UIViewController {
         // Hide name field initially
         loginState()
         
-        //Looks for single or multiple taps.
+        // Looks for single or multiple taps.
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
         view.addGestureRecognizer(tap)
         tap.cancelsTouchesInView = false
         
         // TODO: Do something with Device ID
-        // let deviceId = UIDevice.currentDevice().identifierForVendor!.UUIDString
+        let deviceId = UIDevice.currentDevice().identifierForVendor!.UUIDString
+        print(deviceId)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -49,7 +50,7 @@ class LoginVC: UIViewController {
         
         handle = DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
             if authData != nil {
-                ActivityService.act.showActivityIndicator(true, uiView: self.view)
+                //ActivityService.act.showActivityIndicator(true, uiView: self.view)
                 // user authenticated
                 print("From LoginVC")
                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
@@ -186,7 +187,6 @@ class LoginVC: UIViewController {
                 ActivityService.act.getLastCourse({ (courseId) -> Void in
                     NSUserDefaults.standardUserDefaults().setValue(courseId, forKey: KEY_COURSE)
                     NSUserDefaults.standardUserDefaults().setValue("", forKey: KEY_COURSE_TITLE)
-                    
                 })
                 
                 let currentUser = User(uid: snapshot.key, dictionary: userDict)
@@ -200,7 +200,7 @@ class LoginVC: UIViewController {
                         self.performSegueWithIdentifier(SEGUE_CHANGE_PWD, sender: nil)
                     } else {
                         NotificationService.noti.getNotifications()
-                        ActivityService.act.hideActivityIndicatior()
+                        // ActivityService.act.hideActivityIndicatior()
                         self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                     }
                 }
@@ -323,6 +323,10 @@ class LoginVC: UIViewController {
             loginState()
         }
     }
+    
+    
+    
+    // Prep for Segue
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == SEGUE_SELECT_UNIVERSITY {

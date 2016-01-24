@@ -106,11 +106,13 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         selectedLoop = loops[indexPath.row]
+        
         if selectedLoop.hasCurrentUser == true {
             self.performSegueWithIdentifier(SEGUE_LOOP, sender: nil)
         } else {
             joinLoop()
         }
+        
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
@@ -123,7 +125,6 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 snapshot in
                 
                 if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
-                    // print("LOOP SNAP: ", snapshot)
                     for snap in snapshots {
                         if let loopDict = snap.value as? Dictionary<String, AnyObject> {
                             
@@ -142,7 +143,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 }
                 
                 self.loops.sortInPlace {
-                    return Int($0.createdAt) > Int($1.createdAt)
+                    return $0.createdAt > $1.createdAt
                 }
                 
                 self.tableView.reloadData()

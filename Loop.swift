@@ -11,7 +11,7 @@ import Foundation
 class Loop {
     private var _uid: String!
     private var _courseId: String!
-    private var _createdAt: String!
+    private var _createdAt: Int!
     private var _subject: String!
     private var _universityId: String!
     private var _lastMessage: String!
@@ -30,7 +30,7 @@ class Loop {
         return _subject
     }
     
-    var createdAt: String {
+    var createdAt: Int {
         return _createdAt
     }
     
@@ -60,26 +60,9 @@ class Loop {
         return _userIds
     }
     
-    init(uid: String, courseId: String, createdAt: String, subject: String, universityId: String, lastMessage: String, userIds: Dictionary<String, Int>) {
-        self._uid = uid
-        self._courseId = courseId
-        self._createdAt = createdAt
-        self._subject = subject
-        self._universityId = universityId
-        
-        self._lastMessage = lastMessage
-        self._hasCurrentUser = false
-        
-        self._userIds = [String]()
-        for (user, _) in userIds {
-            self._userIds.append(user)
-        }
-    }
-    
     init(uid: String, loopDict: Dictionary<String, AnyObject>) {
         self._uid = uid
         self._courseId = loopDict["courseId"] as? String
-        self._createdAt = loopDict["createdAt"] as? String
         self._subject = loopDict["subject"] as? String
         self._universityId = loopDict["universityId"] as? String
         self._hasCurrentUser = false
@@ -90,8 +73,15 @@ class Loop {
             self._lastMessage = ""
         }
         
+        if let created = loopDict["createdAt"] as? Int {
+            self._createdAt = created
+        } else if let created = loopDict["createdAt"] as? String {
+            self._createdAt = Int(created)
+            
+        }
+        
         self._userIds = [String]()
-        if let userIdsDict = loopDict["userIds"] as? Dictionary<String, Int> {
+        if let userIdsDict = loopDict["userIds"] as? Dictionary<String, AnyObject> {
             for (user, _) in userIdsDict {
                 self._userIds.append(user)
             }

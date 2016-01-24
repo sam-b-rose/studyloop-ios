@@ -104,8 +104,6 @@ class LoopMessageCell: UITableViewCell {
         self.selectionStyle = .None
         bodyLabel.text = text
         
-        print(text, name, imageUrl, attachmentUrl)
-        
         if name != nil {
             nameLabel.text = name
             
