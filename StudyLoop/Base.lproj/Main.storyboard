@@ -54,6 +54,7 @@
             <string>NotoSans</string>
             <string>NotoSans</string>
             <string>NotoSans</string>
+            <string>NotoSans</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -330,41 +331,10 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zLo-qK-n5w">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
-                                <subviews>
-                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H2B-d2-7LW" customClass="MaterialButton" customModule="StudyLoop" customModuleProvider="target">
-                                        <rect key="frame" x="20" y="10" width="560" height="45"/>
-                                        <color key="backgroundColor" red="0.1137254902" green="0.86274509799999999" blue="0.74117647060000003" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="33" id="88f-Zo-nze"/>
-                                            <constraint firstAttribute="width" constant="195" id="NcF-lO-LP1"/>
-                                            <constraint firstAttribute="height" constant="45" id="TEc-S0-sjs"/>
-                                            <constraint firstAttribute="width" constant="205" id="U6H-vl-JYk"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="NotoSans-Bold" family="Noto Sans" pointSize="15"/>
-                                        <state key="normal" title="Add Loop">
-                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </state>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="88f-Zo-nze"/>
-                                                <exclude reference="NcF-lO-LP1"/>
-                                                <exclude reference="U6H-vl-JYk"/>
-                                            </mask>
-                                        </variation>
-                                        <connections>
-                                            <action selector="didTapAddLoopButton:" destination="AEC-cA-p8P" eventType="touchUpInside" id="HHd-Mm-ey5"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="H2B-d2-7LW" secondAttribute="trailing" constant="20" id="9as-ns-VpF"/>
-                                    <constraint firstItem="H2B-d2-7LW" firstAttribute="top" secondItem="zLo-qK-n5w" secondAttribute="top" constant="10" id="e7b-e2-9ZO"/>
-                                    <constraint firstItem="H2B-d2-7LW" firstAttribute="leading" secondItem="zLo-qK-n5w" secondAttribute="leading" constant="20" id="t20-Ld-8g7"/>
-                                </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NAV-4Z-b2X">
-                                <rect key="frame" x="0.0" y="64" width="600" height="472"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="LoopCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="LoopCell" rowHeight="60" id="NLj-qp-Ved" customClass="LoopCell" customModule="StudyLoop" customModuleProvider="target">
@@ -375,16 +345,33 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FUv-8A-ktA">
-                                                    <rect key="frame" x="20" y="18" width="560" height="24"/>
+                                                    <rect key="frame" x="20" y="8" width="560" height="44"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loop Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jX0-Oo-ljH">
-                                                            <rect key="frame" x="0.0" y="0.0" width="530" height="24"/>
-                                                            <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
-                                                            <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="0.89956896549999998" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="PBu-bG-DKB">
+                                                            <rect key="frame" x="0.0" y="0.0" width="530" height="44"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loop Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jX0-Oo-ljH">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="530" height="24"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="24" id="NXG-N4-0UX"/>
+                                                                    </constraints>
+                                                                    <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
+                                                                    <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="0.89956896549999998" colorSpace="calibratedRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loop Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dst-mN-0Vc">
+                                                                    <rect key="frame" x="0.0" y="24" width="530" height="20"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="20" id="3pc-ll-jnj"/>
+                                                                    </constraints>
+                                                                    <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="14"/>
+                                                                    <color key="textColor" red="0.3921568627" green="0.42352941179999998" blue="0.4941176471" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </stackView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Icon" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1vF-f2-aL6">
-                                                            <rect key="frame" x="530" y="0.0" width="30" height="24"/>
+                                                            <rect key="frame" x="530" y="0.0" width="30" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="33" id="Gpw-qu-4me"/>
                                                                 <constraint firstAttribute="width" relation="lessThanOrEqual" constant="33" id="M5v-iA-Zyt"/>
@@ -403,18 +390,6 @@
                                                             </variation>
                                                         </label>
                                                     </subviews>
-                                                    <constraints>
-                                                        <constraint firstItem="jX0-Oo-ljH" firstAttribute="top" secondItem="FUv-8A-ktA" secondAttribute="top" id="DPK-JE-7Sz"/>
-                                                        <constraint firstAttribute="bottom" secondItem="jX0-Oo-ljH" secondAttribute="bottom" id="Diz-Yb-mLp"/>
-                                                        <constraint firstItem="jX0-Oo-ljH" firstAttribute="leading" secondItem="FUv-8A-ktA" secondAttribute="leading" id="ucl-xd-mpF"/>
-                                                    </constraints>
-                                                    <variation key="default">
-                                                        <mask key="constraints">
-                                                            <exclude reference="DPK-JE-7Sz"/>
-                                                            <exclude reference="Diz-Yb-mLp"/>
-                                                            <exclude reference="ucl-xd-mpF"/>
-                                                        </mask>
-                                                    </variation>
                                                 </stackView>
                                             </subviews>
                                             <constraints>
@@ -427,11 +402,36 @@
                                 </prototypes>
                             </tableView>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No course selected..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cuU-ey-Ol0">
-                                <rect key="frame" x="217" y="256" width="166" height="24"/>
+                                <rect key="frame" x="217.5" y="256.5" width="165.5" height="23.5"/>
                                 <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
                                 <color key="textColor" red="0.3921568627" green="0.42352941179999998" blue="0.4941176471" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H2B-d2-7LW" customClass="MaterialButtonSquare" customModule="StudyLoop" customModuleProvider="target">
+                                <rect key="frame" x="540" y="476" width="60" height="60"/>
+                                <color key="backgroundColor" red="0.1137254902" green="0.86274509799999999" blue="0.74117647060000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="33" id="88f-Zo-nze"/>
+                                    <constraint firstAttribute="width" constant="195" id="NcF-lO-LP1"/>
+                                    <constraint firstAttribute="height" constant="60" id="TEc-S0-sjs"/>
+                                    <constraint firstAttribute="width" constant="205" id="U6H-vl-JYk"/>
+                                    <constraint firstAttribute="width" constant="60" id="a2M-dq-zSe"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="NotoSans-Bold" family="Noto Sans" pointSize="15"/>
+                                <state key="normal" title="+">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="88f-Zo-nze"/>
+                                        <exclude reference="NcF-lO-LP1"/>
+                                        <exclude reference="U6H-vl-JYk"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <action selector="didTapAddLoopButton:" destination="AEC-cA-p8P" eventType="touchUpInside" id="HHd-Mm-ey5"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -440,12 +440,14 @@
                             <constraint firstItem="oEe-Cb-CRn" firstAttribute="top" secondItem="NAV-4Z-b2X" secondAttribute="bottom" id="7OS-4t-Yer"/>
                             <constraint firstAttribute="trailing" secondItem="zLo-qK-n5w" secondAttribute="trailing" id="8PN-rZ-t7U"/>
                             <constraint firstItem="zLo-qK-n5w" firstAttribute="top" secondItem="8VF-hj-EmJ" secondAttribute="bottom" id="9pF-tF-61M"/>
+                            <constraint firstAttribute="bottom" secondItem="H2B-d2-7LW" secondAttribute="bottom" id="PKn-1J-MX6"/>
                             <constraint firstItem="cuU-ey-Ol0" firstAttribute="centerY" secondItem="TzN-1u-a48" secondAttribute="centerY" id="TBU-46-bZq"/>
                             <constraint firstItem="NAV-4Z-b2X" firstAttribute="leading" secondItem="TzN-1u-a48" secondAttribute="leading" id="hLD-g7-kwD"/>
+                            <constraint firstAttribute="trailing" secondItem="H2B-d2-7LW" secondAttribute="trailing" id="lyx-px-BCg"/>
                             <constraint firstItem="zLo-qK-n5w" firstAttribute="leading" secondItem="TzN-1u-a48" secondAttribute="leading" id="mba-vn-pQW"/>
                             <constraint firstItem="NAV-4Z-b2X" firstAttribute="top" secondItem="8VF-hj-EmJ" secondAttribute="bottom" id="tGH-o7-EYc"/>
                             <constraint firstItem="oEe-Cb-CRn" firstAttribute="top" secondItem="zLo-qK-n5w" secondAttribute="bottom" id="tv3-f7-8Fa"/>
-                            <constraint firstItem="NAV-4Z-b2X" firstAttribute="top" secondItem="8VF-hj-EmJ" secondAttribute="bottom" constant="64" id="wUr-Vl-lJW"/>
+                            <constraint firstItem="NAV-4Z-b2X" firstAttribute="top" secondItem="8VF-hj-EmJ" secondAttribute="bottom" id="wUr-Vl-lJW"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">

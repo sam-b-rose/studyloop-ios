@@ -10,6 +10,13 @@ import UIKit
 
 class LoopCell: UITableViewCell {
     
+    lazy var border: CALayer = {
+        let border = CALayer()
+        border.backgroundColor = SL_GRAY.colorWithAlphaComponent(0.3).CGColor
+        border.frame = CGRect(x: 15, y: 0, width: self.frame.width, height: 0.5)
+        return border
+    }()
+    
     lazy var loopLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "NotoSans", size: 17)
@@ -27,7 +34,16 @@ class LoopCell: UITableViewCell {
     
     lazy var lastLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "NotoSans", size: 17)
+        label.font = UIFont(name: "NotoSans", size: 14)
+        label.textColor = SL_GRAY
+        label.numberOfLines = 1
+        return label
+    }()
+    
+    lazy var dateLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "NotoSans", size: 10)
+        label.textColor = SL_GRAY
         label.numberOfLines = 1
         return label
     }()
@@ -47,6 +63,9 @@ class LoopCell: UITableViewCell {
         self.addSubview(self.loopLabel)
         self.addSubview(self.newMessageInidcator)
         self.addSubview(self.lastLabel)
+        self.addSubview(self.dateLabel)
+        self.layer.addSublayer(border)
+
         
         loopLabel.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(self).offset(10)
@@ -60,16 +79,30 @@ class LoopCell: UITableViewCell {
         }
         
         lastLabel.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(loopLabel.snp_bottom).offset(1)
+            make.top.equalTo(loopLabel.snp_bottom).offset(5)
             make.left.equalTo(self).offset(20)
             make.right.equalTo(self).offset(-20)
             make.bottom.equalTo(self).offset(-10)
+            make.height.greaterThanOrEqualTo(20)
+        }
+        
+        dateLabel.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(self).offset(10)
+            make.right.equalTo(self).offset(-20)
+            make.width.lessThanOrEqualTo(100)
         }
     }
     
     func configureCell(loop: Loop) {
         loopLabel.text = loop.subject
         lastLabel.text = loop.lastMessage
+        
+        if loop.lastMessageTime != nil {
+            let date = TimeUtils.tu.dayStringFromTime(loop.lastMessageTime!)
+            dateLabel.text = date
+        } else {
+            dateLabel.text = ""
+        }
  
         let loops = NotificationService.noti.newMessages.map { "\($1)" }
         let hasNewMessage = loops.indexOf(loop.uid)

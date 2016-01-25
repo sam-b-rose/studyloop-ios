@@ -39,10 +39,6 @@ class LoginVC: UIViewController {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
         view.addGestureRecognizer(tap)
         tap.cancelsTouchesInView = false
-        
-        // TODO: Do something with Device ID
-        let deviceId = UIDevice.currentDevice().identifierForVendor!.UUIDString
-        print(deviceId)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -54,6 +50,7 @@ class LoginVC: UIViewController {
                 // user authenticated
                 print("From LoginVC")
                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
+                self.saveDeviceId(authData.uid)
                 self.checkUserData(authData)
             } else {
                 // No user is signed in
@@ -214,6 +211,31 @@ class LoginVC: UIViewController {
             }
         })
         
+    }
+    
+    func saveDeviceId(userId: String) {
+        if let deviceId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_DEVICE_ID) as? String {
+            print("DEVICE ID: ", deviceId)
+            
+            let device = [
+                "createdAt": kFirebaseServerValueTimestamp,
+                "updatedAt": kFirebaseServerValueTimestamp,
+                "userId": userId,
+                "vendor": "ios",
+                "vendorId": deviceId
+            ]
+            
+            DataService.ds.REF_QUEUES
+                .childByAppendingPath("user-devices")
+                .childByAppendingPath("tasks")
+                .childByAutoId()
+                .setValue(device, withCompletionBlock: {
+                    error, ref in
+                    if error != nil {
+                        print(error)
+                    }
+                })
+        }
     }
     
     

@@ -19,6 +19,7 @@ let kFirebaseServerValueTimestamp = [".sv":"timestamp"]
 let IMAGE_BASE = "https://s3.amazonaws.com/sl-attachments/"
 
 // Keys
+let KEY_DEVICE_ID = "deviceId"
 let KEY_UID = "uid"
 let KEY_UNIVESITY = "university"
 let KEY_COURSE = "course"

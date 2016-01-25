@@ -45,7 +45,8 @@ class LoopMessageCell: UITableViewCell {
     }()
     
     lazy var userAvatar: UIImageView = {
-        let avatar = UIImageView(image: UIImage(named: "owl-light-bg"))
+        let avatar = UIImageView(image: nil)
+        avatar.backgroundColor = SL_LIGHT
         avatar.layer.cornerRadius = 20
         avatar.clipsToBounds = true
         return avatar
@@ -120,7 +121,7 @@ class LoopMessageCell: UITableViewCell {
         bodyLabel.text = text
         
         let time = TimeUtils.tu.timeStringFromUnixTime(createdAt)
-        timeLabel.text = StringUtils.su.trimLeadingZeroes(time)
+        timeLabel.text = time
         
         if name != nil {
             nameLabel.text = name
@@ -193,7 +194,6 @@ class LoopMessageCell: UITableViewCell {
             }
         } else {
             initialsLabel.hidden = false
-            userAvatar.backgroundColor = SL_LIGHT
             userAvatar.image = nil
         }
     }

@@ -31,11 +31,20 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.separatorStyle = .None
         tableView.registerClass(LoopCell.self, forCellReuseIdentifier: "LoopCell")
         
+        // Set Add Loop Icon
+        addLoopBtn.titleLabel?.font = UIFont.ioniconOfSize(38)
+        addLoopBtn.setTitle(String.ioniconWithName(.Plus), forState: .Normal)
+        
         // Set navigation menu title and icons
         settingBtn.setTitleTextAttributes(attributes, forState: .Normal)
         settingBtn.title = ""
         menuBtn.setTitleTextAttributes(attributes, forState: .Normal)
         menuBtn.title = String.ioniconWithName(.Navicon)
+        
+        // Table
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 64.0
+        tableView.separatorStyle = .None
     }
     
     override func viewWillAppear(animated: Bool) {

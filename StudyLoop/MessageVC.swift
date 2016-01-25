@@ -23,6 +23,10 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
     var imagePicker: UIImagePickerController!
     static var imageCache = NSCache()
     
+    var messagesHandle: UInt!
+    var loopHandle: UInt!
+    var activityHandle: UInt!
+    
     var timer: NSTimer? = nil
     var imageToSend: UIImage!
     var imageName = ""
@@ -63,24 +67,15 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
         self.tableView.estimatedRowHeight = 64.0
         self.tableView.separatorStyle = .None
         self.tableView.registerClass(LoopMessageCell.self, forCellReuseIdentifier: "LoopMessageCell")
-        
-        // Monitor User Activity
-        ActivityService.act.REF_ACTIVITY_LOOP.childByAppendingPath(loop.uid).observeEventType(.ChildChanged, withBlock: {
-            snapshot in
-            if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
-                self.checkIfTyping(snapshot.key, user: userDict)
-            }
-        })
-        
-        // Set last loop for current user
-        ActivityService.act.setLastLoop(loop.uid)
     }
     
     override func viewWillAppear(animated: Bool) {
         /* Setup Firebase Observables */
         
         // Get Messages
-        DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid).observeEventType(.ChildAdded, withBlock: { snapshot in
+        messagesHandle = DataService.ds.REF_LOOP_MESSAGES
+            .childByAppendingPath(loop.uid)
+            .observeEventType(.ChildAdded, withBlock: { snapshot in
             if let messageDict = snapshot.value as? Dictionary<String, AnyObject> {
                 let key = snapshot.key
                 let message = Message(messageKey: key, dictionary: messageDict)
@@ -89,7 +84,7 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
         })
         
         // Create User Maps
-        DataService.ds.REF_LOOPS.childByAppendingPath(loop.uid).observeEventType(.Value, withBlock: {
+        loopHandle = DataService.ds.REF_LOOPS.childByAppendingPath(loop.uid).observeEventType(.Value, withBlock: {
             snapshot in
             if let loopDict = snapshot.value as? Dictionary<String, AnyObject> {
                 self.loop = Loop(uid: snapshot.key, loopDict: loopDict)
@@ -102,9 +97,26 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
                 })
             }
         })
+        
+        // Monitor User Activity
+        activityHandle = ActivityService.act.REF_ACTIVITY_LOOP.childByAppendingPath(loop.uid).observeEventType(.ChildChanged, withBlock: {
+            snapshot in
+            if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
+                self.checkIfTyping(snapshot.key, user: userDict)
+            }
+        })
+        
+        // Set last loop for current user
+        ActivityService.act.setLastLoop(loop.uid)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewDidDisappear(animated: Bool) {
+        
+        //Remove Firebase observer handler
+        DataService.ds.REF_BASE.removeObserverWithHandle(messagesHandle)
+        DataService.ds.REF_BASE.removeObserverWithHandle(loopHandle)
+        DataService.ds.REF_BASE.removeObserverWithHandle(activityHandle)
+        
         // Remove Notifications
         for (key,val) in NotificationService.noti.newMessages {
             if val == loop.uid {
@@ -232,13 +244,15 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
             self.tableView.reloadData()
             if self.messages.count > 0 {
                 self.scrollToBottomMessage()
-                self.leftButton.setImage(UIImage(named: "icn_upload"), forState: UIControlState.Normal)
-                ActivityService.act.setUserActivity(self.loop.uid, userId: self.currentUserId!, key: "typingAt", value: 0)
+                // self.leftButton.setImage(UIImage(named: "icn_upload"), forState: UIControlState.Normal)
+                // ActivityService.act.setUserActivity(self.loop.uid, userId: self.currentUserId!, key: "typingAt", value: 0)
             }
         }
     }
     
     func sendNewMessage(imageData: Dictionary<String, AnyObject>?) {
+        ActivityService.act.setUserActivity(self.loop.uid, userId: self.currentUserId!, key: "typingAt", value: 0)
+        
         var message: Dictionary<String, AnyObject> = [
             "textValue": "\(self.textView.text!)",
             "createdById": currentUserId!,
@@ -266,7 +280,12 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
                     print("Error sending message")
                 } else {
                     self.textView.text = ""
-                    // DataService.ds.REF_LOOPS.childByAppendingPath(self.loop.uid).setValue(["lastMessage" : message])
+                    let userName = self.userNameMap[self.currentUserId!]
+                    DataService.ds.REF_LOOPS.childByAppendingPath(self.loop.uid).updateChildValues([
+                        "lastMessage": "\(userName!): \(message["textValue"]!)",
+                        "lastMessageTime": kFirebaseServerValueTimestamp
+                        ])
+                    
                 }
             })
         }
@@ -278,6 +297,7 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
     
     override func didPressRightButton(sender: AnyObject!) {
         self.textView.refreshFirstResponder()
+        dismissKeyboard(true)
         sendNewMessage(nil)
         super.didPressRightButton(sender)
     }

@@ -58,6 +58,7 @@
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         print("Got token data! \(deviceToken)! Now send it to the database!")
+        NSUserDefaults.standardUserDefaults().setValue(String(deviceToken), forKey: KEY_DEVICE_ID)
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {

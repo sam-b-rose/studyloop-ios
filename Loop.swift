@@ -15,6 +15,7 @@ class Loop {
     private var _subject: String!
     private var _universityId: String!
     private var _lastMessage: String!
+    private var _lastMessageTime: Double?
     private var _hasCurrentUser: Bool!
     private var _userIds: [String]!
     
@@ -36,6 +37,15 @@ class Loop {
     
     var universityId: String {
         return _universityId
+    }
+    
+    var lastMessageTime: Double? {
+        get {
+            return _lastMessageTime
+        }
+        set(newLastMessage) {
+            _lastMessageTime = newLastMessage
+        }
     }
     
     var lastMessage: String {
@@ -71,6 +81,14 @@ class Loop {
             self._lastMessage = last
         } else {
             self._lastMessage = ""
+        }
+        
+        if let last = loopDict["lastMessageTime"] as? String {
+            self._lastMessageTime = Double(last)
+        } else if let last = loopDict["lastMessageTime"] as? Int {
+            self._lastMessageTime = Double(last)
+        } else {
+            self._lastMessageTime = nil
         }
         
         if let created = loopDict["createdAt"] as? Double {

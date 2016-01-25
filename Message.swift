@@ -46,10 +46,15 @@ class Message {
     
     init(messageKey: String, dictionary: Dictionary<String, AnyObject>) {
         self._messageKey = messageKey
-        self._textValue = dictionary["textValue"] as? String
         self._createdById = dictionary["createdById"] as? String
         self._loopId = dictionary["loopId"] as? String
         self._courseId = dictionary["courseId"] as? String
+        
+        if let message = dictionary["textValue"] as? String {
+            self._textValue = message
+        } else {
+            self._textValue = ""
+        }
         
         if let createdAt = dictionary["createdAt"] as? Double {
             self._createdAt = createdAt

@@ -13,20 +13,20 @@ class TimeUtils {
     static let tu = TimeUtils()
     
     func timeStringFromUnixTime(unixTime: Double) -> String {
-        let date = NSDate(timeIntervalSince1970: unixTime)
+        let date = NSDate(timeIntervalSince1970: unixTime / 1000)
         let dateFormatter = NSDateFormatter()
         
         // Returns date formatted as 12 hour time.
-        dateFormatter.dateFormat = "hh:mm a"
+        dateFormatter.timeStyle = .ShortStyle
         return dateFormatter.stringFromDate(date)
     }
 
     func dayStringFromTime(unixTime: Double) -> String {
-        let date = NSDate(timeIntervalSince1970: unixTime)
+        let date = NSDate(timeIntervalSince1970: unixTime / 1000)
         let dateFormatter = NSDateFormatter()
         
         dateFormatter.locale = NSLocale(localeIdentifier: NSLocale.currentLocale().localeIdentifier)
-        dateFormatter.dateFormat = "EEEE"
+        dateFormatter.dateStyle = .MediumStyle
         return dateFormatter.stringFromDate(date)
     }
 }
