@@ -72,6 +72,8 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
     override func viewWillAppear(animated: Bool) {
         /* Setup Firebase Observables */
         
+        print("setting up handlers")
+        
         // Get Messages
         messagesHandle = DataService.ds.REF_LOOP_MESSAGES
             .childByAppendingPath(loop.uid)
@@ -79,6 +81,7 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
             if let messageDict = snapshot.value as? Dictionary<String, AnyObject> {
                 let key = snapshot.key
                 let message = Message(messageKey: key, dictionary: messageDict)
+                print("Adding message: ", messageDict)
                 self.addMessages(message)
             }
         })
@@ -112,10 +115,14 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
     
     override func viewDidDisappear(animated: Bool) {
         
+        print("removing handlers")
+        messages.removeAll()
+        
         //Remove Firebase observer handler
-        DataService.ds.REF_BASE.removeObserverWithHandle(messagesHandle)
-        DataService.ds.REF_BASE.removeObserverWithHandle(loopHandle)
-        DataService.ds.REF_BASE.removeObserverWithHandle(activityHandle)
+        DataService.ds.REF_LOOP_MESSAGES
+            .childByAppendingPath(loop.uid).removeObserverWithHandle(messagesHandle)
+        DataService.ds.REF_LOOPS.childByAppendingPath(loop.uid).removeObserverWithHandle(loopHandle)
+        ActivityService.act.REF_ACTIVITY_LOOP.childByAppendingPath(loop.uid).removeObserverWithHandle(activityHandle)
         
         // Remove Notifications
         for (key,val) in NotificationService.noti.newMessages {

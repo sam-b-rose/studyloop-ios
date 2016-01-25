@@ -116,7 +116,7 @@ class NotificationService: Evented {
         notification.duration = 3
         notification.setButtonConfiguration(MPGNotificationButtonConfigration.OneButton, withButtonTitles: ["Dismiss"])
         notification.showWithButtonHandler { (notification, buttonIndex) -> Void in
-            if buttonIndex == notification.firstButton.tag || buttonIndex == notification.backgroundView.tag {
+            if buttonIndex == notification.firstButton.tag {
                 print("remove the notification")
                 //self.removeNotification("")
             }
