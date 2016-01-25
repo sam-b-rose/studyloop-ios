@@ -102,6 +102,22 @@ class NotificationService: Evented {
         REF_NOTIFICATIONS_USER.childByAppendingPath(uid).removeValue()
     }
     
+    func removeAllNotifications() {
+        for (key, _) in newLoops {
+            removeNotification(key)
+        }
+        
+        for (key, _) in newMessages {
+            removeNotification(key)
+        }
+        
+        for (key, _) in courseActivity {
+            removeNotification(key)
+        }
+        
+        success("All notifications have been cleared!")
+    }
+    
     func removeNotificationObserver() {
         REF_NOTIFICATIONS_USER.removeAuthEventObserverWithHandle(handle!)
     }
@@ -138,11 +154,11 @@ class NotificationService: Evented {
     }
     
     func success(message: String) {
-        let notification = MPGNotification(title: "Success!", subtitle: message, backgroundColor: SL_WHITE, iconImage: nil)
-        notification.titleColor = SL_BLACK
-        notification.subtitleColor = SL_BLACK
+        let notification = MPGNotification(title: "Success!", subtitle: message, backgroundColor: SL_BLACK, iconImage: nil)
+        notification.titleColor = SL_WHITE
+        notification.subtitleColor = SL_WHITE
         notification.swipeToDismissEnabled = false
-        notification.duration = 2
+        notification.duration = 3
         notification.show()
     }
     
@@ -151,7 +167,7 @@ class NotificationService: Evented {
         notification.titleColor = SL_WHITE
         notification.subtitleColor = SL_WHITE
         notification.swipeToDismissEnabled = false
-        notification.duration = 2
+        notification.duration = 3
         notification.show()
     }
     

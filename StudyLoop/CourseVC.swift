@@ -122,7 +122,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidDisappear(animated: Bool) {
         
         //Remove Firebase observer handler
-        DataService.ds.REF_BASE.removeObserverWithHandle(handle)
+        DataService.ds.REF_LOOPS.removeObserverWithHandle(handle)
         
         // Remove Notifications about this course
         let loopIds = loops.map { $0.uid }

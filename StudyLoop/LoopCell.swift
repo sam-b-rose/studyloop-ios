@@ -34,7 +34,7 @@ class LoopCell: UITableViewCell {
     
     lazy var lastLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "NotoSans", size: 14)
+        label.font = UIFont(name: "NotoSans", size: 10)
         label.textColor = SL_GRAY
         label.numberOfLines = 1
         return label
@@ -70,26 +70,27 @@ class LoopCell: UITableViewCell {
         loopLabel.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(self).offset(10)
             make.left.equalTo(self).offset(20)
-            make.right.equalTo(self.newMessageInidcator).offset(-20)
-        }
-        
-        newMessageInidcator.snp_makeConstraints { (make) -> Void in
-            make.centerY.equalTo(self)
-            make.right.equalTo(self).offset(-20)
+            make.right.equalTo(self.dateLabel.snp_left).offset(-20)
         }
         
         lastLabel.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(loopLabel.snp_bottom).offset(5)
+            make.top.equalTo(self.loopLabel.snp_bottom).offset(5)
             make.left.equalTo(self).offset(20)
-            make.right.equalTo(self).offset(-20)
+            make.right.equalTo(self.newMessageInidcator.snp_left).offset(-20).priorityLow()
             make.bottom.equalTo(self).offset(-10)
             make.height.greaterThanOrEqualTo(20)
         }
         
+        newMessageInidcator.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(self.loopLabel.snp_bottom).offset(5).priorityHigh()
+            make.right.equalTo(self).offset(-35).priorityHigh()
+        }
+        
         dateLabel.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(self).offset(10)
-            make.right.equalTo(self).offset(-20)
-            make.width.lessThanOrEqualTo(100)
+            make.top.equalTo(self).offset(10).priorityHigh()
+            make.right.equalTo(self).offset(-35).priorityHigh()
+            //make.left.equalTo(self.loopLabel.snp_right).offset(20)
+            //make.width.lessThanOrEqualTo(100)
         }
     }
     

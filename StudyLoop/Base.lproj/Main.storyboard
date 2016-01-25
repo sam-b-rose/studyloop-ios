@@ -55,6 +55,10 @@
             <string>NotoSans</string>
             <string>NotoSans</string>
             <string>NotoSans</string>
+            <string>NotoSans</string>
+            <string>NotoSans</string>
+            <string>NotoSans</string>
+            <string>NotoSans</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -683,30 +687,28 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wna-AF-LVi">
-                                                    <rect key="frame" x="18" y="11" width="150" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Clear all notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wna-AF-LVi">
+                                                    <rect key="frame" x="18" y="11" width="170" height="21"/>
                                                     <constraints>
+                                                        <constraint firstAttribute="width" constant="170" id="8og-6U-rRv"/>
+                                                        <constraint firstAttribute="width" constant="160" id="V2k-IQ-YZp"/>
                                                         <constraint firstAttribute="width" constant="150" id="ix4-v3-Pp2"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
+                                                    <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.0.0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Dy-IQ-jUU">
-                                                    <rect key="frame" x="522" y="11" width="45" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="45" id="HoS-JR-W90"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="V2k-IQ-YZp"/>
+                                                            <exclude reference="ix4-v3-Pp2"/>
+                                                        </mask>
+                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="wna-AF-LVi" firstAttribute="centerY" secondItem="gHq-5l-Xlx" secondAttribute="centerY" id="Vvy-xc-9q7"/>
                                                 <constraint firstItem="wna-AF-LVi" firstAttribute="centerY" secondItem="gHq-5l-Xlx" secondAttribute="centerY" id="Xep-ee-SmL"/>
                                                 <constraint firstAttribute="leadingMargin" secondItem="wna-AF-LVi" secondAttribute="leading" constant="-10" id="g7a-Uv-6vW"/>
-                                                <constraint firstItem="9Dy-IQ-jUU" firstAttribute="centerY" secondItem="gHq-5l-Xlx" secondAttribute="centerY" id="wJF-Zd-iVe"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
@@ -714,23 +716,62 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="appSettingsCell" id="aeL-Zq-pOL">
+                                        <rect key="frame" x="0.0" y="474.5" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aeL-Zq-pOL" id="ofH-IQ-qiC">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iGb-fp-eFe">
+                                                    <rect key="frame" x="18" y="11" width="150" height="23"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="150" id="cIb-MM-Zjf"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
+                                                    <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.0.0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6PH-8q-T52">
+                                                    <rect key="frame" x="522" y="11" width="45" height="23"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="45" id="g6O-WZ-0UU"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
+                                                    <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="leadingMargin" secondItem="iGb-fp-eFe" secondAttribute="leading" constant="-10" id="4M1-lp-z0z"/>
+                                                <constraint firstItem="6PH-8q-T52" firstAttribute="centerY" secondItem="ofH-IQ-qiC" secondAttribute="centerY" id="Jy2-we-Tkl"/>
+                                                <constraint firstItem="iGb-fp-eFe" firstAttribute="centerY" secondItem="ofH-IQ-qiC" secondAttribute="centerY" id="R8h-9C-p3m"/>
+                                                <constraint firstItem="iGb-fp-eFe" firstAttribute="centerY" secondItem="ofH-IQ-qiC" secondAttribute="centerY" id="bEE-Zn-eBL"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="bEE-Zn-eBL"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
                                         <constraints>
-                                            <constraint firstAttribute="trailingMargin" secondItem="9Dy-IQ-jUU" secondAttribute="trailing" constant="25" id="2gI-fX-Nq3"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="6PH-8q-T52" secondAttribute="trailing" constant="25" id="4gb-SC-b2v"/>
                                         </constraints>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="appSettingsCell" id="JaB-CN-7qg">
-                                        <rect key="frame" x="0.0" y="474.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="518.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JaB-CN-7qg" id="oba-NA-aFP">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Logout" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ng-u6-697">
-                                                    <rect key="frame" x="18" y="11" width="150" height="21"/>
+                                                    <rect key="frame" x="18" y="11" width="150" height="23"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="150" id="7hO-XD-fUe"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
                                                     <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -746,7 +787,7 @@
                             <tableViewSection id="xNQ-3W-I3G">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="appSettingsCell" id="CIT-n5-CMY">
-                                        <rect key="frame" x="0.0" y="554.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="598.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CIT-n5-CMY" id="vOA-CM-h6w">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>

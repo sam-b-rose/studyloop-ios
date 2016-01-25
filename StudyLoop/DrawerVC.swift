@@ -18,6 +18,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var items = [MenuItem]()
     var request: Request?
+    var courseHandle: UInt!
     static var imageCache = NSCache()
     
     override func viewDidLoad() {
@@ -40,7 +41,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     override func viewWillAppear(animated: Bool) {
-        DataService.ds.REF_USER_CURRENT
+        courseHandle = UserService.us.REF_USER_CURRENT
             .childByAppendingPath("courseIds")
             .observeEventType(.Value, withBlock: { snapshot in
             
@@ -67,6 +68,10 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             
             self.tableView.reloadData()
         })
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        UserService.us.REF_USER_CURRENT.childByAppendingPath("courseIds").removeObserverWithHandle(courseHandle)
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

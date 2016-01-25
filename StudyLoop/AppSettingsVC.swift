@@ -72,7 +72,9 @@ class AppSettingsVC: UITableViewController {
                 saveUserInfo()
             }
         } else if indexPath.section == 1 {
-            if indexPath.row == 1 {
+            if indexPath.row == 0 {
+                NotificationService.noti.removeAllNotifications()
+            } else if indexPath.row == 2 {
                 // Logout
                 print("logout")
                 logoutUser()
