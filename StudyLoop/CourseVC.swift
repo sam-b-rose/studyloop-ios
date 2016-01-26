@@ -29,7 +29,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .None
-        tableView.registerClass(LoopCell.self, forCellReuseIdentifier: "LoopCell")
+        // tableView.registerClass(LoopCell.self, forCellReuseIdentifier: "LoopCell")
         
         // Set Add Loop Icon
         addLoopBtn.titleLabel?.font = UIFont.ioniconOfSize(38)
@@ -115,12 +115,12 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        // Remove Notifications about this course
-        let loopIds = loops.map { $0.uid }
-        for(key, val) in NotificationService.noti.newLoops {
-            if loopIds.indexOf(val) != nil {
-                NotificationService.noti.removeNotification(key)
+    override func viewWillDisappear(animated: Bool) {        
+        // Remove Notifications
+        if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String {
+            let courseNotifications = NotificationService.noti.notifications.filter { $0.courseId == courseId && $0.type == LOOP_CREATED }
+            for notification in courseNotifications {
+                NotificationService.noti.removeNotification(notification.uid)
             }
         }
     }

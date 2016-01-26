@@ -77,7 +77,7 @@ class MemberCell: UITableViewCell {
         }
         
         border.backgroundColor = SL_GRAY.colorWithAlphaComponent(0.3).CGColor
-        border.frame = CGRect(x: 15, y: 0, width: layer.frame.width - 15, height: 0.5)
+        border.frame = CGRect(x: 25, y: 0, width: layer.frame.width - 25, height: 0.5)
         layer.addSublayer(border)
     }
     

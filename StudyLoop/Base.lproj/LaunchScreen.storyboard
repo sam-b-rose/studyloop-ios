@@ -18,8 +18,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="owl-light-bg" translatesAutoresizingMaskIntoConstraints="NO" id="9yd-uc-EJe">
-                                <rect key="frame" x="43" y="154" width="515" height="292"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="owl-light-bg" translatesAutoresizingMaskIntoConstraints="NO" id="9yd-uc-EJe">
+                                <rect key="frame" x="40" y="100" width="520" height="400"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="145" id="aqJ-zG-mLs"/>
                                     <constraint firstAttribute="width" constant="500" id="cXr-b9-cjt"/>
@@ -37,7 +37,6 @@
                             <constraint firstItem="9yd-uc-EJe" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="ALa-FJ-Swr"/>
                             <constraint firstItem="9yd-uc-EJe" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="62" id="GFg-3Z-r4i"/>
                             <constraint firstItem="9yd-uc-EJe" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="55" id="IYb-Nr-jXl"/>
-                            <constraint firstItem="9yd-uc-EJe" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="aB9-1T-rVh"/>
                             <constraint firstItem="9yd-uc-EJe" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="75" id="hdj-B4-SID"/>
                             <constraint firstAttribute="trailingMargin" secondItem="9yd-uc-EJe" secondAttribute="trailing" constant="20" id="t2B-b9-F8O"/>
                             <constraint firstItem="9yd-uc-EJe" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="20" id="xXV-0h-yUg"/>

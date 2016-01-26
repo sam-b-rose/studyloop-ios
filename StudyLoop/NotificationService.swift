@@ -44,33 +44,12 @@ class NotificationService: Evented {
     
     // Evented Notification Dictionaries
     
-    var courseActivity: [String:String] {
-        willSet(newCourse) {
-            self.emit(EVENT_COURSE_ALERT)
-        }
-    }
-    
-    var newMessages: [String:String] {
-        willSet(newMessage) {
-            self.emit(EVENT_NEW_MESSAGE)
-        }
-    }
-    
-    var newLoops: [String:String] {
-        willSet(newLoop) {
-            self.emit(EVENT_NEW_LOOP)
-        }
-    }
-    
     func emit(notificationType: String) -> Bool {
         Event.emit(notificationType)
         return true
     }
     
     init() {
-        self.newLoops = [String:String]()
-        self.newMessages = [String:String]()
-        self.courseActivity = [String:String]()
         self._notifications = [Notification]()
     }
     
@@ -92,8 +71,6 @@ class NotificationService: Evented {
         
         removedHandle = REF_NOTIFICATIONS_USER.observeEventType(.ChildRemoved, withBlock: {
             snapshot in
-            
-            print("SNAP: ", snapshot)
             if let index = self._notifications.indexOf({ $0.uid == snapshot.key }) {
                 self._notifications.removeAtIndex(index)
             }
@@ -125,34 +102,6 @@ class NotificationService: Evented {
     
     
     // MPG Notification objects
-    
-    func newLoop(message: String) {
-        let notification = MPGNotification(title: "New Loop", subtitle: message, backgroundColor: SL_BLACK, iconImage: nil)
-        notification.titleColor = SL_WHITE
-        notification.subtitleColor = SL_WHITE
-        notification.duration = 3
-        notification.setButtonConfiguration(MPGNotificationButtonConfigration.OneButton, withButtonTitles: ["Dismiss"])
-        notification.showWithButtonHandler { (notification, buttonIndex) -> Void in
-            if buttonIndex == notification.firstButton.tag {
-                print("remove the notification")
-                //self.removeNotification("")
-            }
-        }
-    }
-    
-    func newMessage(message: String) {
-        let notification = MPGNotification(title: "New Message", subtitle: message, backgroundColor: SL_BLACK, iconImage: nil)
-        notification.titleColor = SL_WHITE
-        notification.subtitleColor = SL_WHITE
-        notification.duration = 3
-        notification.setButtonConfiguration(MPGNotificationButtonConfigration.OneButton, withButtonTitles: ["Dismiss"])
-        notification.showWithButtonHandler { (notification, buttonIndex) -> Void in
-            if buttonIndex == notification.firstButton.tag || buttonIndex == notification.backgroundView.tag {
-                print("remove the notification")
-                //self.removeNotification("")
-            }
-        }
-    }
     
     func newNotification(notification: Notification) {
         var title = "New notification"
@@ -198,7 +147,7 @@ class NotificationService: Evented {
         let mpgNotification = MPGNotification(title: title, subtitle: body, backgroundColor: SL_BLACK, iconImage: owl)
         mpgNotification.titleColor = SL_WHITE
         mpgNotification.subtitleColor = SL_WHITE
-        mpgNotification.duration = 3
+        mpgNotification.duration = 5
         mpgNotification.setButtonConfiguration(MPGNotificationButtonConfigration.TwoButton, withButtonTitles: ["Dismiss", "Remove"])
         mpgNotification.showWithButtonHandler { (mpgNotification, buttonIndex) -> Void in
             if buttonIndex == mpgNotification.secondButton.tag {
