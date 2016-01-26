@@ -314,7 +314,7 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
                     let userName = self.userNameMap[self.currentUserId!]
                     DataService.ds.REF_LOOPS.childByAppendingPath(self.loop.uid).updateChildValues([
                         "lastMessage": "\(userName!): \(message["textValue"]!)",
-                        "lastMessageTime": kFirebaseServerValueTimestamp
+                        "updatedAt": kFirebaseServerValueTimestamp
                         ])
                     
                 }

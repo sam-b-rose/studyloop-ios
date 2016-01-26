@@ -38,8 +38,8 @@ class LoopCell: UITableViewCell {
         newMessageIndicator.hidden = true
         backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0)
         
-        if loop.lastMessageTime != nil {
-            let date = TimeUtils.tu.dayStringFromTime(loop.lastMessageTime!)
+        if loop.updatedAt != nil {
+            let date = TimeUtils.tu.dayStringFromTime(loop.updatedAt!)
             dateLabel.text = date
         } else {
             dateLabel.text = ""

@@ -12,8 +12,8 @@ import UIKit
 let SHADOW_COLOR: CGFloat = 157.0 / 255.0
 
 // Firebase
-//let URL_BASE = "https://studyloop-stage.firebaseio.com"  // Dev
-let URL_BASE = "https://studyloop-prod.firebaseio.com" // Production
+let URL_BASE = "https://studyloop-stage.firebaseio.com"  // Dev
+//let URL_BASE = "https://studyloop-prod.firebaseio.com" // Production
 let kFirebaseServerValueTimestamp = [".sv":"timestamp"]
 
 // Images
