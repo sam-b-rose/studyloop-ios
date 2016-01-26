@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0A12DB4E71DA66C64D6D8C50 /* Pods_StudyLoop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D755C00352E28EAE43CA0CB3 /* Pods_StudyLoop.framework */; };
 		6F03B08B1C578F2F0055BC0B /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F03B08A1C578F2F0055BC0B /* Notification.swift */; };
+		6F03B0C31C57EA3B0055BC0B /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F03B0C11C57EA3B0055BC0B /* CrashReporter.framework */; };
+		6F03B0C41C57EA3B0055BC0B /* Rollbar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F03B0C21C57EA3B0055BC0B /* Rollbar.framework */; };
 		6F1466F61C0B461D00528DE3 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1466F51C0B461D00528DE3 /* DataService.swift */; };
 		6F19BE301C1A6AA1004DC7A5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F19BE2F1C1A6AA1004DC7A5 /* User.swift */; };
 		6F2226FE1C50F36100D028BD /* Loggable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2226FD1C50F36100D028BD /* Loggable.swift */; };
@@ -91,6 +93,9 @@
 /* Begin PBXFileReference section */
 		1B2666FF8D7DD041D321A4C1 /* Pods-StudyLoop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StudyLoop.release.xcconfig"; path = "Pods/Target Support Files/Pods-StudyLoop/Pods-StudyLoop.release.xcconfig"; sourceTree = "<group>"; };
 		6F03B08A1C578F2F0055BC0B /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		6F03B0C11C57EA3B0055BC0B /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CrashReporter.framework; sourceTree = "<group>"; };
+		6F03B0C21C57EA3B0055BC0B /* Rollbar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Rollbar.framework; sourceTree = "<group>"; };
+		6F03B0C51C57EA890055BC0B /* StudyLoop-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "StudyLoop-Bridging-Header.h"; sourceTree = "<group>"; };
 		6F1466F51C0B461D00528DE3 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		6F19BE2F1C1A6AA1004DC7A5 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		6F2226FD1C50F36100D028BD /* Loggable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loggable.swift; sourceTree = "<group>"; };
@@ -167,10 +172,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				6FE810C21C0B3AE300B1ABA8 /* FBSDKLoginKit.framework in Frameworks */,
+				6F03B0C31C57EA3B0055BC0B /* CrashReporter.framework in Frameworks */,
 				6FE810C11C0B3AE300B1ABA8 /* FBSDKCoreKit.framework in Frameworks */,
 				6FE810C31C0B3AE300B1ABA8 /* FBSDKShareKit.framework in Frameworks */,
 				6F2C4D6E1C4E5E0D0029B8FD /* StoreKit.framework in Frameworks */,
 				0A12DB4E71DA66C64D6D8C50 /* Pods_StudyLoop.framework in Frameworks */,
+				6F03B0C41C57EA3B0055BC0B /* Rollbar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,6 +252,7 @@
 				6FE810A61C0B1E4D00B1ABA8 /* View */,
 				6FE810A71C0B1E5300B1ABA8 /* Controller */,
 				6FE8106C1C0AA35300B1ABA8 /* AppDelegate.swift */,
+				6F03B0C51C57EA890055BC0B /* StudyLoop-Bridging-Header.h */,
 				6F90FEFD1C2C3CFC001920C4 /* Main.storyboard */,
 				6FE810761C0AA35300B1ABA8 /* Assets.xcassets */,
 				6FE810781C0AA35300B1ABA8 /* LaunchScreen.storyboard */,
@@ -357,6 +365,8 @@
 		6FE810BD1C0B3AB400B1ABA8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6F03B0C11C57EA3B0055BC0B /* CrashReporter.framework */,
+				6F03B0C21C57EA3B0055BC0B /* Rollbar.framework */,
 				6FE810BE1C0B3AE300B1ABA8 /* FBSDKCoreKit.framework */,
 				6FE810BF1C0B3AE300B1ABA8 /* FBSDKLoginKit.framework */,
 				6FE810C01C0B3AE300B1ABA8 /* FBSDKShareKit.framework */,
@@ -438,7 +448,7 @@
 		6FE810611C0AA35300B1ABA8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0710;
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = StudyLoop;
 				TargetAttributes = {
@@ -761,6 +771,7 @@
 			baseConfigurationReference = E9077534BC5A5F2D4E8BEBFE /* Pods-StudyLoop.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Alex Klibisz (U28YN6T44M)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -769,9 +780,18 @@
 				);
 				INFOPLIST_FILE = StudyLoop/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/CrashReporter.framework",
+					"$(PROJECT_DIR)/CrashReporter.framework/Versions/A",
+					"$(PROJECT_DIR)/Rollbar.framework",
+					"$(PROJECT_DIR)/Rollbar.framework/Versions/A",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.getstudyloop.StudyLoop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "3632ebb2-0bff-4fde-ac85-a2ebbeb175d5";
+				SWIFT_OBJC_BRIDGING_HEADER = "StudyLoop/StudyLoop-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -780,6 +800,7 @@
 			baseConfigurationReference = 1B2666FF8D7DD041D321A4C1 /* Pods-StudyLoop.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Alex Klibisz (U28YN6T44M)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -788,9 +809,17 @@
 				);
 				INFOPLIST_FILE = StudyLoop/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/CrashReporter.framework",
+					"$(PROJECT_DIR)/CrashReporter.framework/Versions/A",
+					"$(PROJECT_DIR)/Rollbar.framework",
+					"$(PROJECT_DIR)/Rollbar.framework/Versions/A",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.getstudyloop.StudyLoop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "3632ebb2-0bff-4fde-ac85-a2ebbeb175d5";
+				SWIFT_OBJC_BRIDGING_HEADER = "StudyLoop/StudyLoop-Bridging-Header.h";
 			};
 			name = Release;
 		};

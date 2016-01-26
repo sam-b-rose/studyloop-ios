@@ -181,13 +181,6 @@ class LoginVC: UIViewController {
                 // Update profile pic from authData
                 self.updateProfilePicture(authData)
                 
-                // Get last course
-                ActivityService.act.getLastCourse({ (courseId) -> Void in
-                    print(courseId)
-                    NSUserDefaults.standardUserDefaults().setValue(courseId, forKey: KEY_COURSE)
-                    NSUserDefaults.standardUserDefaults().setValue("", forKey: KEY_COURSE_TITLE)
-                })
-                
                 let currentUser = User(uid: snapshot.key, dictionary: userDict)
                 if currentUser.universityId == nil {
                     self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
@@ -198,10 +191,12 @@ class LoginVC: UIViewController {
                         self.userEmail = userDict["email"] as? String
                         self.performSegueWithIdentifier(SEGUE_CHANGE_PWD, sender: nil)
                     } else {
-                        NotificationService.noti.getNotifications()
-                        // ActivityService.act.hideActivityIndicatior()
-                        print(NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE))
-                        self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                        // Get last course
+                        ActivityService.act.getLastCourse({ (courseId) -> Void in
+                            NSUserDefaults.standardUserDefaults().setValue(courseId, forKey: KEY_COURSE)
+                            NotificationService.noti.getNotifications()
+                            self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                        })
                     }
                 }
             } else {

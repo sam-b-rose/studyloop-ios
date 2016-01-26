@@ -21,6 +21,11 @@
         // Set status bar to light theme
         UIApplication.sharedApplication().statusBarStyle = .LightContent
         
+        // Rollbar config
+        let config: RollbarConfiguration = RollbarConfiguration()
+        config.environment = "production"        
+        Rollbar.initWithAccessToken("14a234b43f574448a233c89e33cb9803", configuration: config)
+        
         // Register for push
         let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
         UIApplication.sharedApplication().registerUserNotificationSettings(settings)
@@ -57,7 +62,6 @@
     }
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        print("Got token data! \(deviceToken)! Now send it to the database!")
         NSUserDefaults.standardUserDefaults().setValue(String(deviceToken), forKey: KEY_DEVICE_ID)
     }
     
