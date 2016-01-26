@@ -183,6 +183,7 @@ class LoginVC: UIViewController {
                 
                 // Get last course
                 ActivityService.act.getLastCourse({ (courseId) -> Void in
+                    print(courseId)
                     NSUserDefaults.standardUserDefaults().setValue(courseId, forKey: KEY_COURSE)
                     NSUserDefaults.standardUserDefaults().setValue("", forKey: KEY_COURSE_TITLE)
                 })
@@ -199,6 +200,7 @@ class LoginVC: UIViewController {
                     } else {
                         NotificationService.noti.getNotifications()
                         // ActivityService.act.hideActivityIndicatior()
+                        print(NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE))
                         self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                     }
                 }

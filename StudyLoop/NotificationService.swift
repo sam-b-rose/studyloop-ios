@@ -128,7 +128,7 @@ class NotificationService: Evented {
                         snapshot in
                         
                         if let course = snapshot.value as? Dictionary<String, AnyObject> {
-                            title = "\(course["major"]) \(course["number"])"
+                            title = "\(course["major"]!) \(course["number"]!)"
                         }
                         
                         body = "New loop - \(subject)"
