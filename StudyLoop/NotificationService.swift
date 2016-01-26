@@ -8,6 +8,7 @@
 
 import Foundation
 import Firebase
+import AVFoundation
 import MPGNotification
 
 protocol Evented {
@@ -19,13 +20,16 @@ class NotificationService: Evented {
     static let noti = NotificationService()
     private var handle: UInt!
     
+    // Audio
+    var audioPlayer = AVAudioPlayer()
+    
     // Firebase REFs
     private var _REF_NOTIFICATIONS = Firebase(url: "\(URL_BASE)/notifications")
     
     var REF_NOTIFICATIONS: Firebase {
         return _REF_NOTIFICATIONS
     }
-
+    
     var REF_NOTIFICATIONS_USER: Firebase {
         let uid = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as! String
         return REF_NOTIFICATIONS.childByAppendingPath(uid)
@@ -51,7 +55,7 @@ class NotificationService: Evented {
             self.emit(EVENT_NEW_LOOP)
         }
     }
-
+    
     func emit(notificationType: String) -> Bool {
         Event.emit(notificationType)
         return true
@@ -103,19 +107,10 @@ class NotificationService: Evented {
     }
     
     func removeAllNotifications() {
-        for (key, _) in newLoops {
-            removeNotification(key)
+        REF_NOTIFICATIONS_USER.removeValueWithCompletionBlock {
+            error, ref in
+            self.success("All notifications have been cleared!")
         }
-        
-        for (key, _) in newMessages {
-            removeNotification(key)
-        }
-        
-        for (key, _) in courseActivity {
-            removeNotification(key)
-        }
-        
-        success("All notifications have been cleared!")
     }
     
     func removeNotificationObserver() {
@@ -137,6 +132,7 @@ class NotificationService: Evented {
                 //self.removeNotification("")
             }
         }
+        playSound("notification")
     }
     
     func newMessage(message: String) {
@@ -175,11 +171,29 @@ class NotificationService: Evented {
     
     
     // Generic UIAlert
-
+    
     func showAlert(title: String, msg: String, uiView: UIViewController) {
         let alert = UIAlertController(title: title, message: msg, preferredStyle: .Alert)
         let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
         alert.addAction(action)
         uiView.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    
+    
+    // Play Notification sound
+    func playSound(soundName: String)
+    {
+        if let notificationPath = NSBundle.mainBundle().pathForResource(soundName, ofType: "wav") {
+            let notificationSound = NSURL(fileURLWithPath: notificationPath)
+            
+            do{
+                let audioPlayer = try AVAudioPlayer(contentsOfURL:notificationSound)
+                audioPlayer.prepareToPlay()
+                audioPlayer.play()
+            }catch {
+                print("Error getting the audio file")
+            }
+        }
     }
 }

@@ -46,7 +46,6 @@ class LoginVC: UIViewController {
         
         handle = DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
             if authData != nil {
-                //ActivityService.act.showActivityIndicator(true, uiView: self.view)
                 // user authenticated
                 print("From LoginVC")
                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
@@ -82,6 +81,7 @@ class LoginVC: UIViewController {
         passwordField.frame.size.height = 35
         loginBtn.setTitle("Login", forState: .Normal)
         facebookBtn.hidden = false
+        facebookBtn.setTitle("FACEBOOK LOGIN", forState: .Normal)
         forgotBtn.hidden = false
         forgotBtn.setTitle("Forgot password?", forState: .Normal)
         registerBtn.setTitle("Not registered? Sign up!", forState: .Normal)
@@ -96,7 +96,8 @@ class LoginVC: UIViewController {
         passwordField.hidden = false
         passwordField.frame.size.height = 35
         loginBtn.setTitle("Register", forState: .Normal)
-        facebookBtn.hidden = true
+        facebookBtn.hidden = false
+        facebookBtn.setTitle("FACEBOOK REGISTER", forState: .Normal)
         forgotBtn.hidden = true
         registerBtn.setTitle("Already have an account? Login!", forState: .Normal)
         isRegistering = true
@@ -251,16 +252,19 @@ class LoginVC: UIViewController {
             if facebookError != nil {
                 print("Facebook login failed. Error \(facebookError)")
             } else {
-                let accessToken = FBSDKAccessToken.currentAccessToken().tokenString
-                //print("Successfully logined in with facebook. \(accessToken)")
-                DataService.ds.REF_BASE.authWithOAuthProvider("facebook", token: accessToken, withCompletionBlock: {
-                    error, authData in
-                    if error != nil {
-                        print("login failed. \(error)")
-                    } else {
-                        print("Logged in!")
-                    }
-                })
+                if let accessToken = FBSDKAccessToken.currentAccessToken().tokenString {
+                    //print("Successfully logined in with facebook. \(accessToken)")
+                    DataService.ds.REF_BASE.authWithOAuthProvider("facebook", token: accessToken, withCompletionBlock: {
+                        error, authData in
+                        if error != nil {
+                            print("login failed. \(error)")
+                        } else {
+                            print("Logged in!")
+                        }
+                    })
+                } else {
+                      print("Login failed. Bad accessToken")
+                }
             }
         })
     }

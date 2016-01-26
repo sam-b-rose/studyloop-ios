@@ -17,6 +17,7 @@ class MemberCell: UITableViewCell {
     @IBOutlet weak var userAvatar: UIImageView!
     
     var request: Request?
+    let border = CALayer()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -32,6 +33,7 @@ class MemberCell: UITableViewCell {
     }
     
     func configureCell(var userName: String?, profileImageURL: String?) {
+        self.selectionStyle = .None
         
         if userName != nil {
             nameLabel.text = userName
@@ -40,15 +42,19 @@ class MemberCell: UITableViewCell {
             userName = "Removed User"
         }
         
-        let initialsArr = userName!.characters.split{$0 == " "}.map(String.init)
-        let firstInitial = getFirstLetter(initialsArr[0])
-        var secondInitial = ""
-        if initialsArr.count > 1 {
-            secondInitial = getFirstLetter(initialsArr[1])
+        
+        let nameArray = userName!.characters.split{ $0 == " " }.map(String.init)
+
+        var initialsArray = [String]()
+        for name in nameArray {
+            if let letter = name.characters.first {
+                initialsArray.append(String(letter))
+            }
         }
-        let initials = "\(firstInitial)\(secondInitial)"
+        
+        
+        let initials = initialsArray.joinWithSeparator("")
         initialsLabel.text = initials
-        print(initials)
         
         if profileImageURL != nil {
             initialsLabel.hidden = true
@@ -69,14 +75,15 @@ class MemberCell: UITableViewCell {
             initialsLabel.hidden = false
             userAvatar.image = nil
         }
+        
+        border.backgroundColor = SL_GRAY.colorWithAlphaComponent(0.3).CGColor
+        border.frame = CGRect(x: 15, y: 0, width: layer.frame.width - 15, height: 0.5)
+        layer.addSublayer(border)
     }
     
     func getFirstLetter(str: String) -> String {
         let index = str.startIndex.advancedBy(0)
         return str.substringToIndex(index)
     }
-    
-    /* ---- */
-
 
 }

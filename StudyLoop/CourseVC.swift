@@ -119,17 +119,21 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    override func viewDidDisappear(animated: Bool) {
-        
-        //Remove Firebase observer handler
-        DataService.ds.REF_LOOPS.removeObserverWithHandle(handle)
-        
+    override func viewWillDisappear(animated: Bool) {
         // Remove Notifications about this course
         let loopIds = loops.map { $0.uid }
         for(key, val) in NotificationService.noti.newLoops {
             if loopIds.indexOf(val) != nil {
                 NotificationService.noti.removeNotification(key)
             }
+        }
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        
+        //Remove Firebase observer handler
+        if handle != nil {
+            DataService.ds.REF_LOOPS.removeObserverWithHandle(handle)
         }
     }
     

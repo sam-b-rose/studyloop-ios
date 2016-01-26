@@ -127,17 +127,19 @@ class LoopMessageCell: UITableViewCell {
             nameLabel.text = name
             
             if imageUrl == nil {
-                // TODO: Users initials not working
-                let initialsArr = name!.characters.split{$0 == " "}.map(String.init)
-                let firstInitial = getFirstLetter(initialsArr[0])
-                var secondInitial = ""
+                let nameArray = name!.characters.split{ $0 == " " }.map(String.init)
                 
-                if initialsArr.count > 1 {
-                    secondInitial = getFirstLetter(initialsArr[1])
+                var initialsArray = [String]()
+                for name in nameArray {
+                    if let letter = name.characters.first {
+                        initialsArray.append(String(letter))
+                    }
                 }
                 
-                let initials = "\(firstInitial)\(secondInitial)"
+                
+                let initials = initialsArray.joinWithSeparator("")
                 initialsLabel.text = initials
+                
             }
         } else {
             nameLabel.text = "Removed User"
@@ -153,11 +155,12 @@ class LoopMessageCell: UITableViewCell {
                 // ActivityService.act.showActivityIndicator(true, uiView: self.attachmentImage)
                 request = Alamofire.request(.GET, fullUrl).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, err in
                     if err == nil {
-                        let img = UIImage(data: data!)!
-                        //let resizedImg = ImageSizer.imgs.resizeImageWithAspectFit(img, size: CGSizeMake(self.frame.width - 50, 150))
-                        self.attachmentImage.image = img
+                        let image = UIImage(data: data!)!
+                        
+                        self.attachmentImage.image = image
                         self.attachmentImage.hidden = false
-                        LoopVC.imageCache.setObject(img, forKey: attachmentUrl!)
+                        
+                        LoopVC.imageCache.setObject(image, forKey: attachmentUrl!)
                     } else {
                         print("There was an error!", err)
                     }
@@ -196,10 +199,5 @@ class LoopMessageCell: UITableViewCell {
             initialsLabel.hidden = false
             userAvatar.image = nil
         }
-    }
-    
-    func getFirstLetter(str: String) -> String {
-        let index = str.startIndex.advancedBy(0)
-        return str.substringToIndex(index)
     }
 }

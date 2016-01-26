@@ -10,9 +10,9 @@ import UIKit
 
 class LoopCell: UITableViewCell {
     
-    lazy var border: CALayer = {
-        let border = CALayer()
-        border.backgroundColor = SL_GRAY.colorWithAlphaComponent(0.3).CGColor
+    lazy var border: UIView = {
+        let border = UIView()
+        border.backgroundColor = SL_GRAY.colorWithAlphaComponent(0.3)
         border.frame = CGRect(x: 15, y: 0, width: self.frame.width, height: 0.5)
         return border
     }()
@@ -64,7 +64,7 @@ class LoopCell: UITableViewCell {
         self.addSubview(self.newMessageInidcator)
         self.addSubview(self.lastLabel)
         self.addSubview(self.dateLabel)
-        self.layer.addSublayer(border)
+        self.addSubview(border)
 
         
         loopLabel.snp_makeConstraints { (make) -> Void in
@@ -76,14 +76,16 @@ class LoopCell: UITableViewCell {
         lastLabel.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(self.loopLabel.snp_bottom).offset(5)
             make.left.equalTo(self).offset(20)
-            make.right.equalTo(self.newMessageInidcator.snp_left).offset(-20).priorityLow()
+            make.right.equalTo(self.newMessageInidcator.snp_left).offset(-20).priorityMedium()
             make.bottom.equalTo(self).offset(-10)
+            make.width.lessThanOrEqualTo(self).offset(-80)
             make.height.greaterThanOrEqualTo(20)
         }
         
         newMessageInidcator.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(self.loopLabel.snp_bottom).offset(5).priorityHigh()
             make.right.equalTo(self).offset(-35).priorityHigh()
+            // make.left.equalTo(self.lastLabel.snp_right).offset(20).priorityHigh()
         }
         
         dateLabel.snp_makeConstraints { (make) -> Void in

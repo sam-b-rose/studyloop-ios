@@ -88,7 +88,7 @@ class AppSettingsVC: UITableViewController {
     }
     
     func resetUserDefaults() {
-        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UID)
+        // NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UID)
         NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UNIVESITY)
         NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
         NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)

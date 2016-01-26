@@ -109,8 +109,27 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
             }
         })
         
-        // Set last loop for current user
+        // Set that user is active in loop
+        ActivityService.act.REF_ACTIVITY_LOOP
+            .childByAppendingPath(loop.uid)
+            .childByAppendingPath(currentUserId)
+            .updateChildValues([
+                    "activeAt": kFirebaseServerValueTimestamp,
+                    "presentAt": kFirebaseServerValueTimestamp
+                ])
+        
+         // Set last loop for current user
         ActivityService.act.setLastLoop(loop.uid)
+    }
+    
+    
+    override func viewWillDisappear(animated: Bool) {
+        // Remove Notifications
+        for (key,val) in NotificationService.noti.newMessages {
+            if val == loop.uid {
+                NotificationService.noti.removeNotification(key)
+            }
+        }
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -124,12 +143,18 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
         DataService.ds.REF_LOOPS.childByAppendingPath(loop.uid).removeObserverWithHandle(loopHandle)
         ActivityService.act.REF_ACTIVITY_LOOP.childByAppendingPath(loop.uid).removeObserverWithHandle(activityHandle)
         
-        // Remove Notifications
-        for (key,val) in NotificationService.noti.newMessages {
-            if val == loop.uid {
-                NotificationService.noti.removeNotification(key)
-            }
-        }
+        // Reset user's presence status to inactive
+        ActivityService.act.REF_ACTIVITY_LOOP
+            .childByAppendingPath(loop.uid)
+            .childByAppendingPath(currentUserId)
+            .childByAppendingPath("activeAt")
+            .removeValue()
+    
+        ActivityService.act.REF_ACTIVITY_LOOP
+            .childByAppendingPath(loop.uid)
+            .childByAppendingPath(currentUserId)
+            .childByAppendingPath("presentAt")
+            .removeValue()
     }
     
     func createUserMaps(completion: (result: Bool)-> Void) {
