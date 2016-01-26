@@ -8,7 +8,6 @@
 
 import Foundation
 import Firebase
-import AVFoundation
 import MPGNotification
 
 protocol Evented {
@@ -18,10 +17,14 @@ protocol Evented {
 class NotificationService: Evented {
     
     static let noti = NotificationService()
-    private var handle: UInt!
+    private var addedHandle: UInt?
+    private var removedHandle: UInt?
     
-    // Audio
-    var audioPlayer = AVAudioPlayer()
+    private var _notifications: [Notification] {
+        willSet(newMessage) {
+            self.emit(NOTIFICATION)
+        }
+    }
     
     // Firebase REFs
     private var _REF_NOTIFICATIONS = Firebase(url: "\(URL_BASE)/notifications")
@@ -35,6 +38,9 @@ class NotificationService: Evented {
         return REF_NOTIFICATIONS.childByAppendingPath(uid)
     }
     
+    var notifications: [Notification] {
+        return _notifications
+    }
     
     // Evented Notification Dictionaries
     
@@ -65,44 +71,38 @@ class NotificationService: Evented {
         self.newLoops = [String:String]()
         self.newMessages = [String:String]()
         self.courseActivity = [String:String]()
+        self._notifications = [Notification]()
     }
     
     
     // Notification Data helpers
     
     func getNotifications() {
-        handle = REF_NOTIFICATIONS_USER.observeEventType(.Value, withBlock: {
+        _notifications.removeAll()
+        addedHandle = REF_NOTIFICATIONS_USER.observeEventType(.ChildAdded, withBlock: {
             snapshot in
             
-            self.courseActivity.removeAll()
-            self.newMessages.removeAll()
-            self.newLoops.removeAll()
-            
-            if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
-                for snap in snapshots {
-                    if let notiDict = snap.value as? Dictionary<String, AnyObject> {
-                        // Append to Notification Array
-                        print(notiDict)
-                        
-                        if let type = notiDict["type"] as? String, let data = notiDict["data"] as? Dictionary<String, AnyObject> {
-                            let key = snap.key
-                            self.courseActivity[key] = data["courseId"] as? String
-                            
-                            if type == EVENT_NEW_LOOP {
-                                self.newLoops[key] = data["id"] as? String
-                                self.newLoop("A new loop has been created!")
-                            } else if type == EVENT_NEW_MESSAGE {
-                                self.newMessages[key] = data["loopId"] as? String
-                                self.newMessage("You have an unread message!")
-                            }
-                        }
-                    }
-                }
+            if let notiDict = snapshot.value as? Dictionary<String, AnyObject> {
+                // Create new Notification object
+                let notification = Notification(key: snapshot.key, dictionary: notiDict)
+                self._notifications.append(notification)
+                self.newNotification(notification)
             }
         })
+        
+        removedHandle = REF_NOTIFICATIONS_USER.observeEventType(.ChildRemoved, withBlock: {
+            snapshot in
+            
+            print("SNAP: ", snapshot)
+            if let index = self._notifications.indexOf({ $0.uid == snapshot.key }) {
+                self._notifications.removeAtIndex(index)
+            }
+        })
+
     }
     
     func removeNotification(uid: String) {
+        print("REMOVING Notificaiton: ", uid)
         REF_NOTIFICATIONS_USER.childByAppendingPath(uid).removeValue()
     }
     
@@ -114,7 +114,13 @@ class NotificationService: Evented {
     }
     
     func removeNotificationObserver() {
-        REF_NOTIFICATIONS_USER.removeAuthEventObserverWithHandle(handle!)
+        if addedHandle != nil {
+            REF_NOTIFICATIONS_USER.removeAuthEventObserverWithHandle(addedHandle!)
+        }
+    
+        if removedHandle != nil {
+            REF_NOTIFICATIONS_USER.removeAuthEventObserverWithHandle(removedHandle!)
+        }
     }
     
     
@@ -132,7 +138,6 @@ class NotificationService: Evented {
                 //self.removeNotification("")
             }
         }
-        playSound("notification")
     }
     
     func newMessage(message: String) {
@@ -145,6 +150,60 @@ class NotificationService: Evented {
             if buttonIndex == notification.firstButton.tag || buttonIndex == notification.backgroundView.tag {
                 print("remove the notification")
                 //self.removeNotification("")
+            }
+        }
+    }
+    
+    func newNotification(notification: Notification) {
+        var title = "New notification"
+        var body = ""
+        
+        DataService.ds.REF_LOOPS
+            .childByAppendingPath(notification.loopId!)
+            .childByAppendingPath("subject")
+            .observeSingleEventOfType(.Value, withBlock: {
+                snapshot in
+                
+                let subject = snapshot.value as! String
+                
+                switch notification.type {
+                case LOOP_MESSAGE_RECEIVED:
+                    title = "\(subject)"
+                    if let message = notification.textValue where message != "" {
+                        body = message
+                    }
+                    self.showNotification(title, body: body, notificationId: notification.uid)
+                    break
+                case LOOP_CREATED:
+                    CourseService.cs.REF_COURSES.childByAppendingPath(notification.courseId).observeSingleEventOfType(.Value, withBlock: {
+                        snapshot in
+                        
+                        if let course = snapshot.value as? Dictionary<String, AnyObject> {
+                            title = "\(course["major"]) \(course["number"])"
+                        }
+                        
+                        body = "New loop - \(subject)"
+                        self.showNotification(title, body: body, notificationId: notification.uid)
+                    })
+                    break
+                default:
+                    break
+                }
+                
+            })
+    }
+    
+    func showNotification(title: String, body: String, notificationId: String) {
+        let owl = UIImage(named: "owl-light-square")
+        let mpgNotification = MPGNotification(title: title, subtitle: body, backgroundColor: SL_BLACK, iconImage: owl)
+        mpgNotification.titleColor = SL_WHITE
+        mpgNotification.subtitleColor = SL_WHITE
+        mpgNotification.duration = 3
+        mpgNotification.setButtonConfiguration(MPGNotificationButtonConfigration.TwoButton, withButtonTitles: ["Dismiss", "Remove"])
+        mpgNotification.showWithButtonHandler { (mpgNotification, buttonIndex) -> Void in
+            if buttonIndex == mpgNotification.secondButton.tag {
+                print("remove the notification")
+                self.removeNotification(notificationId)
             }
         }
     }
@@ -177,23 +236,5 @@ class NotificationService: Evented {
         let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
         alert.addAction(action)
         uiView.presentViewController(alert, animated: true, completion: nil)
-    }
-    
-    
-    
-    // Play Notification sound
-    func playSound(soundName: String)
-    {
-        if let notificationPath = NSBundle.mainBundle().pathForResource(soundName, ofType: "wav") {
-            let notificationSound = NSURL(fileURLWithPath: notificationPath)
-            
-            do{
-                let audioPlayer = try AVAudioPlayer(contentsOfURL:notificationSound)
-                audioPlayer.prepareToPlay()
-                audioPlayer.play()
-            }catch {
-                print("Error getting the audio file")
-            }
-        }
     }
 }

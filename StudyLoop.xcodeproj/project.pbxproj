@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0A12DB4E71DA66C64D6D8C50 /* Pods_StudyLoop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D755C00352E28EAE43CA0CB3 /* Pods_StudyLoop.framework */; };
+		6F03B08B1C578F2F0055BC0B /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F03B08A1C578F2F0055BC0B /* Notification.swift */; };
 		6F1466F61C0B461D00528DE3 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1466F51C0B461D00528DE3 /* DataService.swift */; };
 		6F19BE301C1A6AA1004DC7A5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F19BE2F1C1A6AA1004DC7A5 /* User.swift */; };
 		6F2226FE1C50F36100D028BD /* Loggable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2226FD1C50F36100D028BD /* Loggable.swift */; };
@@ -89,6 +90,7 @@
 
 /* Begin PBXFileReference section */
 		1B2666FF8D7DD041D321A4C1 /* Pods-StudyLoop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StudyLoop.release.xcconfig"; path = "Pods/Target Support Files/Pods-StudyLoop/Pods-StudyLoop.release.xcconfig"; sourceTree = "<group>"; };
+		6F03B08A1C578F2F0055BC0B /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		6F1466F51C0B461D00528DE3 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		6F19BE2F1C1A6AA1004DC7A5 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		6F2226FD1C50F36100D028BD /* Loggable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loggable.swift; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 				6F96319C1C138EC000D1DA88 /* Message.swift */,
 				6F90FEF91C2C2D77001920C4 /* University.swift */,
 				6F19BE2F1C1A6AA1004DC7A5 /* User.swift */,
+				6F03B08A1C578F2F0055BC0B /* Notification.swift */,
 			);
 			name = Model;
 			path = ..;
@@ -582,6 +585,7 @@
 				6F91EF181C2E31E500BDD395 /* DrawerVC.swift in Sources */,
 				6FE810BA1C0B287E00B1ABA8 /* MaterialButton.swift in Sources */,
 				6F90FEFA1C2C2D77001920C4 /* University.swift in Sources */,
+				6F03B08B1C578F2F0055BC0B /* Notification.swift in Sources */,
 				6F8B0E101C44834F008C5D54 /* AppSettingsVC.swift in Sources */,
 				6FF43E5C1C35F4180041D00F /* CourseCell.swift in Sources */,
 				6F96319B1C132FE900D1DA88 /* MessageCell.swift in Sources */,

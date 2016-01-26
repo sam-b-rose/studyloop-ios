@@ -103,13 +103,9 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         
-        // Watch for notifications for Courses
-        Event.register(EVENT_NEW_MESSAGE) {
+        // Watch for notifications
+        Event.register(NOTIFICATION) {
             self.tableView.reloadData()
-        }
-        
-        Event.register(EVENT_NEW_LOOP) {
-            // do something to reload course loops
         }
         
         if let courseTitle = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE_TITLE) as? String {

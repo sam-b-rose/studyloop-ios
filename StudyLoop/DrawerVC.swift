@@ -33,14 +33,15 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let image = UIImage(named: "studyloop-logo.png")
         imageView.image = image
         navigationItem.titleView = imageView
-        
-        // Watch for notifications for Courses
-        Event.register(EVENT_COURSE_ALERT) {
-            self.tableView.reloadData()
-        }
     }
     
     override func viewWillAppear(animated: Bool) {
+        
+        // Watch for notifications
+        Event.register(NOTIFICATION) {
+            self.tableView.reloadData()
+        }
+        
         courseHandle = UserService.us.REF_USER_CURRENT
             .childByAppendingPath("courseIds")
             .observeEventType(.Value, withBlock: { snapshot in
@@ -71,7 +72,9 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     override func viewDidDisappear(animated: Bool) {
-        UserService.us.REF_USER_CURRENT.childByAppendingPath("courseIds").removeObserverWithHandle(courseHandle)
+        if courseHandle != nil {
+            UserService.us.REF_USER_CURRENT.childByAppendingPath("courseIds").removeObserverWithHandle(courseHandle)
+        }
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

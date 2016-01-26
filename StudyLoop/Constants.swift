@@ -28,9 +28,14 @@ let KEY_COURSE_TITLE = "courseTitle"
 let KEY_LOOP = "loop"
 
 // Events
+let NOTIFICATION = "notification"
 let EVENT_NEW_MESSAGE = "LOOP_MESSAGE_RECEIVED"
 let EVENT_NEW_LOOP = "LOOP_CREATED"
 let EVENT_COURSE_ALERT = "COURSE_ALERT"
+
+// Notification Types
+let LOOP_MESSAGE_RECEIVED = "LOOP_MESSAGE_RECEIVED"
+let LOOP_CREATED = "LOOP_CREATED"
 
 // Segues
 let SEGUE_LOGGED_IN = "loggedIn"

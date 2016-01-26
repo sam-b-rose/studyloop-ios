@@ -125,10 +125,9 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
     
     override func viewWillDisappear(animated: Bool) {
         // Remove Notifications
-        for (key,val) in NotificationService.noti.newMessages {
-            if val == loop.uid {
-                NotificationService.noti.removeNotification(key)
-            }
+        let loopNotifications = NotificationService.noti.notifications.filter { $0.loopId == loop.uid }
+        for notification in loopNotifications {
+            NotificationService.noti.removeNotification(notification.uid)
         }
     }
     

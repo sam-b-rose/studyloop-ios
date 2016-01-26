@@ -99,6 +99,8 @@ class LoopCell: UITableViewCell {
     func configureCell(loop: Loop) {
         loopLabel.text = loop.subject
         lastLabel.text = loop.lastMessage
+        newMessageInidcator.hidden = true
+        backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0)
         
         if loop.lastMessageTime != nil {
             let date = TimeUtils.tu.dayStringFromTime(loop.lastMessageTime!)
@@ -107,22 +109,14 @@ class LoopCell: UITableViewCell {
             dateLabel.text = ""
         }
  
-        let loops = NotificationService.noti.newMessages.map { "\($1)" }
-        let hasNewMessage = loops.indexOf(loop.uid)
-        
-        if hasNewMessage != nil {
-            newMessageInidcator.hidden = false
-        } else {
-            newMessageInidcator.hidden = true
-        }
-        
-        let newLoops = NotificationService.noti.newLoops.map { "\($1)" }
-        let isNewLoop = newLoops.indexOf(loop.uid)
-        
-        if isNewLoop != nil {
-            self.backgroundColor = SL_LIGHT
-        } else {
-            self.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0)
+        let loopNotifications = NotificationService.noti.notifications.filter { $0.loopId == loop.uid }
+        print(loopNotifications.count)
+        if loopNotifications.count > 0 {
+            if loopNotifications[0].type == LOOP_MESSAGE_RECEIVED {
+                newMessageInidcator.hidden = false
+            } else if loopNotifications[0].type == LOOP_CREATED {
+                self.backgroundColor = SL_LIGHT
+            }
         }
     }
 

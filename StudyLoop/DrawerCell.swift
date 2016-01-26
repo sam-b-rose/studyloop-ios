@@ -36,10 +36,8 @@ class DrawerCell: UITableViewCell {
             menuIcon.hidden = false
             menuIcon.text = String.ioniconWithCode("ion-ios-gear")
         } else {
-            let courses = NotificationService.noti.courseActivity.map { "\($1)" }
-            let hasNotification = courses.indexOf(item.courseId)
-            
-            if hasNotification != nil {
+            let courses = NotificationService.noti.notifications.filter { $0.courseId == item.courseId }
+            if courses.count > 0 {
                 menuIcon.hidden = false
                 menuIcon.textColor = SL_RED
                 menuIcon.text = String.ioniconWithCode("ion-record")
