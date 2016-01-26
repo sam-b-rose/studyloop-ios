@@ -66,14 +66,18 @@ class ActivityService {
         REF_ACTIVITY_USERS.childByAppendingPath(userId).childByAppendingPath("loopId").setValue(loopId)
     }
     
-    func getLastLoop(completion: (result: String) -> Void) {
+    func getLastLoop(completion: (result: String?) -> Void) {
         let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
         REF_ACTIVITY_USERS.childByAppendingPath(userId).observeSingleEventOfType(.Value, withBlock: {
             snapshot in
             if let userActivityDict = snapshot.value as? Dictionary<String, AnyObject> {
                 if let loopId = userActivityDict["loopId"] as? String {
                     completion(result: loopId)
+                } else {
+                    completion(result: nil)
                 }
+            } else {
+                completion(result: nil)
             }
         })
     }
@@ -83,14 +87,18 @@ class ActivityService {
         REF_ACTIVITY_USERS.childByAppendingPath(userId).childByAppendingPath("courseId").setValue(courseId)
     }
    
-    func getLastCourse(completion: (result: String) -> Void) {
+    func getLastCourse(completion: (result: String?) -> Void) {
         let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
         REF_ACTIVITY_USERS.childByAppendingPath(userId).observeSingleEventOfType(.Value, withBlock: {
             snapshot in
             if let userActivityDict = snapshot.value as? Dictionary<String, AnyObject> {
                 if let courseId = userActivityDict["courseId"] as? String {
                     completion(result: courseId)
+                } else {
+                    completion(result: nil)
                 }
+            } else {
+                completion(result: nil)
             }
         })
     }
