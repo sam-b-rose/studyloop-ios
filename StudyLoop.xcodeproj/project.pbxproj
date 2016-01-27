@@ -700,7 +700,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Alex Klibisz (U28YN6T44M)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Alex Klibisz (B3A7ST59NS)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -722,7 +722,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "3632ebb2-0bff-4fde-ac85-a2ebbeb175d5";
+				PROVISIONING_PROFILE = "7c0bf022-3fff-43c1-b8e1-e06a4c4aa4c7";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -745,7 +745,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Alex Klibisz (U28YN6T44M)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Alex Klibisz (B3A7ST59NS)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -760,7 +760,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "3632ebb2-0bff-4fde-ac85-a2ebbeb175d5";
+				PROVISIONING_PROFILE = "7c0bf022-3fff-43c1-b8e1-e06a4c4aa4c7";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -780,6 +780,7 @@
 					"$(PROJECT_DIR)/StudyLoop",
 				);
 				INFOPLIST_FILE = StudyLoop/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -790,9 +791,10 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.getstudyloop.StudyLoop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3632ebb2-0bff-4fde-ac85-a2ebbeb175d5";
+				PROVISIONING_PROFILE = "7c0bf022-3fff-43c1-b8e1-e06a4c4aa4c7";
 				SWIFT_OBJC_BRIDGING_HEADER = "StudyLoop/StudyLoop-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -802,14 +804,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Alex Klibisz (U28YN6T44M)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Alex Klibisz (B3A7ST59NS)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Alex Klibisz (B3A7ST59NS)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/StudyLoop",
 				);
 				INFOPLIST_FILE = StudyLoop/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -820,8 +823,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.getstudyloop.StudyLoop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3632ebb2-0bff-4fde-ac85-a2ebbeb175d5";
+				PROVISIONING_PROFILE = "7c0bf022-3fff-43c1-b8e1-e06a4c4aa4c7";
 				SWIFT_OBJC_BRIDGING_HEADER = "StudyLoop/StudyLoop-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
