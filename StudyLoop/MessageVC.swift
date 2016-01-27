@@ -30,6 +30,7 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
     var timer: NSTimer? = nil
     var imageToSend: UIImage!
     var imageName = ""
+    var viewImage = ""
     let currentUserId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
     
     let attributes = [NSFontAttributeName: UIFont.ioniconOfSize(26)] as Dictionary!
@@ -81,7 +82,6 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
             if let messageDict = snapshot.value as? Dictionary<String, AnyObject> {
                 let key = snapshot.key
                 let message = Message(messageKey: key, dictionary: messageDict)
-                print("Adding message: ", messageDict)
                 self.addMessages(message)
             }
         })
@@ -275,8 +275,6 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
             self.tableView.reloadData()
             if self.messages.count > 0 {
                 self.scrollToBottomMessage()
-                // self.leftButton.setImage(UIImage(named: "icn_upload"), forState: UIControlState.Normal)
-                // ActivityService.act.setUserActivity(self.loop.uid, userId: self.currentUserId!, key: "typingAt", value: 0)
             }
         }
     }
@@ -365,6 +363,20 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
         return self.messages.count
     }
     
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        print("did tap cell")
+        
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as? LoopMessageCell
+        
+        if cell?.attachmentImage.image != nil {
+            if let imageUrl = cell?.imageUrl {
+                self.viewImage = imageUrl
+                performSegueWithIdentifier(SEGUE_VIEW_IMAGE, sender: nil)
+            }
+        }
+    }
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath)
         -> UITableViewCell {
             let message = messages[indexPath.row]
@@ -394,6 +406,11 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
             previewImageVC.delegate = self
             previewImageVC.modalPresentationStyle = .OverCurrentContext
             previewImageVC.image = self.imageToSend
+        } else if segue.identifier == SEGUE_VIEW_IMAGE {
+            let previewImageVC = segue.destinationViewController as! PreviewImageVC
+            previewImageVC.delegate = self
+            previewImageVC.modalPresentationStyle = .OverCurrentContext
+            previewImageVC.image = LoopVC.imageCache.objectForKey(viewImage) as? UIImage
         }
     }
 }

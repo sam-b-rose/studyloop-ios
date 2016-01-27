@@ -6,6 +6,7 @@ PODS:
   - MPGNotification (1.2.4)
   - SlackTextViewController (1.8)
   - SnapKit (0.18.0)
+  - Toucan (0.5.0)
 
 DEPENDENCIES:
   - Alamofire (~> 3.0)
@@ -15,6 +16,7 @@ DEPENDENCIES:
   - MPGNotification (~> 1.2)
   - SlackTextViewController
   - SnapKit
+  - Toucan (~> 0.5)
 
 SPEC CHECKSUMS:
   Alamofire: 5f730ba29fd113b7ddd71c1e65d0c630acf5d7b0
@@ -24,5 +26,6 @@ SPEC CHECKSUMS:
   MPGNotification: f0e3924087afa9b3eccd5ce624e03965ae31ae61
   SlackTextViewController: 0300adee2931fdbe72488990336f0937dbed048e
   SnapKit: e1f090a6d47b1dd4bd89b73f72b6746a7835ef3c
+  Toucan: 0519c341148252ae114c5a657d2a85bb9ada9e40
 
 COCOAPODS: 0.39.0

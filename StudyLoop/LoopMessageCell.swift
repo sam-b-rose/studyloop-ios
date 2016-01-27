@@ -8,11 +8,13 @@
 
 import UIKit
 import SnapKit
+import Toucan
 import Alamofire
 
 class LoopMessageCell: UITableViewCell {
     
     var request: Request?
+    var imageUrl = ""
     
     lazy var nameLabel: UILabel = {
         let label = UILabel()
@@ -147,30 +149,34 @@ class LoopMessageCell: UITableViewCell {
         }
         
         if attachmentUrl != nil {
+            self.imageUrl = attachmentUrl!
             if let img = LoopVC.imageCache.objectForKey(attachmentUrl!) as? UIImage {
                 self.attachmentImage.image = img
                 self.attachmentImage.hidden = false
+                self.attachmentImage.snp_updateConstraints(closure: { (make) -> Void in
+                    make.height.equalTo(img.size.height)
+                })
             } else {
                 let fullUrl = IMAGE_BASE + attachmentUrl!
-                // ActivityService.act.showActivityIndicator(true, uiView: self.attachmentImage)
                 request = Alamofire.request(.GET, fullUrl).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, err in
                     if err == nil {
                         let image = UIImage(data: data!)!
+                        let newImageWidth = self.frame.width - self.userAvatar.frame.width - 10
+                        let resizedImage = ImageUtil.iu.resizeImage(image, newWidth: newImageWidth)
                         
-                        self.attachmentImage.image = image
+                        self.attachmentImage.image = resizedImage
                         self.attachmentImage.hidden = false
                         
-                        LoopVC.imageCache.setObject(image, forKey: attachmentUrl!)
+                        self.attachmentImage.snp_updateConstraints(closure: { (make) -> Void in
+                            make.height.equalTo(resizedImage.size.height)
+                        })
+                        
+                        LoopVC.imageCache.setObject(resizedImage, forKey: attachmentUrl!)
                     } else {
                         print("There was an error!", err)
                     }
                 })
             }
-            
-            self.attachmentImage.snp_updateConstraints(closure: { (make) -> Void in
-                make.height.equalTo(150)
-            })
-            
         } else {
             self.attachmentImage.hidden = true
             self.attachmentImage.image = nil

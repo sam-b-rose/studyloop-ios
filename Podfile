@@ -8,6 +8,7 @@ pod 'KYDrawerController'
 pod 'FuzzySearch', '~> 1.1'
 pod 'SlackTextViewController'
 pod 'SnapKit'
+pod 'Toucan', '~> 0.5'
 pod 'MPGNotification', '~> 1.2'
 
 end

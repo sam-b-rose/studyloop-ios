@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '343961C413EF6F66DB8D219F'
-               BlueprintName = 'SnapKit'
+               BlueprintIdentifier = 'ACB39A9C7021DF6C1F6D1967'
+               BlueprintName = 'Toucan'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'SnapKit.framework'>
+               BuildableName = 'Toucan.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

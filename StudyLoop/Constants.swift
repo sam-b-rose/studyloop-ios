@@ -47,6 +47,7 @@ let SEGUE_ADD_COURSE = "addCourse"
 let SEGUE_COURSE = "course"
 let SEGUE_LOOP = "loop"
 let SEGUE_PREVIEW_IMAGE = "previewImage"
+let SEGUE_VIEW_IMAGE = "viewImage"
 let SEGUE_ADD_LOOP = "addLoop"
 let SEGUE_MEMBERS = "members"
 
