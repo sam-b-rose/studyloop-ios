@@ -107,39 +107,40 @@ class NotificationService: Evented {
         var title = "New notification"
         var body = ""
         
-        DataService.ds.REF_LOOPS
-            .childByAppendingPath(notification.loopId!)
-            .childByAppendingPath("subject")
-            .observeSingleEventOfType(.Value, withBlock: {
-                snapshot in
-                
-                let subject = snapshot.value as! String
-                
-                switch notification.type {
-                case LOOP_MESSAGE_RECEIVED:
-                    title = "\(subject)"
-                    if let message = notification.textValue where message != "" {
-                        body = message
-                    }
-                    self.showNotification(title, body: body, notificationId: notification.uid)
-                    break
-                case LOOP_CREATED:
-                    CourseService.cs.REF_COURSES.childByAppendingPath(notification.courseId).observeSingleEventOfType(.Value, withBlock: {
-                        snapshot in
-                        
-                        if let course = snapshot.value as? Dictionary<String, AnyObject> {
-                            title = "\(course["major"]!) \(course["number"]!)"
+        if let loopId = notification.loopId where loopId != "" {
+            DataService.ds.REF_LOOPS
+                .childByAppendingPath(loopId)
+                .childByAppendingPath("subject")
+                .observeSingleEventOfType(.Value, withBlock: {
+                    snapshot in
+                    
+                    let subject = snapshot.value as! String
+                    
+                    switch notification.type {
+                    case LOOP_MESSAGE_RECEIVED:
+                        title = "\(subject)"
+                        if let message = notification.textValue where message != "" {
+                            body = message
                         }
-                        
-                        body = "New loop - \(subject)"
                         self.showNotification(title, body: body, notificationId: notification.uid)
-                    })
-                    break
-                default:
-                    break
-                }
-                
-            })
+                        break
+                    case LOOP_CREATED:
+                        CourseService.cs.REF_COURSES.childByAppendingPath(notification.courseId).observeSingleEventOfType(.Value, withBlock: {
+                            snapshot in
+                            
+                            if let course = snapshot.value as? Dictionary<String, AnyObject> {
+                                title = "\(course["major"]!) \(course["number"]!)"
+                            }
+                            
+                            body = "New loop - \(subject)"
+                            self.showNotification(title, body: body, notificationId: notification.uid)
+                        })
+                        break
+                    default:
+                        break
+                    }
+                })
+        }
     }
     
     func showNotification(title: String, body: String, notificationId: String) {

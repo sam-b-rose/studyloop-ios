@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D865725F116AB43391C47B6313267797"
-               BlueprintName = "SlackTextViewController"
-               ReferencedContainer = "container:Pods.xcodeproj"
-               BuildableName = "SlackTextViewController.framework">
+               BuildableIdentifier = 'primary'
+               BlueprintIdentifier = '586A26655FDB2B3E72177000'
+               BlueprintName = 'SlackTextViewController'
+               ReferencedContainer = 'container:Pods.xcodeproj'
+               BuildableName = 'SlackTextViewController.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
