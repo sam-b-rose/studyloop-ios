@@ -19,12 +19,15 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var noCourseLbl: UILabel!
     
     var loops = [Loop]()
+    var ref: Firebase!
     var selectedLoop: Loop! = nil
     var handle: UInt!
     let attributes = [NSFontAttributeName: UIFont.ioniconOfSize(26)] as Dictionary!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        ref = Firebase(url:"https://swift-chat.firebaseio.com")
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -157,7 +160,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             selectedLoop = loops[indexPath.row]
             
             if selectedLoop.hasCurrentUser == true {
-                self.performSegueWithIdentifier(SEGUE_LOOP, sender: nil)
+                self.performSegueWithIdentifier("messagesVC", sender: nil)
             } else {
                 joinLoop()
             }
@@ -209,6 +212,13 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if(segue.identifier == SEGUE_LOOP) {
             let loopVC = segue.destinationViewController as! LoopVC
             loopVC.loop = selectedLoop
+        }
+        
+        let messagesVc = segue.destinationViewController as! MessagesViewController
+        if UserService.us.authData != nil {
+            messagesVc.user = UserService.us.authData
+            messagesVc.ref = ref
+            messagesVc.senderId = UserService.us.authData?.providerData["email"] as! String
         }
     }
 }

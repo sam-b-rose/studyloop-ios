@@ -12,6 +12,7 @@ import Firebase
 class UserService {
     static let us = UserService()
     
+    var authData: FAuthData?
     private var _REF_USERS = Firebase(url: "\(URL_BASE)/users")
     private var _REF_USER_SETTINGS = Firebase(url: "\(URL_BASE)/user-settings")
     

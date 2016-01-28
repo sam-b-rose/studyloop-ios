@@ -22,6 +22,7 @@ let IMAGE_BASE = "https://s3.amazonaws.com/sl-attachments/"
 // Keys
 let KEY_DEVICE_ID = "deviceId"
 let KEY_UID = "uid"
+let KEY_AUTH = "auth"
 let KEY_UNIVESITY = "university"
 let KEY_COURSE = "course"
 let KEY_COURSE_TITLE = "courseTitle"

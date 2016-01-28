@@ -48,6 +48,7 @@ class LoginVC: UIViewController {
             if authData != nil {
                 // user authenticated
                 print("From LoginVC")
+                UserService.us.authData = authData
                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
                 self.saveDeviceId(authData.uid)
                 self.checkUserData(authData)
