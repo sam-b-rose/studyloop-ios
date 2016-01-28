@@ -91,7 +91,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-StudyLoop/MPGNotification.framework"
   install_framework "Pods-StudyLoop/SlackTextViewController.framework"
   install_framework "Pods-StudyLoop/SnapKit.framework"
-  install_framework "Pods-StudyLoop/Toucan.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-StudyLoop/Alamofire.framework"
@@ -101,5 +100,4 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-StudyLoop/MPGNotification.framework"
   install_framework "Pods-StudyLoop/SlackTextViewController.framework"
   install_framework "Pods-StudyLoop/SnapKit.framework"
-  install_framework "Pods-StudyLoop/Toucan.framework"
 fi
