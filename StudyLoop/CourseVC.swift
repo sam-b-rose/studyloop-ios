@@ -219,6 +219,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             messagesVc.user = UserService.us.authData
             messagesVc.ref = ref
             messagesVc.senderId = UserService.us.authData?.providerData["email"] as! String
+            messagesVc.senderDisplayName = UserService.us.authData?.providerData["email"] as! String
         }
     }
 }

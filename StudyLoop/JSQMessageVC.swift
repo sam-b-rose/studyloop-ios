@@ -34,12 +34,26 @@ class MessagesViewController: JSQMessagesViewController {
         
         // *** STEP 4: RECEIVE MESSAGES FROM FIREBASE (limited to latest 25 messages)
         messagesRef.queryLimitedToLast(25).observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) in
-            let text = snapshot.value["text"] as? String
-            let sender = snapshot.value["sender"] as? String
+            var text: String!
+            var senderId: String!
+            print("SNAP: ", snapshot)
+            
+            if let message = snapshot.value["text"] as? String {
+                text = message
+            } else {
+                text = "Didn't get a text value."
+            }
+            
+            if let sender = snapshot.value["sender"] as? String {
+                senderId = sender
+            } else {
+                senderId = "unknown sender"
+            }
+            
             // let imageUrl = snapshot.value["imageUrl"] as? String
             
             // let message = JQMessage(text: text, sender: sender, senderDisplayName: sender, imageUrl: imageUrl)
-            let message = JSQMessage(senderId: sender, senderDisplayName: sender, date: NSDate(), text: text)
+            let message = JSQMessage(senderId: senderId, senderDisplayName: senderId, date: NSDate(), text: text)
             self.messages.append(message)
             self.finishReceivingMessage()
         })
