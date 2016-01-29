@@ -8,7 +8,6 @@
 
 import UIKit
 import SnapKit
-import Toucan
 import Alamofire
 
 class LoopMessageCell: UITableViewCell {
