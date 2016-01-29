@@ -19,15 +19,15 @@ class JQMessage : NSObject, JSQMessageData {
     var imageUrl_: String?
     
     convenience init(text: String?, sender: String?) {
-        self.init(text: text, sender: sender, senderDisplayName: sender, imageUrl: nil)
+        self.init(text: text, sender: sender, senderDisplayName: sender, date: NSDate(), imageUrl: nil)
     }
     
-    init(text: String?, sender: String?, senderDisplayName: String?, imageUrl: String?) {
+    init(text: String?, sender: String?, senderDisplayName: String?, date: NSDate!, imageUrl: String?) {
         self.text_ = text!
         self.sender_ = sender!
         self.senderDisplayName_ = senderDisplayName!
         self.isMediaMessage_ = false
-        self.date_ = NSDate()
+        self.date_ = date
         self.imageUrl_ = imageUrl
         
         let timestamp = UInt(floor(self.date_.timeIntervalSince1970 * 1000))

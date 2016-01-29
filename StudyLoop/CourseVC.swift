@@ -217,9 +217,9 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let messagesVc = segue.destinationViewController as! MessagesViewController
         if UserService.us.authData != nil {
             messagesVc.user = UserService.us.authData
-            messagesVc.ref = ref
-            messagesVc.senderId = UserService.us.authData?.providerData["email"] as! String
-            messagesVc.senderDisplayName = UserService.us.authData?.providerData["email"] as! String
+            messagesVc.loop = selectedLoop
+            messagesVc.senderId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as! String
+            messagesVc.senderDisplayName = "Sam Rose"
         }
     }
 }
