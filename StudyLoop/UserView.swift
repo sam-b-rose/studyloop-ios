@@ -27,11 +27,6 @@ class UserView: UIView {
         self.addGestureRecognizer(tap)
         self.userInteractionEnabled = true
         
-        // add border
-        border.backgroundColor = UIColor.lightGrayColor().CGColor
-        border.frame = CGRect(x: 0, y: self.layer.frame.height, width: self.layer.frame.width, height: 0.5)
-        //layer.addSublayer(border)
-        
         DataService.ds.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: {
             snapshot in
             if let userDict = snapshot.value as? Dictionary<String, AnyObject> {

@@ -15,6 +15,7 @@ class DrawerCell: UITableViewCell {
     
     var item: MenuItem!
     let border = CALayer()
+    let selectedBorder = CALayer()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -22,13 +23,22 @@ class DrawerCell: UITableViewCell {
     
     func configureCell(item: MenuItem) {
         self.item = item
+        self.selectionStyle = .None
         itemLabel.text = item.title
         
         // Icon Defaults
         menuIcon.hidden = true
-        menuIcon.textColor = SL_BLACK
-        menuIcon.font = UIFont.ioniconOfSize(17)
+        menuIcon.textColor = SL_WHITE
+        menuIcon.font = UIFont.ioniconOfSize(20)
         
+        selectedBorder.backgroundColor = SL_GREEN.CGColor
+        selectedBorder.frame = CGRect(x: 0, y: 0, width: 5, height: layer.frame.height)
+        layer.addSublayer(selectedBorder)
+        
+        border.backgroundColor = SL_GRAY.colorWithAlphaComponent(0.3).CGColor
+        border.frame = CGRect(x: 15, y: 0, width: layer.frame.width - 15, height: 0.5)
+        //layer.addSublayer(border)
+
         if item.title == "Add Course" {
             menuIcon.hidden = false
             menuIcon.text = String.ioniconWithCode("ion-plus")
@@ -44,8 +54,10 @@ class DrawerCell: UITableViewCell {
             }
         }
         
-        border.backgroundColor = SL_GRAY.colorWithAlphaComponent(0.3).CGColor
-        border.frame = CGRect(x: 15, y: 0, width: layer.frame.width - 15, height: 0.5)
-        layer.addSublayer(border)
+        if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String where item.courseId != "" && courseId == item.courseId {
+             selectedBorder.hidden = false
+        } else {
+             selectedBorder.hidden = true
+        }
     }
 }

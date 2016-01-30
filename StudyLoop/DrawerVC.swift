@@ -117,6 +117,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 NSUserDefaults.standardUserDefaults().setValue(items[indexPath.row].title, forKey: KEY_COURSE_TITLE)
             }
             
+            tableView.reloadData()
             drawerController.setDrawerState(.Closed, animated: true)
         }
     }

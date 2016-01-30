@@ -28,6 +28,7 @@ class MenuItem {
     init(title: String) {
         self._title = title
         self._hasNotification = false
+        self._courseId = ""
     }
     
     init(title: String, courseId: String, notify: Bool) {
