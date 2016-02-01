@@ -160,7 +160,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             selectedLoop = loops[indexPath.row]
             
             if selectedLoop.hasCurrentUser == true {
-                self.performSegueWithIdentifier("messagesVC", sender: nil)
+                self.performSegueWithIdentifier(SEGUE_MESSAGES, sender: nil)
             } else {
                 joinLoop()
             }
@@ -189,7 +189,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let currentUser = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
         DataService.ds.REF_LOOPS.childByAppendingPath(selectedLoop.uid).childByAppendingPath("userIds").childByAppendingPath(currentUser).setValue(true)
         DataService.ds.REF_USER_CURRENT.childByAppendingPath("loopIds").childByAppendingPath(selectedLoop.uid).setValue(true)
-        self.performSegueWithIdentifier(SEGUE_LOOP, sender: nil)
+        self.performSegueWithIdentifier(SEGUE_MESSAGES, sender: nil)
     }
     
     @IBAction func didTapSettingsButton(sender: AnyObject) {
@@ -215,13 +215,10 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         if(segue.identifier == SEGUE_MESSAGES) {
-            let messagesVc = segue.destinationViewController as! MessagesViewController
-            if UserService.us.authData != nil {
-                messagesVc.user = UserService.us.authData
-                messagesVc.loop = selectedLoop
-                messagesVc.senderId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as! String
-                messagesVc.senderDisplayName = "Sam Rose"
-            }
+            let messagesVC = segue.destinationViewController as! MessagesViewController
+            messagesVC.loop = selectedLoop
+            messagesVC.senderId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as! String
+            messagesVC.senderDisplayName = UserService.us.currentUser.name
         }
     }
 }

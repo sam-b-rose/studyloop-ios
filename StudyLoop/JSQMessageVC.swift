@@ -13,20 +13,17 @@ import JSQMessagesViewController
 
 class MessagesViewController: JSQMessagesViewController {
     
-    var user: FAuthData?
     var loop: Loop?
-    
-    var timer: NSTimer? = nil
     var messages = [JMessage]()
     var userImageMap = Dictionary<String, String>()
     var userNameMap = Dictionary<String, String>()
     var avatars = Dictionary<String, JSQMessagesAvatarImage>()
+    
     var outgoingBubbleImage = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(SL_LIGHT)
     var incomingBubbleImage = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(SL_GRAY.colorWithAlphaComponent(0.2))
-    var senderImageUrl: String!
-    var batchMessages = true
     
-    // *** STEP 1: STORE FIREBASE REFERENCES
+    var timer: NSTimer? = nil
+    
     var messagesRef: Firebase!
     var usersRef: Firebase!
     
@@ -80,7 +77,6 @@ class MessagesViewController: JSQMessagesViewController {
     
     
     func sendMessage(text: String!, sender: String!) {
-        // *** STEP 3: ADD A MESSAGE TO FIREBASE
         messagesRef.childByAutoId().setValue([
             "textValue":text,
             "createdById": senderId,
@@ -103,8 +99,6 @@ class MessagesViewController: JSQMessagesViewController {
                 }
             }
         }
-        
-        // At some point, we failed at getting the image (probably broken URL), so default to avatarColor
         setupAvatarColor(name, incoming: incoming)
     }
     
@@ -138,6 +132,11 @@ class MessagesViewController: JSQMessagesViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
+        // Remove Notifications
+        let loopNotifications = NotificationService.noti.notifications.filter { $0.loopId == loop!.uid }
+        for notification in loopNotifications {
+            NotificationService.noti.removeNotification(notification.uid)
+        }
     }
     
     // ACTIONS

@@ -12,9 +12,13 @@ import Firebase
 class UserService {
     static let us = UserService()
     
-    var authData: FAuthData?
+    private var _currentUser: User!
     private var _REF_USERS = Firebase(url: "\(URL_BASE)/users")
     private var _REF_USER_SETTINGS = Firebase(url: "\(URL_BASE)/user-settings")
+    
+    var currentUser: User {
+        return _currentUser
+    }
     
     var REF_USERS: Firebase {
         return _REF_USERS
@@ -43,5 +47,14 @@ class UserService {
     func setMuteLoop(loopId: String, isMuted: Bool) {
         let uid = NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) as! String
         REF_USER_SETTINGS.childByAppendingPath(uid).childByAppendingPath("mutedLoops").childByAppendingPath(loopId).setValue(isMuted)
+    }
+    
+    func watchCurrentUser() {
+        REF_USER_CURRENT.observeEventType(.Value, withBlock: {
+            snapshot in
+            if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
+                self._currentUser = User(uid: snapshot.key, dictionary: userDict)
+            }
+        })
     }
 }
