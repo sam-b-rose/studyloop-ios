@@ -9,7 +9,7 @@
 import UIKit
 
 class DrawerCell: UITableViewCell {
-
+    
     @IBOutlet weak var itemLabel: UILabel!
     @IBOutlet weak var menuIcon: UILabel!
     
@@ -37,8 +37,8 @@ class DrawerCell: UITableViewCell {
         
         border.backgroundColor = SL_GRAY.colorWithAlphaComponent(0.3).CGColor
         border.frame = CGRect(x: 15, y: 0, width: layer.frame.width - 15, height: 0.5)
-        //layer.addSublayer(border)
-
+        // layer.addSublayer(border)
+        
         if item.title == "Add Course" {
             menuIcon.hidden = false
             menuIcon.text = String.ioniconWithCode("ion-plus")
@@ -55,9 +55,11 @@ class DrawerCell: UITableViewCell {
         }
         
         if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String where item.courseId != "" && courseId == item.courseId {
-             selectedBorder.hidden = false
+            selectedBorder.hidden = false
+            self.backgroundColor = UIColor(red:0.09, green:0.1, blue:0.11, alpha:1)
         } else {
-             selectedBorder.hidden = true
+            selectedBorder.hidden = true
+            self.backgroundColor = SL_BLACK
         }
     }
 }

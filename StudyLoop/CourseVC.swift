@@ -214,12 +214,14 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             loopVC.loop = selectedLoop
         }
         
-        let messagesVc = segue.destinationViewController as! MessagesViewController
-        if UserService.us.authData != nil {
-            messagesVc.user = UserService.us.authData
-            messagesVc.loop = selectedLoop
-            messagesVc.senderId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as! String
-            messagesVc.senderDisplayName = "Sam Rose"
+        if(segue.identifier == SEGUE_MESSAGES) {
+            let messagesVc = segue.destinationViewController as! MessagesViewController
+            if UserService.us.authData != nil {
+                messagesVc.user = UserService.us.authData
+                messagesVc.loop = selectedLoop
+                messagesVc.senderId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as! String
+                messagesVc.senderDisplayName = "Sam Rose"
+            }
         }
     }
 }

@@ -9,9 +9,9 @@
 import Foundation
 import JSQMessagesViewController
 
-class JQMessage : NSObject, JSQMessageData {
+class JMessage : NSObject, JSQMessageData {
     var text_: String
-    var sender_: String
+    var senderId_: String
     var senderDisplayName_: String
     var isMediaMessage_: Bool
     var messageHash_: UInt
@@ -24,7 +24,7 @@ class JQMessage : NSObject, JSQMessageData {
     
     init(text: String?, sender: String?, senderDisplayName: String?, date: NSDate!, imageUrl: String?) {
         self.text_ = text!
-        self.sender_ = sender!
+        self.senderId_ = sender!
         self.senderDisplayName_ = senderDisplayName!
         self.isMediaMessage_ = false
         self.date_ = date
@@ -34,12 +34,35 @@ class JQMessage : NSObject, JSQMessageData {
         self.messageHash_ = timestamp
     }
     
+    init(dictionary: Dictionary<String, AnyObject>, displayName: String?, imageUrl: String?) {
+        self.text_ = dictionary["textValue"] as! String
+        self.senderId_ = dictionary["createdById"] as! String
+        self.isMediaMessage_ = false
+        self.imageUrl_ = imageUrl
+        
+        if displayName != nil{
+            self.senderDisplayName_ = displayName!
+        } else {
+            self.senderDisplayName_ = "Anonymous"
+        }
+        
+        if let createdAt = dictionary["createdAt"] as? Double {
+            self.date_ = NSDate(timeIntervalSince1970: createdAt * 1000)
+        } else {
+            self.date_ = NSDate()
+        }
+        
+        let timestamp = UInt(floor(self.date_.timeIntervalSince1970 * 1000))
+        self.messageHash_ = timestamp
+    }
+    
+    
     func text() -> String! {
         return text_
     }
     
     func senderId() -> String! {
-        return sender_
+        return senderId_
     }
     
     func senderDisplayName() -> String! {
