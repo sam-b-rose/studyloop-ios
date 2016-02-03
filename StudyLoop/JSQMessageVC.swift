@@ -13,7 +13,7 @@ import JSQMessagesViewController
 
 class MessagesViewController: JSQMessagesViewController {
     
-    var loop: Loop?
+    var loop: Loop!
     var messages = [JMessage]()
     var userImageMap = Dictionary<String, String>()
     var userNameMap = Dictionary<String, String>()
@@ -23,12 +23,42 @@ class MessagesViewController: JSQMessagesViewController {
     var incomingBubbleImage = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(SL_GRAY.colorWithAlphaComponent(0.2))
     
     var timer: NSTimer? = nil
+    var cameraButton: UIButton!
     
+    var activityRef: Firebase!
     var messagesRef: Firebase!
     var usersRef: Firebase!
     
+    let attributes = [NSFontAttributeName: UIFont.ioniconOfSize(26)] as Dictionary!
+    
+    func monitorActivity() {
+        // Monitor User Activity
+        activityRef = ActivityService.act.REF_ACTIVITY_LOOP.childByAppendingPath(loop.uid)
+            
+        activityRef.observeEventType(.ChildChanged, withBlock: {
+            snapshot in
+            
+            print("SNAP: ", snapshot)
+            if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
+                self.checkIfTyping(snapshot.key, user: userDict)
+            }
+        })
+        
+        // Set that user is active in loop
+        ActivityService.act.REF_ACTIVITY_LOOP
+            .childByAppendingPath(loop.uid)
+            .childByAppendingPath(senderId)
+            .updateChildValues([
+                "activeAt": kFirebaseServerValueTimestamp,
+                "presentAt": kFirebaseServerValueTimestamp
+                ])
+        
+        // Set last loop for current user
+        ActivityService.act.setLastLoop(loop.uid)
+    }
+    
     func getUsers() {
-        usersRef = DataService.ds.REF_LOOPS.childByAppendingPath(loop!.uid).childByAppendingPath("userIds")
+        usersRef = DataService.ds.REF_LOOPS.childByAppendingPath(loop.uid).childByAppendingPath("userIds")
         
         usersRef.observeEventType(FEventType.Value, withBlock: { (snapshot) -> Void in
             if let users = snapshot.value as? Dictionary<String, AnyObject> {
@@ -40,13 +70,13 @@ class MessagesViewController: JSQMessagesViewController {
     }
     
     func getMessages() {
-        messagesRef = DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop!.uid)
+        messagesRef = DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid)
         
         // *** STEP 4: RECEIVE MESSAGES FROM FIREBASE (limited to latest 25 messages)
         self.messagesRef.queryLimitedToLast(25).observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) in
             if let messageDict = snapshot.value as? Dictionary<String, AnyObject> {
                 if let senderId = messageDict["createdById"] as? String {
-                    let message = JMessage(dictionary: messageDict, displayName: self.userNameMap[senderId], imageUrl: self.userImageMap[senderId])
+                    let message = JMessage(key: snapshot.key, dictionary: messageDict, displayName: self.userNameMap[senderId], imageUrl: self.userImageMap[senderId])
                     self.messages.append(message)
                     self.finishReceivingMessage()
                 }
@@ -80,7 +110,7 @@ class MessagesViewController: JSQMessagesViewController {
         messagesRef.childByAutoId().setValue([
             "textValue":text,
             "createdById": senderId,
-            "loopId": loop!.uid,
+            "loopId": loop.uid,
             "courseId": NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as! String,
             "createdAt": kFirebaseServerValueTimestamp,
             ])
@@ -116,12 +146,29 @@ class MessagesViewController: JSQMessagesViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        inputToolbar!.contentView!.leftBarButtonItem = nil
         automaticallyScrollsToMostRecentMessage = true
-        navigationController?.navigationBar.topItem?.title = ""
+        
+        // Navbar Stuff
+        let more = UIBarButtonItem(title: String.ioniconWithName(.More), style: .Plain, target: self, action: Selector("goToLoopSettings"))
+        self.navigationItem.rightBarButtonItem = more
+        self.navigationItem.rightBarButtonItem!.setTitleTextAttributes(attributes, forState: .Normal)
+        self.navigationItem.title = loop.subject
+        
+        if let topItem = self.navigationController?.navigationBar.topItem {
+            topItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        }
+        
+        ////// Attachment Button //////
+        inputToolbar!.contentView!.leftBarButtonItem = nil
+        cameraButton = UIButton(type: .Custom)
+        cameraButton.titleLabel?.font = UIFont.ioniconOfSize(20)
+        cameraButton.titleLabel?.textAlignment = .Center;
+        cameraButton.setTitle(String.ioniconWithName(.Camera), forState: .Normal)
+        cameraButton.frame = CGRectMake(0, 0, 22, 32);
         
         senderId = (senderId != nil) ? senderId : "Anonymous"
         getUsers()
+        monitorActivity()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -133,7 +180,7 @@ class MessagesViewController: JSQMessagesViewController {
         super.viewWillDisappear(animated)
         
         // Remove Notifications
-        let loopNotifications = NotificationService.noti.notifications.filter { $0.loopId == loop!.uid }
+        let loopNotifications = NotificationService.noti.notifications.filter { $0.loopId == loop.uid }
         for notification in loopNotifications {
             NotificationService.noti.removeNotification(notification.uid)
         }
@@ -152,20 +199,21 @@ class MessagesViewController: JSQMessagesViewController {
     
     // Typing
     
-//    func textView(textView: JSQMessagesComposerTextView!, shouldChangeTextInRange range: NSRange, replacementText text: String!) -> Bool {
-//        
-//        // Watch user text input to update isTyping indicator
-//        timer?.invalidate()
-//        timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("updateTypingIndicator:"), userInfo: textView, repeats: false)
-//        return true
-//    }
+    override func textViewDidChange(textView: UITextView) {
+        super.textViewDidChange((self.inputToolbar?.contentView?.textView)!)
+
+        // Watch user text input to update isTyping indicator
+        timer?.invalidate()
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("updateTypingIndicator:"), userInfo: self.inputToolbar?.contentView?.textView, repeats: false)
+    }
     
     func updateTypingIndicator(timer: NSTimer) {
-        if let textView = timer.userInfo! as? JSQMessagesComposerTextView {
+        if let textView = timer.userInfo! as? UITextView {
             if textView.text != "" {
-                ActivityService.act.setUserActivity(loop!.uid, userId: senderId!, key: "typingAt", value: kFirebaseServerValueTimestamp)
+                print("setting typing")
+                ActivityService.act.setUserActivity(loop.uid, userId: senderId!, key: "typingAt", value: kFirebaseServerValueTimestamp)
             } else {
-                ActivityService.act.setUserActivity(loop!.uid, userId: senderId!, key: "typingAt", value: 0)
+                ActivityService.act.setUserActivity(loop.uid, userId: senderId!, key: "typingAt", value: 0)
             }
         }
     }
@@ -179,13 +227,6 @@ class MessagesViewController: JSQMessagesViewController {
                 showTypingIndicator = false
             }
         }
-    }
-    
-    func detectTyping() {
-        DataService.ds.REF_LOOPS.childByAppendingPath(loop!.uid).childByAppendingPath("typing").observeEventType(.Value, withBlock: {
-            snapshot in
-            print("Is user typing: ", snapshot)
-        })
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
@@ -265,6 +306,20 @@ class MessagesViewController: JSQMessagesViewController {
         }
         
         return kJSQMessagesCollectionViewCellLabelHeightDefault
+    }
+    
+    // Segue Prep
+    
+    func goToLoopSettings() {
+        performSegueWithIdentifier(SEGUE_LOOP_SETTINGS, sender: nil)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if(segue.identifier == SEGUE_LOOP_SETTINGS) {
+            let loopSettingsVC = segue.destinationViewController as! LoopSettingsVC
+            loopSettingsVC.loopId = self.loop.uid
+            loopSettingsVC.userIds = self.loop.userIds
+        }
     }
 }
 
