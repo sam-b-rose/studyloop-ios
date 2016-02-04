@@ -734,7 +734,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "3632ebb2-0bff-4fde-ac85-a2ebbeb175d5";
+				PROVISIONING_PROFILE = "4b14faf8-65f9-45cd-84fd-e08873b88529";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VALIDATE_PRODUCT = NO;
@@ -774,7 +774,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = NO;
-				PROVISIONING_PROFILE = "3632ebb2-0bff-4fde-ac85-a2ebbeb175d5";
+				PROVISIONING_PROFILE = "4b14faf8-65f9-45cd-84fd-e08873b88529";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -786,8 +786,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Alex Klibisz (U28YN6T44M)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Alex Klibisz (U28YN6T44M)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -805,7 +805,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.getstudyloop.StudyLoop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3632ebb2-0bff-4fde-ac85-a2ebbeb175d5";
+				PROVISIONING_PROFILE = "4b14faf8-65f9-45cd-84fd-e08873b88529";
 				SWIFT_OBJC_BRIDGING_HEADER = "StudyLoop/StudyLoop-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -818,8 +818,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Alex Klibisz (U28YN6T44M)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Alex Klibisz (U28YN6T44M)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -838,7 +838,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.getstudyloop.StudyLoop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3632ebb2-0bff-4fde-ac85-a2ebbeb175d5";
+				PROVISIONING_PROFILE = "4b14faf8-65f9-45cd-84fd-e08873b88529";
 				SWIFT_OBJC_BRIDGING_HEADER = "StudyLoop/StudyLoop-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 			};

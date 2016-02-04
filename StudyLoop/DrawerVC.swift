@@ -14,7 +14,7 @@ import KYDrawerController
 class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
-    
+    @IBOutlet weak var userView: UserView!
     
     var items = [MenuItem]()
     var request: Request?
@@ -28,11 +28,17 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.dataSource = self
         
         // Set Logo
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 210 , height: 60))
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 210 , height: 70))
         imageView.contentMode = .ScaleAspectFit
         let image = UIImage(named: "studyloop-logo.png")
         imageView.image = image
         navigationItem.titleView = imageView
+        
+        // Tap for settings
+        let tap = UITapGestureRecognizer(target: self, action: "goToSettings:")
+        tap.numberOfTapsRequired = 1
+        self.userView.addGestureRecognizer(tap)
+        self.userView.userInteractionEnabled = true
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -103,13 +109,9 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             drawerController.mainViewController = mainNavigation
             
             switch indexPath.row {
-            case (items.count - 2):
+            case (items.count - 1):
                 // Add Course
                 mainNavigation.topViewController?.performSegueWithIdentifier(SEGUE_ADD_COURSE, sender: nil)
-                break
-            case (items.count - 1):
-                // Settings
-                mainNavigation.topViewController?.performSegueWithIdentifier(SEGUE_SETTINGS, sender: nil)
                 break
             default:
                 // go to course
@@ -125,16 +127,19 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func appendDefaltItems() -> [MenuItem] {
         let defaults = [
             MenuItem(title: "Add Course"),
-            MenuItem(title: "Settings")
+            // MenuItem(title: "Settings")
         ]
         return defaults
     }
     
-    func goToProfile() {
+    func goToSettings(sender: UITapGestureRecognizer) {
+        print("Going to Settings")
         if let drawerController = navigationController?.parentViewController as? KYDrawerController {
             let mainNavigation = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainNavigation") as! UINavigationController
-            // go to profile
-            mainNavigation.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+            
+            // go to settings / profile
+            mainNavigation.topViewController?.performSegueWithIdentifier(SEGUE_SETTINGS, sender: nil)
+            
             drawerController.mainViewController = mainNavigation
             drawerController.setDrawerState(.Closed, animated: true)
         }

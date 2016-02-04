@@ -12,6 +12,7 @@ import Firebase
 
 class UserView: UIView {
     
+    @IBOutlet weak var settingsIcon: UILabel!
     @IBOutlet weak var profileImage: UserImage!
     @IBOutlet weak var nameLabel: UILabel!
     
@@ -22,10 +23,8 @@ class UserView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        let tap = UITapGestureRecognizer(target: self, action: "viewTapped:")
-        tap.numberOfTapsRequired = 1
-        self.addGestureRecognizer(tap)
-        self.userInteractionEnabled = true
+        settingsIcon.font = UIFont.ioniconOfSize(20)
+        settingsIcon.text = String.ioniconWithCode("ion-ios-gear")
         
         DataService.ds.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: {
             snapshot in
@@ -56,11 +55,4 @@ class UserView: UIView {
             })
         }
     }
-     
-    func viewTapped(sender: UITapGestureRecognizer) {
-        // go to profile
-        print("view tapped: go to profile")
-    }
-    
-    
 }
