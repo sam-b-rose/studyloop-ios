@@ -11,13 +11,16 @@ import Foundation
 import Firebase
 import JSQMessagesViewController
 
-class MessagesViewController: JSQMessagesViewController {
+class MessagesViewController: JSQMessagesViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var loop: Loop!
     var messages = [JMessage]()
     var userImageMap = Dictionary<String, String>()
     var userNameMap = Dictionary<String, String>()
     var avatars = Dictionary<String, JSQMessagesAvatarImage>()
+    var imagePicker: UIImagePickerController!
+    static var imageCache = NSCache()
+
     
     var outgoingBubbleImage = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(SL_LIGHT)
     var incomingBubbleImage = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(SL_GRAY.colorWithAlphaComponent(0.2))
@@ -107,17 +110,30 @@ class MessagesViewController: JSQMessagesViewController {
     
     
     func sendMessage(text: String!, sender: String!) {
-        messagesRef.childByAutoId().setValue([
+        let message: Dictionary<String, AnyObject> = [
             "textValue":text,
             "createdById": senderId,
             "loopId": loop.uid,
             "courseId": NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as! String,
             "createdAt": kFirebaseServerValueTimestamp,
-            ])
+        ]
+        
+        DataService.ds.REF_QUEUES.childByAppendingPath("loop-messages").childByAppendingPath("tasks").childByAutoId().setValue(message)
+        messagesRef.childByAutoId().setValue(message, withCompletionBlock: {
+            error, ref in
+            if error != nil {
+                print("Error sending message")
+            } else {
+                DataService.ds.REF_LOOPS.childByAppendingPath(self.loop.uid).updateChildValues([
+                    "lastMessage": "\(self.userNameMap[sender]!): \(text)",
+                    "updatedAt": kFirebaseServerValueTimestamp
+                    ])
+                
+            }
+        })
     }
     
     func setupAvatarImage(name: String, imageUrl: String?, incoming: Bool) {
-        print("Avatar Setup", name, imageUrl, incoming)
         if let stringUrl = imageUrl {
             if let url = NSURL(string: stringUrl) {
                 if let data = NSData(contentsOfURL: url) {
@@ -230,7 +246,12 @@ class MessagesViewController: JSQMessagesViewController {
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
-        return messages[indexPath.item]
+        let message = messages[indexPath.item]
+        if message.isMediaMessage() {
+            print("will get media", message)
+        }
+        
+        return message
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
@@ -249,7 +270,7 @@ class MessagesViewController: JSQMessagesViewController {
             return avatar
         } else {
             setupAvatarImage(message.senderId(), imageUrl: message.imageUrl(), incoming: true)
-            return nil
+            return avatars[message.senderId()]
         }
     }
     

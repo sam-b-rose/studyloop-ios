@@ -54,7 +54,7 @@ class JMessage : NSObject, JSQMessageData {
         }
         
         if let createdAt = dictionary["createdAt"] as? Double {
-            self.date_ = NSDate(timeIntervalSince1970: createdAt * 1000)
+            self.date_ = NSDate(timeIntervalSince1970: createdAt)
         } else {
             self.date_ = NSDate()
         }
@@ -63,17 +63,7 @@ class JMessage : NSObject, JSQMessageData {
             if let path = attachment["path"] as? String {
                 self.isMediaMessage_ = true
                 self.attachmentUrl_ = path
-//                self.request = Alamofire.request(.GET, self.attachmentUrl_!).validate(contentType: ["image/*"]).response(completionHandler: {
-//                    request, response, data, err in
-//                    super.init()
-//                    if err == nil {
-//                        let img = UIImage(data: data!)!
-//                        self.media_ = JSQPhotoMediaItem(image: img)
-////                        LoopVC.imageCache.setObject(img, forKey: self.message.attachmentUrl!)
-//                    } else {
-//                        print("There was an error!", err)
-//                    }
-//                })
+                self.media_ = JSQPhotoMediaItem()
             }
         }
     }
