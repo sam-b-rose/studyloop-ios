@@ -29,6 +29,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>JTSImageViewController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>KYDrawerController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -62,6 +67,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>21CFE842F3169DAD909E672F047529BB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>432ECC54282C84882B482CCB4CF227FC</key>
 		<dict>
 			<key>primary</key>
@@ -72,12 +82,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>8FE3C7334E4999CAA5509D9764BE04F6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>95DB89A8BFC5FF0BF98458651D0163CD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9B635441242E1EDE22B7B6B539ADDE3C</key>
+		<key>A67695BF93A2F8AAB53ED4ECB97BAC77</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -92,17 +107,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C00BE3854A843F179578C40F894984D2</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>EDA125ADA52355B7CA6DF7BA96918357</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F2138D851EB982153A3146AD1D0F1631</key>
+		<key>FAE26C46CFBAF39E4C96ABF16B93D9FC</key>
 		<dict>
 			<key>primary</key>
 			<true/>

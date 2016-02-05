@@ -5,6 +5,7 @@ PODS:
   - JSQMessagesViewController (7.2.0):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
+  - JTSImageViewController (1.5.1)
   - KYDrawerController (1.1.2)
   - MPGNotification (1.2.4)
   - SlackTextViewController (1.8)
@@ -15,6 +16,7 @@ DEPENDENCIES:
   - Firebase (>= 2.4.3)
   - FuzzySearch (~> 1.1)
   - JSQMessagesViewController
+  - JTSImageViewController
   - KYDrawerController
   - MPGNotification (~> 1.2)
   - SlackTextViewController
@@ -26,6 +28,7 @@ SPEC CHECKSUMS:
   FuzzySearch: 3521e8252654b857fd02b630d399f0ca884b09d4
   JSQMessagesViewController: 73cab48aa92fc2d512f3b6724f3425cc47a19eb5
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
+  JTSImageViewController: 1f8ce1cc93dab0d0af8e53badeea7528560cfec9
   KYDrawerController: 222c4d07ed09fa7842011d36d73e3599dcbccab3
   MPGNotification: f0e3924087afa9b3eccd5ce624e03965ae31ae61
   SlackTextViewController: 0300adee2931fdbe72488990336f0937dbed048e

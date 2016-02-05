@@ -11,6 +11,7 @@ import Foundation
 import Firebase
 import Alamofire
 import JSQMessagesViewController
+import JTSImageViewController
 
 class MessagesViewController: JSQMessagesViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -182,14 +183,6 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
             topItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         }
         
-        // Attachment Button
-        inputToolbar!.contentView!.leftBarButtonItem = nil
-        cameraButton = UIButton(type: .Custom)
-        cameraButton.titleLabel?.font = UIFont.ioniconOfSize(20)
-        cameraButton.titleLabel?.textAlignment = .Center;
-        cameraButton.setTitle(String.ioniconWithName(.Camera), forState: .Normal)
-        cameraButton.frame = CGRectMake(0, 0, 22, 32);
-        
         senderId = (senderId != nil) ? senderId : "Anonymous"
         
         // Firebase calls
@@ -226,6 +219,7 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
         print("Camera pressed!")
     }
     
+    // TODO: Add Ability to send Image
     func sendMessage(text: String!, sender: String!) {
         let message: Dictionary<String, AnyObject> = [
             "textValue":text,
@@ -391,6 +385,20 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
         }
         
         return kJSQMessagesCollectionViewCellLabelHeightDefault
+    }
+    
+    override func collectionView(collectionView: JSQMessagesCollectionView!, didTapMessageBubbleAtIndexPath indexPath: NSIndexPath!) {
+        let message = messages[indexPath.item]
+        if message.isMediaMessage {
+            let imageInfo = JTSImageInfo()
+            imageInfo.image = MessagesViewController.imageCache.objectForKey(message.attachmentUrl!) as! UIImage
+            imageInfo.referenceRect = self.collectionView!.cellForItemAtIndexPath(indexPath)!.frame
+            imageInfo.referenceView = self.view
+            
+            // Setup view controller
+            let imageViewer = JTSImageViewController(imageInfo: imageInfo, mode: .Image, backgroundStyle: .Scaled)
+            imageViewer.showFromViewController(self, transition: .FromOriginalPosition)
+        }
     }
     
     
