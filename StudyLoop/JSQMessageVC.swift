@@ -9,35 +9,42 @@
 import UIKit
 import Foundation
 import Firebase
+import Alamofire
 import JSQMessagesViewController
 
 class MessagesViewController: JSQMessagesViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var loop: Loop!
-    var messages = [JMessage]()
+    var messages = [SLMessage]()
     var userImageMap = Dictionary<String, String>()
     var userNameMap = Dictionary<String, String>()
     var avatars = Dictionary<String, JSQMessagesAvatarImage>()
     var imagePicker: UIImagePickerController!
     static var imageCache = NSCache()
-
+    
     
     var outgoingBubbleImage = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(SL_LIGHT)
     var incomingBubbleImage = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(SL_GRAY.colorWithAlphaComponent(0.2))
     
+    var request: Request?
     var timer: NSTimer? = nil
     var cameraButton: UIButton!
     
     var activityRef: Firebase!
     var messagesRef: Firebase!
+    var messagesQueueRef: Firebase!
     var usersRef: Firebase!
     
     let attributes = [NSFontAttributeName: UIFont.ioniconOfSize(26)] as Dictionary!
     
+    
+    
+    /* Firebase / Gettin Data */
+    
     func monitorActivity() {
         // Monitor User Activity
         activityRef = ActivityService.act.REF_ACTIVITY_LOOP.childByAppendingPath(loop.uid)
-            
+        
         activityRef.observeEventType(.ChildChanged, withBlock: {
             snapshot in
             
@@ -74,15 +81,37 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
     
     func getMessages() {
         messagesRef = DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid)
+        messagesQueueRef = DataService.ds.REF_QUEUES
         
-        // *** STEP 4: RECEIVE MESSAGES FROM FIREBASE (limited to latest 25 messages)
+        // TODO: Currently limitied to last 25 messages
         self.messagesRef.queryLimitedToLast(25).observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) in
             if let messageDict = snapshot.value as? Dictionary<String, AnyObject> {
-                if let senderId = messageDict["createdById"] as? String {
-                    let message = JMessage(key: snapshot.key, dictionary: messageDict, displayName: self.userNameMap[senderId], imageUrl: self.userImageMap[senderId])
-                    self.messages.append(message)
-                    self.finishReceivingMessage()
+                let message: SLMessage!
+                
+                let text = messageDict["textValue"] as! String
+                let senderId = messageDict["createdById"] as! String
+                let senderDisplayName = self.userNameMap[senderId] != nil ? self.userNameMap[senderId]! : "Anonymous"
+                
+                var date = NSDate()
+                let avatarUrl = self.userImageMap[senderId]
+                
+                if let createdAt = messageDict["createdAt"] as? Double {
+                    date = NSDate(timeIntervalSince1970: createdAt)
                 }
+                
+                if let attachment = messageDict["attachment"] as? Dictionary<String, AnyObject>,
+                    let path = attachment["path"] as? String {
+                        let attachmentUrl = path
+                        let photoMedia = JSQPhotoMediaItem(image: nil)
+                        photoMedia.appliesMediaViewMaskAsOutgoing = (senderId == self.senderId)
+                        message = SLMessage(senderId: senderId, senderDisplayName: senderDisplayName, date: date, media: photoMedia, attachmentUrl: attachmentUrl, avatarUrl: avatarUrl)
+                        self.messages.append(message)
+                } else {
+                    message = SLMessage(senderId: senderId, senderDisplayName: senderDisplayName, date: date, text: text, avatarUrl: avatarUrl)
+                    self.messages.append(message)
+                }
+                
+                self.finishReceivingMessage()
             }
         })
     }
@@ -108,31 +137,6 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
         }
     }
     
-    
-    func sendMessage(text: String!, sender: String!) {
-        let message: Dictionary<String, AnyObject> = [
-            "textValue":text,
-            "createdById": senderId,
-            "loopId": loop.uid,
-            "courseId": NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as! String,
-            "createdAt": kFirebaseServerValueTimestamp,
-        ]
-        
-        DataService.ds.REF_QUEUES.childByAppendingPath("loop-messages").childByAppendingPath("tasks").childByAutoId().setValue(message)
-        messagesRef.childByAutoId().setValue(message, withCompletionBlock: {
-            error, ref in
-            if error != nil {
-                print("Error sending message")
-            } else {
-                DataService.ds.REF_LOOPS.childByAppendingPath(self.loop.uid).updateChildValues([
-                    "lastMessage": "\(self.userNameMap[sender]!): \(text)",
-                    "updatedAt": kFirebaseServerValueTimestamp
-                    ])
-                
-            }
-        })
-    }
-    
     func setupAvatarImage(name: String, imageUrl: String?, incoming: Bool) {
         if let stringUrl = imageUrl {
             if let url = NSURL(string: stringUrl) {
@@ -152,7 +156,7 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
         let diameter = incoming ? UInt(collectionView!.collectionViewLayout.incomingAvatarViewSize.width) : UInt(collectionView!.collectionViewLayout.outgoingAvatarViewSize.width)
         
         let color = SL_LIGHT
-
+        
         let nameLength = name.characters.count
         let initials : String? = name.substringToIndex(senderId!.startIndex.advancedBy(min(3, nameLength)))
         let userImage = JSQMessagesAvatarImageFactory.avatarImageWithUserInitials(initials, backgroundColor: color, textColor: SL_CORAL, font: UIFont.systemFontOfSize(CGFloat(13)), diameter: diameter)
@@ -160,21 +164,25 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
         avatars[name] = userImage
     }
     
+    
+    
+    /* View Did/Will/Had/Done/Did Load */
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         automaticallyScrollsToMostRecentMessage = true
+        collectionView!.collectionViewLayout.messageBubbleFont = UIFont.init(name: "Noto Sans", size: 14)
         
         // Navbar Stuff
         let more = UIBarButtonItem(title: String.ioniconWithName(.More), style: .Plain, target: self, action: Selector("goToLoopSettings"))
         self.navigationItem.rightBarButtonItem = more
         self.navigationItem.rightBarButtonItem!.setTitleTextAttributes(attributes, forState: .Normal)
         self.navigationItem.title = loop.subject
-        
         if let topItem = self.navigationController?.navigationBar.topItem {
             topItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         }
         
-        ////// Attachment Button //////
+        // Attachment Button
         inputToolbar!.contentView!.leftBarButtonItem = nil
         cameraButton = UIButton(type: .Custom)
         cameraButton.titleLabel?.font = UIFont.ioniconOfSize(20)
@@ -183,6 +191,8 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
         cameraButton.frame = CGRectMake(0, 0, 22, 32);
         
         senderId = (senderId != nil) ? senderId : "Anonymous"
+        
+        // Firebase calls
         getUsers()
         monitorActivity()
     }
@@ -202,7 +212,10 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
         }
     }
     
-    // ACTIONS
+    
+    
+    
+    /* Input Bar Actions */
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
         sendMessage(text, sender: senderId)
@@ -213,11 +226,38 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
         print("Camera pressed!")
     }
     
-    // Typing
+    func sendMessage(text: String!, sender: String!) {
+        let message: Dictionary<String, AnyObject> = [
+            "textValue":text,
+            "createdById": senderId,
+            "loopId": loop.uid,
+            "courseId": NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as! String,
+            "createdAt": kFirebaseServerValueTimestamp,
+        ]
+        
+        messagesQueueRef.childByAppendingPath("loop-messages").childByAppendingPath("tasks").childByAutoId().setValue(message)
+        messagesRef.childByAutoId().setValue(message, withCompletionBlock: {
+            error, ref in
+            if error != nil {
+                print("Error sending message")
+            } else {
+                DataService.ds.REF_LOOPS.childByAppendingPath(self.loop.uid).updateChildValues([
+                    "lastMessage": "\(self.userNameMap[sender]!): \(text)",
+                    "updatedAt": kFirebaseServerValueTimestamp
+                    ])
+                
+            }
+        })
+    }
+    
+    
+    
+    /* Typing Indicator Stuff */
+    // TODO: Not working
     
     override func textViewDidChange(textView: UITextView) {
         super.textViewDidChange((self.inputToolbar?.contentView?.textView)!)
-
+        
         // Watch user text input to update isTyping indicator
         timer?.invalidate()
         timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("updateTypingIndicator:"), userInfo: self.inputToolbar?.contentView?.textView, repeats: false)
@@ -234,7 +274,6 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
         }
     }
     
-    
     func checkIfTyping(uid: String, user: Dictionary<String, AnyObject>) {
         if senderId != uid {
             if let typing = user["typingAt"] as? Int where typing > 0 {
@@ -245,19 +284,46 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
         }
     }
     
+    
+    
+    /* Collection View */
+    
     override func collectionView(collectionView: JSQMessagesCollectionView!, messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
         let message = messages[indexPath.item]
-        if message.isMediaMessage() {
-            print("will get media", message)
-        }
         
+        // TODO: Make media logic better :/
+        if message.isMediaMessage {
+            if let image = MessagesViewController.imageCache.objectForKey(message.attachmentUrl!) as? UIImage {
+                let photoMedia = JSQPhotoMediaItem(image: image)
+                photoMedia.appliesMediaViewMaskAsOutgoing = (message.senderId == self.senderId)
+                let mediaMessage = SLMessage(senderId: message.senderId, senderDisplayName: message.senderDisplayName, date: message.date, media: photoMedia, attachmentUrl: message.attachmentUrl, avatarUrl: message.avatarUrl)
+                self.messages[indexPath.item] = mediaMessage
+            } else {
+                let url = "\(IMAGE_BASE)\(message.attachmentUrl!)"
+                request?.cancel()
+                request = Alamofire.request(.GET, url).validate(contentType: ["image/*"]).response(
+                    completionHandler: {
+                        request, response, data, err in
+                        if err == nil {
+                            let image = UIImage(data: data!)!
+                            let photoMedia = JSQPhotoMediaItem(image: image)
+                            photoMedia.appliesMediaViewMaskAsOutgoing = (message.senderId == self.senderId)
+                            let mediaMessage = SLMessage(senderId: message.senderId, senderDisplayName: message.senderDisplayName, date: message.date, media: photoMedia, attachmentUrl: message.attachmentUrl, avatarUrl: message.avatarUrl)
+                            MessagesViewController.imageCache.setObject(image, forKey: message.attachmentUrl!)
+                            
+                            self.messages[indexPath.item] = mediaMessage
+                            self.collectionView?.reloadData()
+                        }
+                })
+            }
+        }
         return message
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
         let message = messages[indexPath.item]
         
-        if message.senderId() == senderId {
+        if message.senderId == senderId {
             return self.outgoingBubbleImage
         }
         
@@ -266,11 +332,11 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
         let message = messages[indexPath.item]
-        if let avatar = avatars[message.senderId()] {
+        if let avatar = avatars[message.senderId] {
             return avatar
         } else {
-            setupAvatarImage(message.senderId(), imageUrl: message.imageUrl(), incoming: true)
-            return avatars[message.senderId()]
+            setupAvatarImage(message.senderId, imageUrl: message.avatarUrl, incoming: true)
+            return avatars[message.senderId]
         }
     }
     
@@ -281,47 +347,45 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
         
-        cell.textView!.textColor = SL_BLACK
+        cell.textView?.textColor = SL_BLACK
         
         let attributes : [String:AnyObject] = [NSForegroundColorAttributeName: SL_GREEN, NSUnderlineStyleAttributeName: 1]
-        cell.textView!.linkTextAttributes = attributes
+        cell.textView?.linkTextAttributes = attributes
         
         return cell
     }
     
-    
-    // View  usernames above bubbles
     override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForMessageBubbleTopLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
         let message = messages[indexPath.item];
         
         // Sent by me, skip
-        if message.senderId() == senderId {
+        if message.senderId == senderId {
             return nil;
         }
         
         // Same as previous sender, skip
         if indexPath.item > 0 {
             let previousMessage = messages[indexPath.item - 1];
-            if previousMessage.senderId() == message.senderId() {
+            if previousMessage.senderId == message.senderId {
                 return nil;
             }
         }
         
-        return NSAttributedString(string:message.senderDisplayName())
+        return NSAttributedString(string:message.senderDisplayName)
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
         let message = messages[indexPath.item]
         
         // Sent by me, skip
-        if message.senderId() == senderId {
+        if message.senderId == senderId {
             return CGFloat(0.0);
         }
         
         // Same as previous sender, skip
         if indexPath.item > 0 {
             let previousMessage = messages[indexPath.item - 1];
-            if previousMessage.senderId() == message.senderId() {
+            if previousMessage.senderId == message.senderId {
                 return CGFloat(0.0);
             }
         }
@@ -329,7 +393,10 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
         return kJSQMessagesCollectionViewCellLabelHeightDefault
     }
     
-    // Segue Prep
+    
+    
+    
+    /* Segue Prep */
     
     func goToLoopSettings() {
         performSegueWithIdentifier(SEGUE_LOOP_SETTINGS, sender: nil)

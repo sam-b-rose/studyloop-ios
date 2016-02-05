@@ -17,7 +17,7 @@ class JMessage : NSObject, JSQMessageData {
     var senderDisplayName_: String
     var isMediaMessage_: Bool
     var date_: NSDate
-    var media_: JSQPhotoMediaItem?
+    var media_: JSQMessageMediaData?
     var imageUrl_: String?
     var attachmentUrl_: String?
     
@@ -61,9 +61,10 @@ class JMessage : NSObject, JSQMessageData {
         
         if let attachment = dictionary["attachment"] as? Dictionary<String, AnyObject> {
             if let path = attachment["path"] as? String {
-                self.isMediaMessage_ = true
+                self.isMediaMessage_ = false
                 self.attachmentUrl_ = path
-                self.media_ = JSQPhotoMediaItem()
+                let image = UIImage(named: "owl-light-bg")
+                self.media_ = JSQPhotoMediaItem(image: image)
             }
         }
     }
