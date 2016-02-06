@@ -53,9 +53,5 @@ class LoopCell: UITableViewCell {
                 self.backgroundColor = SL_LIGHT
             }
         }
-
-        border.backgroundColor = SL_GRAY.colorWithAlphaComponent(0.3).CGColor
-        border.frame = CGRect(x: 25, y: layer.frame.height - 2, width: layer.frame.width - 25, height: 0.5)
-        layer.addSublayer(border)
     }
 }

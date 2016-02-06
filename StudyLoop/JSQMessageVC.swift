@@ -12,6 +12,7 @@ import Firebase
 import Alamofire
 import JSQMessagesViewController
 import JTSImageViewController
+import AHKActionSheet
 
 class MessagesViewController: JSQMessagesViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -20,9 +21,11 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
     var userImageMap = Dictionary<String, String>()
     var userNameMap = Dictionary<String, String>()
     var avatars = Dictionary<String, JSQMessagesAvatarImage>()
+    
     var imagePicker: UIImagePickerController!
     static var imageCache = NSCache()
-    
+    var imageToSend: UIImage!
+    var imageName = ""
     
     var outgoingBubbleImage = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(SL_LIGHT)
     var incomingBubbleImage = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(SL_GRAY.colorWithAlphaComponent(0.2))
@@ -167,12 +170,15 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
     
     
     
-    /* View Did/Will/Had/Done/Did Load */
+    // MARK: - View Load
     
     override func viewDidLoad() {
         super.viewDidLoad()
         automaticallyScrollsToMostRecentMessage = true
         collectionView!.collectionViewLayout.messageBubbleFont = UIFont.init(name: "Noto Sans", size: 14)
+        
+        imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
         
         // Navbar Stuff
         let more = UIBarButtonItem(title: String.ioniconWithName(.More), style: .Plain, target: self, action: Selector("goToLoopSettings"))
@@ -207,21 +213,83 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
     
     
     
+    // MARK: - Image Picker
     
-    /* Input Bar Actions */
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        imagePicker.dismissViewControllerAnimated(true, completion: {
+            let imageURL = info[UIImagePickerControllerReferenceURL] as! NSURL
+            self.imageName = imageURL.lastPathComponent!
+            self.imageToSend = info[UIImagePickerControllerOriginalImage] as! UIImage
+            self.confirmImageChoice()
+        })
+    }
+    
+    func confirmImageChoice() {
+        let confirm = AHKActionSheet(title: nil)
+        
+        confirm.blurTintColor = UIColor.blackColor().colorWithAlphaComponent(0.75)
+        confirm.blurRadius = 8.0
+        confirm.buttonHeight = 50.0
+        confirm.cancelButtonHeight = 50.0
+        confirm.animationDuration = 0.5
+        confirm.cancelButtonShadowColor = UIColor.blackColor().colorWithAlphaComponent(0.1)
+        confirm.separatorColor = UIColor.whiteColor().colorWithAlphaComponent(0.3)
+        confirm.selectedBackgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+        confirm.buttonTextAttributes = [
+            NSFontAttributeName: UIFont(name: "Noto Sans", size: 17)!,
+            NSForegroundColorAttributeName: SL_WHITE
+        ]
+        
+        let imageHeader = ImageConfirmView(frame: CGRectMake(0, 0, 200,60))
+        imageHeader.configureImageConfirm(imageToSend)
+        confirm.headerView = imageHeader
+        
+        confirm.addButtonWithTitle("Send", type: AHKActionSheetButtonType.Default, handler: {
+            AHKActionSheet in
+            self.sendImage()
+        })
+        
+        confirm.addButtonWithTitle("Reselect", type: AHKActionSheetButtonType.Default, handler: {
+            AHKActionSheet in
+            self.presentViewController(self.imagePicker, animated: true, completion: nil)
+        })
+        
+        confirm.show()
+    }
+    
+    func sendImage() {
+        let image = UIImageJPEGRepresentation(imageToSend, 0.2)
+        let sizeBytes = image!.length
+        if sizeBytes < 10000000 {
+            let base64Image = "data:image/jpeg;base64," + image!.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+            let imageData: Dictionary<String, AnyObject> = [
+                "image": base64Image,
+                "size": sizeBytes,
+                "caption": ""
+            ]
+            sendMessage("", sender: senderId, imageData: imageData)
+        } else {
+            NotificationService.noti.showAlert("Image to Large", msg: "Image attchment is over the max 10MB limit.", uiView: self)
+        }
+    }
+    
+    
+    
+    
+    // MARK: - Input Bar Actions
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
-        sendMessage(text, sender: senderId)
+        sendMessage(text, sender: senderId, imageData: nil)
         finishSendingMessage()
     }
     
     override func didPressAccessoryButton(sender: UIButton!) {
-        print("Camera pressed!")
+        presentViewController(imagePicker, animated: true, completion: nil)
     }
     
     // TODO: Add Ability to send Image
-    func sendMessage(text: String!, sender: String!) {
-        let message: Dictionary<String, AnyObject> = [
+    func sendMessage(text: String!, sender: String!, imageData: Dictionary<String, AnyObject>?) {
+        var message: Dictionary<String, AnyObject> = [
             "textValue":text,
             "createdById": senderId,
             "loopId": loop.uid,
@@ -229,19 +297,31 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
             "createdAt": kFirebaseServerValueTimestamp,
         ]
         
-        messagesQueueRef.childByAppendingPath("loop-messages").childByAppendingPath("tasks").childByAutoId().setValue(message)
-        messagesRef.childByAutoId().setValue(message, withCompletionBlock: {
-            error, ref in
-            if error != nil {
-                print("Error sending message")
-            } else {
-                DataService.ds.REF_LOOPS.childByAppendingPath(self.loop.uid).updateChildValues([
-                    "lastMessage": "\(self.userNameMap[sender]!): \(text)",
-                    "updatedAt": kFirebaseServerValueTimestamp
-                    ])
-                
-            }
-        })
+        if imageData != nil {
+            // Compose Media Messaage
+            let time = NSDate().timeIntervalSince1970
+            let queueId: String! = "\(senderId!)_\(time)_\(imageName)"
+            
+            message["name"] = imageName
+            message["dataURI"] = imageData!["image"]
+            message["queueId"] = queueId
+            message["sizeBytes"] = imageData!["size"]
+            message["textValue"] = imageData!["caption"]
+            message["type"] = "image/jpeg"
+            DataService.ds.REF_QUEUES.childByAppendingPath("loop-message-attachments").childByAppendingPath("tasks").childByAutoId().setValue(message)
+        } else {
+            // Standard Text Message
+            messagesQueueRef.childByAppendingPath("loop-messages").childByAppendingPath("tasks").childByAutoId().setValue(message)
+            messagesRef.childByAutoId().setValue(message, withCompletionBlock: {
+                error, ref in
+                if error == nil {
+                    DataService.ds.REF_LOOPS.childByAppendingPath(self.loop.uid).updateChildValues([
+                        "lastMessage": "\(self.userNameMap[sender]!): \(text)",
+                        "updatedAt": kFirebaseServerValueTimestamp
+                        ])
+                }
+            })
+        }
     }
     
     
@@ -280,7 +360,7 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
     
     
     
-    /* Collection View */
+    // MARK:  - Collection View Stuff
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
         let message = messages[indexPath.item]

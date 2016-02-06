@@ -44,14 +44,18 @@ class LoginVC: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         
-        handle = DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
+        handle = DataService.ds.REF_BASE.observeAuthEventWithBlock({
+            authData in
+            
             if authData != nil {
                 // user authenticated
                 print("From LoginVC")
                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
                 UserService.us.watchCurrentUser()
+                
                 self.saveDeviceId(authData.uid)
                 self.checkUserData(authData)
+                
             } else {
                 // No user is signed in
                 print("No User is signed in")
@@ -176,13 +180,14 @@ class LoginVC: UIViewController {
     
     func checkUserData(authData: FAuthData) {
         // check for if user exists and if they have a university selected
-        DataService.ds.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: { snapshot in
+        UserService.us.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: { snapshot in
             if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
                 
                 // Update profile pic from authData
                 self.updateProfilePicture(authData)
                 
                 let currentUser = User(uid: snapshot.key, dictionary: userDict)
+                
                 if currentUser.universityId == nil {
                     self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
                 } else {

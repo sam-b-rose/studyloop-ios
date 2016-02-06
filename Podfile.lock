@@ -1,4 +1,5 @@
 PODS:
+  - AHKActionSheet (0.5.4)
   - Alamofire (3.1.5)
   - Firebase (2.4.3)
   - FuzzySearch (1.1.0)
@@ -12,6 +13,7 @@ PODS:
   - SnapKit (0.18.0)
 
 DEPENDENCIES:
+  - AHKActionSheet
   - Alamofire (~> 3.0)
   - Firebase (>= 2.4.3)
   - FuzzySearch (~> 1.1)
@@ -23,6 +25,7 @@ DEPENDENCIES:
   - SnapKit
 
 SPEC CHECKSUMS:
+  AHKActionSheet: f0b312b5c689f72924d231c39dae140ecd5c1d46
   Alamofire: 5f730ba29fd113b7ddd71c1e65d0c630acf5d7b0
   Firebase: 48179995b561e2262c5d4060ecdffca45fbbff8b
   FuzzySearch: 3521e8252654b857fd02b630d399f0ca884b09d4

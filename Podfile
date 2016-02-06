@@ -12,6 +12,7 @@ pod 'SlackTextViewController'
 pod 'SnapKit'
 pod 'MPGNotification', '~> 1.2'
 pod 'JTSImageViewController'
+pod "AHKActionSheet"
 
 end
 

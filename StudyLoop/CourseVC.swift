@@ -27,12 +27,8 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ref = Firebase(url:"https://swift-chat.firebaseio.com")
-        
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.separatorStyle = .None
-        // tableView.registerClass(LoopCell.self, forCellReuseIdentifier: "LoopCell")
         
         // Set Add Loop Icon
         addLoopBtn.titleLabel?.font = UIFont.ioniconOfSize(38)
@@ -47,7 +43,6 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Table
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 64.0
-        tableView.separatorStyle = .None
     }
     
     override func viewWillAppear(animated: Bool) {
