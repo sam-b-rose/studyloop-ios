@@ -88,12 +88,12 @@ class User {
     }
     
     func setUniversity(universityId: String) {
-        DataService.ds.REF_USER_CURRENT.childByAppendingPath("universityId").setValue(universityId)
+        UserService.us.REF_USER_CURRENT.childByAppendingPath("universityId").setValue(universityId)
         _universityId = universityId
     }
     
     func addCourse(courseId: String) {
-        DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").childByAppendingPath(courseId).setValue(true)
+        UserService.us.REF_USER_CURRENT.childByAppendingPath("courseIds").childByAppendingPath(courseId).setValue(true)
         _courseIds![courseId] = 1
     }
 }

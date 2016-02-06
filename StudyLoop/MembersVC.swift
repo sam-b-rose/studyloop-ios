@@ -39,9 +39,6 @@ class MembersVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if let topItem = self.navigationController?.navigationBar.topItem {
             topItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         }
-        
-        // Table Stuff
-        tableView.separatorStyle = .None
     }
     
     func createUserMaps(completion: (result: Bool)-> Void) {
@@ -50,7 +47,7 @@ class MembersVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         for user in userIds {
             dispatch_group_enter(userGroup)
             if userImageMap[user] == nil {
-                DataService.ds.REF_USERS.childByAppendingPath(user).observeSingleEventOfType(.Value, withBlock: {
+                UserService.us.REF_USERS.childByAppendingPath(user).observeSingleEventOfType(.Value, withBlock: {
                     snapshot in
                     if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
                         self.userImageMap[user] = userDict["profileImageURL"] as? String

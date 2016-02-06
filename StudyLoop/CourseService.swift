@@ -13,9 +13,15 @@ class CourseService {
     
     static let cs = CourseService()
     
+    private var _currentCourse: Course?
+    
     private var _REF_COURSES = Firebase(url: "\(URL_BASE)/courses")
     private var _COURSES = [Course]()
     
+    var currentCourse: Course? {
+        return _currentCourse
+    }
+        
     var REF_COURSES: Firebase {
         return _REF_COURSES
     }
@@ -24,39 +30,43 @@ class CourseService {
         return _COURSES
     }
     
-    var REF_USER_CURRENT: Firebase {
+    var REF_COURSE_CURRENT: Firebase {
         let uid = NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) as! String
-        let user = Firebase(url: "\(URL_BASE)").childByAppendingPath("users").childByAppendingPath(uid)
-        return user!
+        let course = Firebase(url: "\(URL_BASE)").childByAppendingPath("users").childByAppendingPath(uid)
+        return course!
     }
     
     
     
-    // Course Data helpers
-
+    // MARK: - Course data helpers
+    
     func addUserToCourse(courseId: String, courseTitle: String, userId: String) {
-        DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").childByAppendingPath(courseId).setValue(true, withCompletionBlock: {
-            error, ref in
-            if error == nil {
-                self.REF_COURSES.childByAppendingPath(courseId).childByAppendingPath("userIds").childByAppendingPath(userId).setValue(true)
-                // Set Defaults
-                NSUserDefaults.standardUserDefaults().setObject(courseId, forKey: KEY_COURSE)
-                NSUserDefaults.standardUserDefaults().setObject(courseTitle, forKey: KEY_COURSE_TITLE)
-
-                // Success
-                NotificationService.noti.success("You have been added to \(courseTitle).")
-            } else {
-                // Error
-                NotificationService.noti.error()
-            }
-            
-        })
-
+        UserService.us.REF_USER_CURRENT
+            .childByAppendingPath("courseIds")
+            .childByAppendingPath(courseId)
+            .setValue(true, withCompletionBlock: {
+                error, ref in
+                if error == nil {
+                    self.REF_COURSES.childByAppendingPath(courseId).childByAppendingPath("userIds").childByAppendingPath(userId).setValue(true)
+                    
+                    // Set Defaults
+                    NSUserDefaults.standardUserDefaults().setObject(courseId, forKey: KEY_COURSE)
+                    NSUserDefaults.standardUserDefaults().setObject(courseTitle, forKey: KEY_COURSE_TITLE)
+                    
+                    // Success
+                    NotificationService.noti.success("You have been added to \(courseTitle).")
+                } else {
+                    // Error
+                    NotificationService.noti.error()
+                }
+                
+            })
+        
     }
     
     func getCourses(completion: (result: String) -> Void) {
         _COURSES.removeAll()
-        let universityId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UNIVESITY)
+        let universityId = UserService.us.currentUser.universityId
         
         REF_COURSES
             .queryOrderedByChild("universityId")

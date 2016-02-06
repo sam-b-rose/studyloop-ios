@@ -35,9 +35,9 @@ class AddLoopVC: UIViewController {
             let newLoop: Dictionary<String, AnyObject> = [
                 "courseId": NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE)!,
                 "createdAt": kFirebaseServerValueTimestamp,
-                "createdById": NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID)!,
+                "createdById": UserService.us.currentUser.id,
                 "subject": loopSubjectField.text!,
-                "universityId": NSUserDefaults.standardUserDefaults().objectForKey(KEY_UNIVESITY)!
+                "universityId": UserService.us.currentUser.universityId!
             ]
             
             DataService.ds.REF_QUEUES.childByAppendingPath("loops").childByAppendingPath("tasks").childByAutoId().setValue(newLoop, withCompletionBlock: {

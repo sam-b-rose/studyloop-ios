@@ -77,7 +77,7 @@ class LoopSettingsVC: UITableViewController {
                 .removeValueWithCompletionBlock({
                     error, ref in
                     if error == nil {
-                        DataService.ds.REF_USER_CURRENT
+                        UserService.us.REF_USER_CURRENT
                             .childByAppendingPath("loopIds")
                             .childByAppendingPath(self.loopId)
                             .removeValueWithCompletionBlock({

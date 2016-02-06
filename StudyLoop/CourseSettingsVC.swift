@@ -87,7 +87,7 @@ class CourseSettingsVC: UITableViewController {
             DataService.ds.REF_COURSES.childByAppendingPath(courseId).childByAppendingPath("userIds").childByAppendingPath(userId).removeValueWithCompletionBlock({
                 error,  ref in
                 if error == nil {
-                    DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").childByAppendingPath(courseId).removeValueWithCompletionBlock({
+                    UserService.us.REF_USER_CURRENT.childByAppendingPath("courseIds").childByAppendingPath(courseId).removeValueWithCompletionBlock({
                         error, ref in
                         if error == nil {
                             let courseTitle = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE_TITLE) as? String

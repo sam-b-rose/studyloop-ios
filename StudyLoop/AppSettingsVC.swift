@@ -88,8 +88,6 @@ class AppSettingsVC: UITableViewController {
     }
     
     func resetUserDefaults() {
-        // NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UID)
-        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UNIVESITY)
         NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
         NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
     }
@@ -175,7 +173,6 @@ class AppSettingsVC: UITableViewController {
             universityVC!.previousVC = "AppSettingsVC"
         } else if segue.identifier == SEGUE_CHANGE_PWD {
             let changePasswordVC = segue.destinationViewController as? ChangePasswordVC
-            changePasswordVC!.userEmail = currentUser?.email
             changePasswordVC!.previousVC = "AppSettingsVC"
         }
     }

@@ -25,14 +25,9 @@ class UserView: UIView {
         
         settingsIcon.font = UIFont.ioniconOfSize(20)
         settingsIcon.text = String.ioniconWithCode("ion-ios-gear")
-        
-        DataService.ds.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: {
-            snapshot in
-            if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
-                self.user = User(uid: snapshot.key, dictionary: userDict)
-                self.configureView()
-            }
-        })
+
+        user = UserService.us.currentUser
+        configureView()
     }
     
     override func drawRect(rect: CGRect) {

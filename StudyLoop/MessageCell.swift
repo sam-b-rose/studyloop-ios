@@ -45,8 +45,6 @@ class MessageCell: UITableViewCell {
     }
     
     func configureCell(message: Message, img: UIImage?) {
-        likeRef = DataService.ds.REF_USER_CURRENT.childByAppendingPath("likes").childByAppendingPath(message.messageKey)
-
         self.message = message
         self.textValue.text = message.textValue
         self.likesLbl.text = "\(message.likes)"

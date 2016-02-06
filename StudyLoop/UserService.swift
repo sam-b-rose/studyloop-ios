@@ -49,12 +49,19 @@ class UserService {
         REF_USER_SETTINGS.childByAppendingPath(uid).childByAppendingPath("mutedLoops").childByAppendingPath(loopId).setValue(isMuted)
     }
     
-    func watchCurrentUser() {
+    func watchCurrentUser(completion: (result: Bool) -> Void) {
         REF_USER_CURRENT.observeEventType(.Value, withBlock: {
             snapshot in
             if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
                 self._currentUser = User(uid: snapshot.key, dictionary: userDict)
+                completion(result: true)
             }
         })
+    }
+    
+    func updateProfilePicture(profileImageURL: AnyObject?) {
+        if let imageUrl = profileImageURL as? String {
+            REF_USER_CURRENT.childByAppendingPath("profileImageURL").setValue(imageUrl)
+        }
     }
 }

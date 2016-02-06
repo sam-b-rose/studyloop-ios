@@ -125,7 +125,7 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
         for (user, inLoop) in users {
             if userImageMap[user] == nil && inLoop as! Bool == true {
                 dispatch_group_enter(userGroup)
-                DataService.ds.REF_USERS.childByAppendingPath(user).observeSingleEventOfType(.Value, withBlock: {
+                UserService.us.REF_USERS.childByAppendingPath(user).observeSingleEventOfType(.Value, withBlock: {
                     snapshot in
                     if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
                         self.userImageMap[user] = userDict["profileImageURL"] as? String
