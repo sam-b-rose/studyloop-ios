@@ -22,9 +22,6 @@ class LoginVC: UIViewController {
     @IBOutlet weak var registerBtn: UIButton!
     @IBOutlet weak var forgotBtn: UIButton!
     
-    var handle: UInt?
-    var userEmail: String?
-    
     // States
     var isRegistering = false
     var isForgotPassword = false
@@ -164,10 +161,10 @@ class LoginVC: UIViewController {
                             UserService.us.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: {
                                 snapshot in
                                 if snapshot == nil {
-                                    self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                                    self.dismissViewControllerAnimated(true, completion: nil)
                                 } else {
                                     self.createUser(authData, completion: { (result) -> Void in
-                                        self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                                        self.dismissViewControllerAnimated(true, completion: nil)
                                     })
                                 }
                             })
@@ -219,7 +216,7 @@ class LoginVC: UIViewController {
                                                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
                                                 // Create User in Firebase Database
                                                 self.createUser(authData, completion: { (result) -> Void in
-                                                    self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                                                    self.dismissViewControllerAnimated(true, completion: nil)
                                                 })
                                             })
                                         }
@@ -240,10 +237,10 @@ class LoginVC: UIViewController {
                         UserService.us.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: {
                             snapshot in
                             if snapshot == nil {
-                                self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                                self.dismissViewControllerAnimated(true, completion: nil)
                             } else {
                                 self.createUser(authData, completion: { (result) -> Void in
-                                    self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                                    self.dismissViewControllerAnimated(true, completion: nil)
                                 })
                             }
                         })
@@ -278,7 +275,7 @@ class LoginVC: UIViewController {
     
     
     
-    // Prep for Segue
+    // MARK: - Segue Prep
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == SEGUE_SELECT_UNIVERSITY {

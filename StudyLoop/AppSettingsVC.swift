@@ -102,9 +102,10 @@ class AppSettingsVC: UITableViewController {
         NotificationService.noti.removeNotificationObserver()
         DataService.ds.REF_BASE.unauth()
         resetUserDefaults()
-        if let drawerController = navigationController?.parentViewController as? KYDrawerController {
-            drawerController.dismissViewControllerAnimated(true, completion: nil)
-        }
+//        if let drawerController = navigationController?.parentViewController as? KYDrawerController {
+//            drawerController.dismissViewControllerAnimated(true, completion: nil)
+//        }
+        self.performSegueWithIdentifier("logOutUser", sender: nil)
     }
     
     func showDeleteConfirmation() {
@@ -166,6 +167,10 @@ class AppSettingsVC: UITableViewController {
                 })
         }
     }
+    
+    
+    
+    // MARK: - Segue Prep
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == SEGUE_SELECT_UNIVERSITY {

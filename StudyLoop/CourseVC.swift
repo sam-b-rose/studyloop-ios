@@ -43,6 +43,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Table
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 64.0
+        print("View Did Load")
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -53,7 +54,14 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             settingBtn.title = String.ioniconWithName(.More)
             ActivityService.act.setLastCourse(courseId)
             
+            if let courseTitle = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE_TITLE) as? String {
+                navigationItem.title = courseTitle
+            } else {
+                navigationItem.title = "Select a Course"
+            }
+            
             // Get Loops in Course
+            print("View Will Appear")
             handle = DataService.ds.REF_LOOPS
                 .queryOrderedByChild("courseId")
                 .queryEqualToValue(courseId)
@@ -104,12 +112,6 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Watch for notifications
         Event.register(NOTIFICATION) {
             self.tableView.reloadData()
-        }
-        
-        if let courseTitle = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE_TITLE) as? String {
-            navigationItem.title = courseTitle
-        } else {
-            navigationItem.title = "Select a Course"
         }
     }
     

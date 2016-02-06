@@ -11,6 +11,7 @@ import Firebase
 
 class InitialVC: UIViewController {
     
+    var authHandle: UInt!
     var authRef: Firebase!
     var deviceRef: Firebase!
     
@@ -25,7 +26,7 @@ class InitialVC: UIViewController {
         super.viewDidAppear(true)
         
         // Check if user is already authenticated
-        authRef.observeAuthEventWithBlock({
+        authHandle = authRef.observeAuthEventWithBlock({
             authData in
             if authData != nil {
                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
@@ -35,10 +36,15 @@ class InitialVC: UIViewController {
                     self.checkUserData(authData)
                 })
             } else {
-                NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UID)
                 self.performSegueWithIdentifier(SEGUE_LOGGED_OUT, sender: nil)
             }
         })
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        if authHandle != nil {
+            authRef.removeAuthEventObserverWithHandle(authHandle)
+        }
     }
     
     func saveDeviceId(userId: String) {
@@ -57,11 +63,14 @@ class InitialVC: UIViewController {
     
     func checkUserData(authData: FAuthData) {
         if UserService.us.currentUser.universityId == nil {
-            self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+            // Go to select University
+            print("select university")
+            // self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
         } else {
             if let tempPassword = authData.providerData["isTemporaryPassword"] as? Int where tempPassword == 1 {
                 // change password
-                self.performSegueWithIdentifier(SEGUE_CHANGE_PWD, sender: nil)
+                print("change password")
+                // self.performSegueWithIdentifier(SEGUE_CHANGE_PWD, sender: nil)
             } else {
                 // Get last course
                 ActivityService.act.getLastCourse({ (courseId) -> Void in

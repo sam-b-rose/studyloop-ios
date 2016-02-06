@@ -50,31 +50,32 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         courseHandle = UserService.us.REF_USER_CURRENT
             .childByAppendingPath("courseIds")
-            .observeEventType(.Value, withBlock: { snapshot in
-            
-            self.items = []
-            let currentCourse = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String
-            if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
-                for snap in snapshots {
-                    //print("SNAP: ", snap)
-                    DataService.ds.REF_COURSES.childByAppendingPath(snap.key).observeSingleEventOfType(.Value, withBlock: { snapshot in
-                        //print(snapshot)
-                        let course = MenuItem(title: "\(snapshot.value.objectForKey("major")!) \(snapshot.value.objectForKey("number")!)", courseId: snapshot.value.objectForKey("id") as! String, notify: true)
-                        self.items.insert(course, atIndex: 0)
-                        self.tableView.reloadData()
-                        
-                        if course.courseId == currentCourse {
-                            NSUserDefaults.standardUserDefaults().setValue(course.title, forKey: KEY_COURSE_TITLE)
-                        }
-                    })
+            .observeEventType(.Value, withBlock: {
+                snapshot in
+                print("SNAP: ", snapshot)
+                self.items.removeAll()
+                let currentCourse = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String
+                if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
+                    for snap in snapshots {
+                        //print("SNAP: ", snap)
+                        DataService.ds.REF_COURSES.childByAppendingPath(snap.key).observeSingleEventOfType(.Value, withBlock: { snapshot in
+                            //print(snapshot)
+                            let course = MenuItem(title: "\(snapshot.value.objectForKey("major")!) \(snapshot.value.objectForKey("number")!)", courseId: snapshot.value.objectForKey("id") as! String, notify: true)
+                            self.items.insert(course, atIndex: 0)
+                            self.tableView.reloadData()
+                            
+                            if course.courseId == currentCourse {
+                                NSUserDefaults.standardUserDefaults().setValue(course.title, forKey: KEY_COURSE_TITLE)
+                            }
+                        })
+                    }
                 }
-            }
-            
-            // Append Defaults
-            self.items += self.appendDefaltItems()
-            
-            self.tableView.reloadData()
-        })
+                
+                // Append Defaults
+                self.items += self.appendDefaltItems()
+                
+                self.tableView.reloadData()
+            })
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -127,7 +128,6 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func appendDefaltItems() -> [MenuItem] {
         let defaults = [
             MenuItem(title: "Add Course"),
-            // MenuItem(title: "Settings")
         ]
         return defaults
     }

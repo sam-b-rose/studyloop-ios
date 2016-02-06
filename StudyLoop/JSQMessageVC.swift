@@ -175,7 +175,7 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
     override func viewDidLoad() {
         super.viewDidLoad()
         automaticallyScrollsToMostRecentMessage = true
-        collectionView!.collectionViewLayout.messageBubbleFont = UIFont.init(name: "Noto Sans", size: 14)
+        collectionView!.collectionViewLayout.messageBubbleFont = UIFont.init(name: "Noto Sans", size: 17)
         
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
@@ -423,7 +423,7 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
         
         cell.textView?.textColor = SL_BLACK
         
-        let attributes : [String:AnyObject] = [NSForegroundColorAttributeName: SL_GREEN, NSUnderlineStyleAttributeName: 1]
+        let attributes : [String:AnyObject] = [NSForegroundColorAttributeName: SL_GRAY, NSUnderlineStyleAttributeName: 1]
         cell.textView?.linkTextAttributes = attributes
         
         return cell
