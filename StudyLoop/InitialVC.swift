@@ -37,7 +37,7 @@ class InitialVC: UIViewController {
                         UserService.us.updateProfilePicture(authData.providerData["profileImageURL"])
                         UserService.us.updateIsTempPass(authData.providerData["isTemporaryPassword"])
                         print("User is Authentic", authData.uid)
-                        self.setRootViewController(VIEW_CONTROLLER_DRAWER)
+                        self.setRootViewController(VIEW_CONTROLLER_DRAWER_CONTROLLER)
                     } else {
                         print("User not Authentic")
                         self.setRootViewController(VIEW_CONTROLLER_LOGIN)

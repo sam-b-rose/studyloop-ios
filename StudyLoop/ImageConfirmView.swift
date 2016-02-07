@@ -11,23 +11,25 @@ import UIKit
 class ImageConfirmView: UIView {
     
     var imageView: UIImageView!
-    var label: UILabel!
+    //var label: UILabel!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        imageView = UIImageView(frame: CGRectMake(10, 10, 40, 40))
+        // some crazy shifting to align image to the center of the screen
+        imageView = UIImageView(frame: CGRectMake((self.frame.width/4) + 10, 10, (self.frame.width/2) - 20, self.frame.height - 20))
         imageView.contentMode = .ScaleAspectFill
         imageView.layer.cornerRadius = 5.0
         imageView.clipsToBounds = true
         self.addSubview(imageView)
         
-        label = UILabel(frame: CGRectMake(60, 20, 200, 20))
-        label.text = "Confirm"
-        label.textColor = SL_WHITE
-        label.font = UIFont(name: "Noto Sans", size: 17)
-        label.backgroundColor = UIColor.clearColor()
-        self.addSubview(label)
+        // remove label but might want it back
+        //label = UILabel(frame: CGRectMake(60, 20, 200, 20))
+        //label.text = "Confirm"
+        //label.textColor = SL_WHITE
+        //label.font = UIFont(name: "Noto Sans", size: 17)
+        //label.backgroundColor = UIColor.clearColor()
+        //self.addSubview(label)
     }
     
     required init?(coder aDecoder: NSCoder) {

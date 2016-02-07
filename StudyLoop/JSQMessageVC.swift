@@ -240,7 +240,7 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
             NSForegroundColorAttributeName: SL_WHITE
         ]
         
-        let imageHeader = ImageConfirmView(frame: CGRectMake(0, 0, 200, 60))
+        let imageHeader = ImageConfirmView(frame: CGRectMake(0, 0, self.view.frame.width, (self.view.frame.width / 2)))
         imageHeader.configureImageConfirm(imageToSend)
         confirm.headerView = imageHeader
         
@@ -258,6 +258,7 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
     }
     
     func sendImage() {
+        // TODO: Allow Gifs (must have)
         let image = UIImageJPEGRepresentation(imageToSend, 0.2)
         let sizeBytes = image!.length
         if sizeBytes < 10000000 {
