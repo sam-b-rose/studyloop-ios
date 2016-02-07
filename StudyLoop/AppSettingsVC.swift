@@ -179,10 +179,10 @@ class AppSettingsVC: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == SEGUE_SELECT_UNIVERSITY {
             let universityVC = segue.destinationViewController as? UniversityVC
-            universityVC!.previousVC = "AppSettingsVC"
+            universityVC!.previousVC = VIEW_CONTROLLER_APP_SETTINGS
         } else if segue.identifier == SEGUE_CHANGE_PWD {
             let changePasswordVC = segue.destinationViewController as? ChangePasswordVC
-            changePasswordVC!.previousVC = "AppSettingsVC"
+            changePasswordVC!.previousVC = VIEW_CONTROLLER_APP_SETTINGS
         }
     }
 }

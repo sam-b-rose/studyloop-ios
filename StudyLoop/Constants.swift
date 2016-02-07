@@ -33,6 +33,26 @@ let NOTIFICATION = "notification"
 let LOOP_MESSAGE_RECEIVED = "LOOP_MESSAGE_RECEIVED"
 let LOOP_CREATED = "LOOP_CREATED"
 
+// View Controllers
+let VIEW_CONTROLLER_ADD_COURSE = "AddCourseViewController"
+let VIEW_CONTROLLER_ADD_LOOP = "AddLoopViewController"
+let VIEW_CONTROLLER_APP_SETTINGS = "AppSettingsViewController"
+let VIEW_CONTROLLER_CHANGE_PASSWORD = "ChangePasswordViewController"
+let VIEW_CONTROLLER_COURSE = "CourseVC"
+let VIEW_CONTROLLER_COURSE_SETTINGS = "CourseSettingsViewController"
+let VIEW_CONTROLLER_DRAWER = "DrawerViewController"
+let VIEW_CONTROLLER_DRAWER_CONTROLLER = "DrawerControllerViewController"
+let VIEW_CONTROLLER_INITIAL = "InitialViewController"
+let VIEW_CONTROLLER_LOGIN = "LoginViewController"
+let VIEW_CONTROLLER_LOOP_SETTINGS = "LoopSettingsViewController"
+let VIEW_CONTROLLER_MEMBERS = "MembersViewController"
+let VIEW_CONTROLLER_MESSAGES = "MessagesViewController"
+let VIEW_CONTROLLER_UNIVERSITY = "UniversityViewController"
+
+// Navigation Controllers
+let NAVIGATION_CONTROLLER_DRAWER = "DrawerNavigation"
+let NAVIGATION_CONTROLLER_MAIN = "MainNavigation"
+
 // Segues
 let SEGUE_LOGGED_IN = "loggedIn"
 let SEGUE_LOGGED_OUT = "loggedOut"

@@ -48,9 +48,9 @@ class ChangePasswordVC: UITableViewController {
                             NotificationService.noti.success("Password has been changed.")
                             DataService.ds.REF_BASE.authUser(userEmail, password: newPwd, withCompletionBlock: { error, authData in
                                 // user authed again to update isTemporaryPassword
-                                if self.previousVC == "LoginVC" {
+                                if self.previousVC == VIEW_CONTROLLER_LOGIN {
                                     self.dismissViewControllerAnimated(true, completion: nil)
-                                } else if self.previousVC == "AppSettingsVC" {
+                                } else if self.previousVC == VIEW_CONTROLLER_APP_SETTINGS {
                                     self.navigationController?.popViewControllerAnimated(true)
                                 }
                             })

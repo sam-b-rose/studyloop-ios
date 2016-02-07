@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="atZ-zP-YY1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15A279b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="atZ-zP-YY1">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -64,7 +64,7 @@
         <!--Drawer Controller-->
         <scene sceneID="4o6-9K-PEI">
             <objects>
-                <viewController id="xgv-Qa-XRt" customClass="KYDrawerController" customModule="KYDrawerController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DrawerControllerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="xgv-Qa-XRt" customClass="KYDrawerController" customModule="KYDrawerController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="TUV-LU-D1P"/>
                         <viewControllerLayoutGuide type="bottom" id="uKg-XE-b8R"/>
@@ -93,7 +93,7 @@
         <!--InitialVC-->
         <scene sceneID="FuA-JU-8q7">
             <objects>
-                <viewController id="atZ-zP-YY1" customClass="InitialVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="InitialViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="atZ-zP-YY1" customClass="InitialVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="J6Q-Yh-ymB"/>
                         <viewControllerLayoutGuide type="bottom" id="vMF-d3-qPy"/>
@@ -118,7 +118,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <segue destination="xgv-Qa-XRt" kind="presentation" identifier="loggedIn" modalTransitionStyle="crossDissolve" id="8yv-c0-Ik8"/>
+                        <segue destination="xgv-Qa-XRt" kind="show" identifier="loggedIn" id="8yv-c0-Ik8"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="loggedOut" id="EeO-Ef-csi"/>
                     </connections>
                 </viewController>
@@ -129,7 +129,7 @@
         <!--LoginVC-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="LoginVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="LoginVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -340,7 +340,7 @@
         <!--Messages View Controller-->
         <scene sceneID="jRE-n7-giq">
             <objects>
-                <viewController id="zsf-rJ-lNH" customClass="MessagesViewController" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MessagesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zsf-rJ-lNH" customClass="MessagesViewController" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="gnb-HJ-Hew"/>
                         <viewControllerLayoutGuide type="bottom" id="zkc-mc-Zgw"/>
@@ -361,7 +361,7 @@
         <!--CourseVC-->
         <scene sceneID="zEx-HX-o5v">
             <objects>
-                <viewController storyboardIdentifier="CourseVC" id="AEC-cA-p8P" customClass="CourseVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CourseVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="AEC-cA-p8P" customClass="CourseVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="8VF-hj-EmJ"/>
                         <viewControllerLayoutGuide type="bottom" id="oEe-Cb-CRn"/>
@@ -396,7 +396,7 @@
                                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="KW3-tj-EfH">
                                                             <rect key="frame" x="0.0" y="0.0" width="564" height="24"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" misplaced="YES" text="Loop Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jX0-Oo-ljH">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Loop Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jX0-Oo-ljH">
                                                                     <rect key="frame" x="0.0" y="0.0" width="537" height="24"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="24" id="NXG-N4-0UX"/>
@@ -405,7 +405,7 @@
                                                                     <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="0.89956896549999998" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" misplaced="YES" text="Date" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r29-0P-2rZ">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Date" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r29-0P-2rZ">
                                                                     <rect key="frame" x="542" y="0.0" width="23" height="24"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="24" id="dL2-Zn-EFi"/>
@@ -566,7 +566,7 @@
         <!--App SettingsVC-->
         <scene sceneID="4VL-jk-VBG">
             <objects>
-                <tableViewController id="4YO-M6-iQT" customClass="AppSettingsVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="AppSettingsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4YO-M6-iQT" customClass="AppSettingsVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="mCN-R2-cvT">
                         <rect key="frame" x="0.0" y="64" width="600" height="686"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -603,16 +603,16 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sOB-d6-H2j">
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sOB-d6-H2j">
                                                     <rect key="frame" x="18" y="9" width="564" height="24"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AFd-Zr-unB">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AFd-Zr-unB">
                                                             <rect key="frame" x="0.0" y="0.0" width="48" height="24"/>
                                                             <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
                                                             <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MMh-XB-h0w">
+                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MMh-XB-h0w">
                                                             <rect key="frame" x="48" y="0.0" width="516" height="24"/>
                                                             <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
@@ -635,16 +635,16 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jT4-qS-x8V">
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jT4-qS-x8V">
                                                     <rect key="frame" x="18" y="10" width="564" height="24"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wr8-9D-U56">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wr8-9D-U56">
                                                             <rect key="frame" x="0.0" y="0.0" width="44" height="24"/>
                                                             <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
                                                             <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8Qz-OL-TzC">
+                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8Qz-OL-TzC">
                                                             <rect key="frame" x="44" y="0.0" width="520" height="24"/>
                                                             <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
@@ -667,10 +667,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y1E-kK-xee">
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y1E-kK-xee">
                                                     <rect key="frame" x="18" y="10" width="549" height="24"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="University" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6e-SP-Fxd">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="University" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6e-SP-Fxd">
                                                             <rect key="frame" x="0.0" y="0.0" width="80" height="24"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="80" id="b7p-qI-GMB"/>
@@ -679,7 +679,7 @@
                                                             <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="UTK" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qmP-fo-pR9">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UTK" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qmP-fo-pR9">
                                                             <rect key="frame" x="80" y="0.0" width="469" height="24"/>
                                                             <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="17"/>
                                                             <color key="textColor" red="0.070588235289999995" green="0.078431372550000003" blue="0.090196078430000007" alpha="1" colorSpace="calibratedRGB"/>
@@ -912,7 +912,7 @@
         <!--Add CourseVC-->
         <scene sceneID="juf-rE-HOu">
             <objects>
-                <viewController id="m8u-j2-o1x" customClass="AddCourseVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddCourseViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="m8u-j2-o1x" customClass="AddCourseVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Y56-eA-ztY"/>
                         <viewControllerLayoutGuide type="bottom" id="7qt-QM-kHa"/>
@@ -1057,7 +1057,7 @@
         <!--Change PasswordVC-->
         <scene sceneID="vcc-eO-a4U">
             <objects>
-                <tableViewController id="3xY-X7-KwJ" customClass="ChangePasswordVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ChangePasswordViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3xY-X7-KwJ" customClass="ChangePasswordVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="fn2-HD-mh5">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1200,7 +1200,7 @@
         <!--UniversityVC-->
         <scene sceneID="gPb-mY-bYE">
             <objects>
-                <viewController id="HHz-C6-cOx" customClass="UniversityVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="UniversityViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="HHz-C6-cOx" customClass="UniversityVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bLu-nZ-mc3"/>
                         <viewControllerLayoutGuide type="bottom" id="PSq-Y9-mCN"/>
@@ -1267,7 +1267,7 @@
         <!--DrawerVC-->
         <scene sceneID="AIb-fo-lSa">
             <objects>
-                <viewController id="e4o-m2-O9R" customClass="DrawerVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DrawerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="e4o-m2-O9R" customClass="DrawerVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="cMj-Hb-M8n"/>
                         <viewControllerLayoutGuide type="bottom" id="CNw-m0-WnD"/>
@@ -1428,7 +1428,7 @@
         <!--Navigation Controller-->
         <scene sceneID="et7-k6-0DI">
             <objects>
-                <navigationController storyboardIdentifier="DrawerNavigation" automaticallyAdjustsScrollViewInsets="NO" id="86i-NW-Qv2" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="DrawerNavigation" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="86i-NW-Qv2" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="2hR-o1-psZ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1447,7 +1447,7 @@
         <!--Navigation Controller-->
         <scene sceneID="f1u-GD-0Ri">
             <objects>
-                <navigationController storyboardIdentifier="MainNavigation" automaticallyAdjustsScrollViewInsets="NO" id="Gly-6d-ko7" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MainNavigation" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Gly-6d-ko7" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="DOr-65-eNS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1468,10 +1468,10 @@
             </objects>
             <point key="canvasLocation" x="1074" y="495"/>
         </scene>
-        <!--Title-->
+        <!--Add LoopVC-->
         <scene sceneID="Dqb-zu-JOI">
             <objects>
-                <viewController id="kFU-Cu-Du2" customClass="AddLoopVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddLoopViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="kFU-Cu-Du2" userLabel="Add LoopVC" customClass="AddLoopVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="VsU-09-jhZ"/>
                         <viewControllerLayoutGuide type="bottom" id="qIh-hP-ooN"/>
@@ -1551,7 +1551,7 @@
         <!--Course SettingsVC-->
         <scene sceneID="hjI-27-FhK">
             <objects>
-                <tableViewController id="Wcd-md-rc7" customClass="CourseSettingsVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="CourseSettingsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Wcd-md-rc7" customClass="CourseSettingsVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="L3C-HZ-UZU">
                         <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1664,7 +1664,7 @@
         <!--Loop SettingsVC-->
         <scene sceneID="Rt6-7t-v0z">
             <objects>
-                <tableViewController id="Qte-EA-2uA" customClass="LoopSettingsVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="LoopSettingsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Qte-EA-2uA" customClass="LoopSettingsVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="8iF-0t-drn">
                         <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1780,7 +1780,7 @@
         <!--MembersVC-->
         <scene sceneID="K4T-ho-u8o">
             <objects>
-                <viewController id="BcZ-Oz-vJr" customClass="MembersVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MembersViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BcZ-Oz-vJr" customClass="MembersVC" customModule="StudyLoop" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Ctg-qo-xBU"/>
                         <viewControllerLayoutGuide type="bottom" id="Kn1-3x-Kpz"/>
@@ -1882,8 +1882,8 @@
         <image name="studyloop-logo" width="521" height="149"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="0ho-Lr-cpF"/>
-        <segue reference="i9C-Id-CYX"/>
         <segue reference="sCX-H2-uqm"/>
+        <segue reference="i9C-Id-CYX"/>
+        <segue reference="0ho-Lr-cpF"/>
     </inferredMetricsTieBreakers>
 </document>
