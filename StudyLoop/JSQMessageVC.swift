@@ -240,7 +240,7 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
             NSForegroundColorAttributeName: SL_WHITE
         ]
         
-        let imageHeader = ImageConfirmView(frame: CGRectMake(0, 0, 200,60))
+        let imageHeader = ImageConfirmView(frame: CGRectMake(0, 0, 200, 60))
         imageHeader.configureImageConfirm(imageToSend)
         confirm.headerView = imageHeader
         
@@ -308,7 +308,15 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
             message["sizeBytes"] = imageData!["size"]
             message["textValue"] = imageData!["caption"]
             message["type"] = "image/jpeg"
-            DataService.ds.REF_QUEUES.childByAppendingPath("loop-message-attachments").childByAppendingPath("tasks").childByAutoId().setValue(message)
+            DataService.ds.REF_QUEUES.childByAppendingPath("loop-message-attachments").childByAppendingPath("tasks").childByAutoId().setValue(message, withCompletionBlock: {
+                error, ref in
+                if error == nil {
+                    DataService.ds.REF_LOOPS.childByAppendingPath(self.loop.uid).updateChildValues([
+                        "lastMessage": "\(self.userNameMap[sender]!): Sent a photo 🖼",
+                        "updatedAt": kFirebaseServerValueTimestamp
+                        ])
+                }
+            })
         } else {
             // Standard Text Message
             messagesQueueRef.childByAppendingPath("loop-messages").childByAppendingPath("tasks").childByAutoId().setValue(message)

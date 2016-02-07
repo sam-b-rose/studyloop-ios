@@ -17,7 +17,6 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var addLoopBtn: MaterialButton!
     @IBOutlet weak var menuBtn: UIBarButtonItem!
     @IBOutlet weak var noCourseLbl: UILabel!
-    @IBOutlet weak var noLoopsLbl: UILabel!
     
     var loops = [Loop]()
     var ref: Firebase!
@@ -97,12 +96,6 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                         return $0.createdAt > $1.createdAt
                     }
                     
-                    if self.loops.count == 0 {
-                        self.noLoopsLbl.hidden = false
-                    } else {
-                        self.noLoopsLbl.hidden = true
-                    }
-                    
                     self.tableView.reloadData()
                 })
         } else {
@@ -129,7 +122,6 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 // Get last course
                 ActivityService.act.getLastCourse({ (courseId) -> Void in
                     NSUserDefaults.standardUserDefaults().setValue(courseId, forKey: KEY_COURSE)
-                    NotificationService.noti.getNotifications()
                     completion(result: true)
                 })
             }

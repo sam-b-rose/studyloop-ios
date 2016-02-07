@@ -14,8 +14,8 @@ class DrawerCell: UITableViewCell {
     @IBOutlet weak var menuIcon: UILabel!
     
     var item: MenuItem!
-    let border = CALayer()
     let selectedBorder = CALayer()
+    //let notificationBorder = CALayer()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -35,9 +35,9 @@ class DrawerCell: UITableViewCell {
         selectedBorder.frame = CGRect(x: 0, y: 0, width: 5, height: layer.frame.height)
         layer.addSublayer(selectedBorder)
         
-        border.backgroundColor = SL_GRAY.colorWithAlphaComponent(0.35).CGColor
-        border.frame = CGRect(x: 15, y: 0, width: layer.frame.width - 15, height: 0.5)
-        // layer.addSublayer(border)
+        //notificationBorder.backgroundColor = SL_RED.CGColor
+        //notificationBorder.frame = CGRect(x: layer.frame.width, y: 0, width: 5, height: layer.frame.height)
+        //layer.addSublayer(notificationBorder)
         
         if item.title == "Add Course" {
             menuIcon.hidden = false

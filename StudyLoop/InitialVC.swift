@@ -30,9 +30,10 @@ class InitialVC: UIViewController {
             authData in
             if authData != nil {
                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
-                //self.saveDeviceId(authData.uid)
+                self.saveDeviceId(authData.uid)
                 UserService.us.watchCurrentUser({ (result) -> Void in
                     if result == true {
+                        NotificationService.noti.getNotifications()
                         UserService.us.updateProfilePicture(authData.providerData["profileImageURL"])
                         UserService.us.updateIsTempPass(authData.providerData["isTemporaryPassword"])
                         print("User is Authentic", authData.uid)

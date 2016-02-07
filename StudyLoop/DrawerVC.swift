@@ -53,8 +53,6 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             .childByAppendingPath("courseIds")
             .observeEventType(.Value, withBlock: {
                 snapshot in
-                
-                print("SNAP: ", snapshot)
                 self.items.removeAll()
                 if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
                     self.courseHandler(snapshots, completion: { (result) -> Void in

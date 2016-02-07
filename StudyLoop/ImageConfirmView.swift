@@ -18,6 +18,7 @@ class ImageConfirmView: UIView {
         
         imageView = UIImageView(frame: CGRectMake(10, 10, 40, 40))
         imageView.contentMode = .ScaleAspectFill
+        imageView.layer.cornerRadius = 5.0
         imageView.clipsToBounds = true
         self.addSubview(imageView)
         
