@@ -394,8 +394,6 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
             }
     }
     
-    
-    
     // Segue Prep
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
