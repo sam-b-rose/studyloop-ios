@@ -60,6 +60,13 @@ class AppSettingsVC: UITableViewController {
         request?.cancel()
     }
     
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 0.1
+        }
+        return UITableViewAutomaticDimension
+    }
+    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
@@ -102,10 +109,7 @@ class AppSettingsVC: UITableViewController {
         NotificationService.noti.removeNotificationObserver()
         DataService.ds.REF_BASE.unauth()
         resetUserDefaults()
-//        if let drawerController = navigationController?.parentViewController as? KYDrawerController {
-//            drawerController.dismissViewControllerAnimated(true, completion: nil)
-//        }
-        self.performSegueWithIdentifier("logOutUser", sender: nil)
+        self.performSegueWithIdentifier("unwindToInit", sender: nil)
     }
     
     func showDeleteConfirmation() {

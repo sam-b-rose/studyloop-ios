@@ -35,7 +35,7 @@ class DrawerCell: UITableViewCell {
         selectedBorder.frame = CGRect(x: 0, y: 0, width: 5, height: layer.frame.height)
         layer.addSublayer(selectedBorder)
         
-        border.backgroundColor = SL_GRAY.colorWithAlphaComponent(0.3).CGColor
+        border.backgroundColor = SL_GRAY.colorWithAlphaComponent(0.35).CGColor
         border.frame = CGRect(x: 15, y: 0, width: layer.frame.width - 15, height: 0.5)
         // layer.addSublayer(border)
         

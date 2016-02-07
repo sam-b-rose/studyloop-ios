@@ -159,17 +159,17 @@ class NotificationService: Evented {
     }
     
     func success(message: String) {
-        let notification = MPGNotification(title: "Success!", subtitle: message, backgroundColor: SL_GREEN, iconImage: nil)
-        notification.titleColor = SL_BLACK
-        notification.subtitleColor = SL_BLACK
+        let notification = MPGNotification(title: "Success!", subtitle: message, backgroundColor: SL_BLACK, iconImage: nil)
+        notification.titleColor = SL_WHITE
+        notification.subtitleColor = SL_WHITE
         notification.duration = 4
         notification.show()
     }
     
     func error() {
         let notification = MPGNotification(title: "Error!", subtitle: "There was a problem :(", backgroundColor: SL_RED, iconImage: nil)
-        notification.titleColor = SL_WHITE
-        notification.subtitleColor = SL_WHITE
+        notification.titleColor = SL_BLACK
+        notification.subtitleColor = SL_BLACK
         notification.duration = 4
         notification.show()
     }

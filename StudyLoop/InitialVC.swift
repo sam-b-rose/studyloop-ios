@@ -22,31 +22,33 @@ class InitialVC: UIViewController {
         deviceRef = DataService.ds.REF_QUEUES.childByAppendingPath("user-devices").childByAppendingPath("tasks")
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewDidAppear(true)
+    override func viewDidAppear(animated: Bool) {
+        print("view did appear")
         
         // Check if user is already authenticated
         authHandle = authRef.observeAuthEventWithBlock({
             authData in
             if authData != nil {
                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
-                self.saveDeviceId(authData.uid)
+                //self.saveDeviceId(authData.uid)
                 UserService.us.watchCurrentUser({ (result) -> Void in
-                    UserService.us.updateProfilePicture(authData.providerData["profileImageURL"])
-                    self.checkUserData(authData)
+                    if result == true {
+                        UserService.us.updateProfilePicture(authData.providerData["profileImageURL"])
+                        UserService.us.updateIsTempPass(authData.providerData["isTemporaryPassword"])
+                        print("User is Authentic", authData.uid)
+                        self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                    } else {
+                        print("User not Authentic")
+                        self.performSegueWithIdentifier(SEGUE_LOGGED_OUT, sender: nil)
+                    }
                 })
             } else {
+                print("User not Authentic")
                 self.performSegueWithIdentifier(SEGUE_LOGGED_OUT, sender: nil)
             }
         })
     }
-    
-    override func viewDidDisappear(animated: Bool) {
-        if authHandle != nil {
-            authRef.removeAuthEventObserverWithHandle(authHandle)
-        }
-    }
-    
+
     func saveDeviceId(userId: String) {
         if let deviceId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_DEVICE_ID) as? String {
             deviceRef.childByAutoId().setValue([
@@ -59,26 +61,12 @@ class InitialVC: UIViewController {
         }
     }
     
-    // TODO: Fix Segues
+    @IBAction func unwindToInit(segue: UIStoryboardSegue) {}
     
-    func checkUserData(authData: FAuthData) {
-        if UserService.us.currentUser.universityId == nil {
-            // Go to select University
-            print("select university")
-            // self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
-        } else {
-            if let tempPassword = authData.providerData["isTemporaryPassword"] as? Int where tempPassword == 1 {
-                // change password
-                print("change password")
-                // self.performSegueWithIdentifier(SEGUE_CHANGE_PWD, sender: nil)
-            } else {
-                // Get last course
-                ActivityService.act.getLastCourse({ (courseId) -> Void in
-                    NSUserDefaults.standardUserDefaults().setValue(courseId, forKey: KEY_COURSE)
-                    NotificationService.noti.getNotifications()
-                    self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
-                })
-            }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if authHandle != nil {
+            print("Removed Auth Observer")
+            authRef.removeAuthEventObserverWithHandle(authHandle)
         }
     }
 }

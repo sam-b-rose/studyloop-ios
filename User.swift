@@ -19,6 +19,7 @@ class User {
     private var _profileImageURL: String?
     private var _courseIds: Dictionary<String, Int>?
     private var _universityId: String?
+    private var _isTemporaryPassword: Int?
     private var _userRef: Firebase!
     
     var email: String {
@@ -55,6 +56,15 @@ class User {
     
     var universityId: String? {
         return _universityId
+    }
+    
+    var isTemporaryPassword: Int? {
+        get {
+            return _isTemporaryPassword
+        }
+        set(isTemp) {
+            _isTemporaryPassword = isTemp
+        }
     }
     
     init(uid: String, dictionary: Dictionary<String, AnyObject?>) {

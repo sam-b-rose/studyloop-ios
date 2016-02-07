@@ -34,9 +34,14 @@ class LoopCell: UITableViewCell {
     
     func configureCell(loop: Loop) {
         loopLabel.text = loop.subject
-        lastLabel.text = loop.lastMessage
         newMessageIndicator.hidden = true
         backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0)
+        
+        if loop.lastMessage == "" {
+            lastLabel.text = "No messages 😢 Say something! 📣"
+        } else {
+            lastLabel.text = loop.lastMessage
+        }
         
         if loop.updatedAt != nil {
             let date = TimeUtils.tu.dayStringFromTime(loop.updatedAt!)

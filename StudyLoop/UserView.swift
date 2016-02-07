@@ -17,7 +17,6 @@ class UserView: UIView {
     @IBOutlet weak var nameLabel: UILabel!
     
     var user: User!
-    let border = CALayer()
     var request: Request?
     
     override func awakeFromNib() {

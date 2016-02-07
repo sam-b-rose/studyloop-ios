@@ -17,6 +17,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var userView: UserView!
     
     var items = [MenuItem]()
+    var timer: NSTimer!
     var request: Request?
     var courseHandle: UInt!
     static var imageCache = NSCache()
@@ -52,30 +53,42 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             .childByAppendingPath("courseIds")
             .observeEventType(.Value, withBlock: {
                 snapshot in
+                
                 print("SNAP: ", snapshot)
                 self.items.removeAll()
-                let currentCourse = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String
                 if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
-                    for snap in snapshots {
-                        //print("SNAP: ", snap)
-                        DataService.ds.REF_COURSES.childByAppendingPath(snap.key).observeSingleEventOfType(.Value, withBlock: { snapshot in
-                            //print(snapshot)
-                            let course = MenuItem(title: "\(snapshot.value.objectForKey("major")!) \(snapshot.value.objectForKey("number")!)", courseId: snapshot.value.objectForKey("id") as! String, notify: true)
-                            self.items.insert(course, atIndex: 0)
-                            self.tableView.reloadData()
-                            
-                            if course.courseId == currentCourse {
-                                NSUserDefaults.standardUserDefaults().setValue(course.title, forKey: KEY_COURSE_TITLE)
-                            }
-                        })
-                    }
+                    self.courseHandler(snapshots, completion: { (result) -> Void in
+                        // Append Defaults
+                        self.items += self.appendDefaltItems()
+                        self.tableView.reloadData()
+                    })
                 }
                 
-                // Append Defaults
-                self.items += self.appendDefaltItems()
-                
-                self.tableView.reloadData()
             })
+    }
+    
+    func courseHandler(snapshots: [FDataSnapshot], completion: (result: Bool) -> Void) {
+        let currentCourse = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String
+        let courseGroup = dispatch_group_create()
+        
+        for snap in snapshots {
+            dispatch_group_enter(courseGroup)
+            DataService.ds.REF_COURSES.childByAppendingPath(snap.key).observeSingleEventOfType(.Value, withBlock: { snapshot in
+                let course = MenuItem(title: "\(snapshot.value.objectForKey("major")!) \(snapshot.value.objectForKey("number")!)", courseId: snapshot.value.objectForKey("id") as! String, notify: true)
+                self.items.append(course)
+                if course.courseId == currentCourse {
+                    NSUserDefaults.standardUserDefaults().setValue(course.title, forKey: KEY_COURSE_TITLE)
+                }
+                dispatch_group_leave(courseGroup)
+            })
+        }
+        
+        dispatch_group_notify(courseGroup, dispatch_get_main_queue()) {
+            self.items.sortInPlace {
+                return $0.title < $1.title
+            }
+            completion(result: true)
+        }
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -83,6 +96,8 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             UserService.us.REF_USER_CURRENT.childByAppendingPath("courseIds").removeObserverWithHandle(courseHandle)
         }
     }
+    
+    // MARK: - Table Stuff
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
@@ -133,8 +148,8 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func goToSettings(sender: UITapGestureRecognizer) {
-        print("Going to Settings")
         if let drawerController = navigationController?.parentViewController as? KYDrawerController {
+            print("Prepare for Settings")
             let mainNavigation = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainNavigation") as! UINavigationController
             
             // go to settings / profile

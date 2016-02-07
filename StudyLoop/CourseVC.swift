@@ -17,6 +17,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var addLoopBtn: MaterialButton!
     @IBOutlet weak var menuBtn: UIBarButtonItem!
     @IBOutlet weak var noCourseLbl: UILabel!
+    @IBOutlet weak var noLoopsLbl: UILabel!
     
     var loops = [Loop]()
     var ref: Firebase!
@@ -44,6 +45,10 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 64.0
         print("View Did Load")
+        
+        checkUserData { (result) -> Void in
+            print(result)
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -56,8 +61,6 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             
             if let courseTitle = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE_TITLE) as? String {
                 navigationItem.title = courseTitle
-            } else {
-                navigationItem.title = "Select a Course"
             }
             
             // Get Loops in Course
@@ -94,6 +97,12 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                         return $0.createdAt > $1.createdAt
                     }
                     
+                    if self.loops.count == 0 {
+                        self.noLoopsLbl.hidden = false
+                    } else {
+                        self.noLoopsLbl.hidden = true
+                    }
+                    
                     self.tableView.reloadData()
                 })
         } else {
@@ -103,6 +112,29 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             addLoopBtn.hidden = true
             settingBtn.title = ""
             NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
+        }
+    }
+    
+    // TODO: Fix Segues
+    
+    func checkUserData(completion: (result: Bool) -> Void) {
+        if UserService.us.currentUser.universityId == nil {
+            // Go to select University
+            print("select university")
+            self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+        } else {
+            if let tempPassword = UserService.us.currentUser.isTemporaryPassword where tempPassword == 1 {
+                // change password
+                print("change password")
+                self.performSegueWithIdentifier(SEGUE_CHANGE_PWD, sender: nil)
+            } else {
+                // Get last course
+                ActivityService.act.getLastCourse({ (courseId) -> Void in
+                    NSUserDefaults.standardUserDefaults().setValue(courseId, forKey: KEY_COURSE)
+                    NotificationService.noti.getNotifications()
+                    completion(result: true)
+                })
+            }
         }
     }
     
@@ -169,6 +201,10 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
+    
+    
+    // MARK: - Loop Logic
+    
     func joinLoop() {
         let alert = UIAlertController(title: "Join Loop", message: "Do you want to join \(selectedLoop.subject)?", preferredStyle: .Alert)
         let join = UIAlertAction(title: "Join", style: .Default, handler: joinLoopHandler)
@@ -190,6 +226,9 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.performSegueWithIdentifier(SEGUE_MESSAGES, sender: nil)
     }
     
+    
+    // MARK: - Button Actions
+    
     @IBAction func didTapSettingsButton(sender: AnyObject) {
         if NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) != nil {
             performSegueWithIdentifier(SEGUE_COURSE_SETTINGS, sender: nil)
@@ -205,6 +244,10 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             drawerController.setDrawerState(.Opened, animated: true)
         }
     }
+    
+    
+    
+    // MARK: - Segue Prep
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if(segue.identifier == SEGUE_LOOP) {

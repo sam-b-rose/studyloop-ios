@@ -160,10 +160,12 @@ class LoginVC: UIViewController {
                             NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
                             UserService.us.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: {
                                 snapshot in
-                                if snapshot == nil {
+                                if snapshot != nil {
+                                    print("user already exsits, moving on")
                                     self.dismissViewControllerAnimated(true, completion: nil)
                                 } else {
                                     self.createUser(authData, completion: { (result) -> Void in
+                                        print(result)
                                         self.dismissViewControllerAnimated(true, completion: nil)
                                     })
                                 }
@@ -216,7 +218,7 @@ class LoginVC: UIViewController {
                                                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
                                                 // Create User in Firebase Database
                                                 self.createUser(authData, completion: { (result) -> Void in
-                                                    self.dismissViewControllerAnimated(true, completion: nil)
+                                                    self.performSegueWithIdentifier("unwindToInit", sender: self)
                                                 })
                                             })
                                         }
@@ -237,10 +239,10 @@ class LoginVC: UIViewController {
                         UserService.us.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: {
                             snapshot in
                             if snapshot == nil {
-                                self.dismissViewControllerAnimated(true, completion: nil)
+                                self.performSegueWithIdentifier("unwindToInit", sender: self)
                             } else {
                                 self.createUser(authData, completion: { (result) -> Void in
-                                    self.dismissViewControllerAnimated(true, completion: nil)
+                                    self.performSegueWithIdentifier("unwindToInit", sender: self)
                                 })
                             }
                         })
@@ -270,20 +272,6 @@ class LoginVC: UIViewController {
             registerState()
         } else {
             loginState()
-        }
-    }
-    
-    
-    
-    // MARK: - Segue Prep
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == SEGUE_SELECT_UNIVERSITY {
-            let universityVC = segue.destinationViewController as? UniversityVC
-            universityVC!.previousVC = "LoginVC"
-        } else if segue.identifier == SEGUE_CHANGE_PWD {
-            let changePasswordVC = segue.destinationViewController as? ChangePasswordVC
-            changePasswordVC!.previousVC = "LoginVC"
         }
     }
 }

@@ -55,6 +55,9 @@ class UserService {
             if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
                 self._currentUser = User(uid: snapshot.key, dictionary: userDict)
                 completion(result: true)
+            } else {
+                print("error getting user data")
+                completion(result: false)
             }
         })
     }
@@ -63,5 +66,9 @@ class UserService {
         if let imageUrl = profileImageURL as? String {
             REF_USER_CURRENT.childByAppendingPath("profileImageURL").setValue(imageUrl)
         }
+    }
+    
+    func updateIsTempPass(isTemporaryPassword: AnyObject?) {
+        _currentUser.isTemporaryPassword = isTemporaryPassword as? Int
     }
 }
