@@ -12,7 +12,6 @@ import Firebase
 
 class UserView: UIView {
     
-    @IBOutlet weak var settingsIcon: UILabel!
     @IBOutlet weak var profileImage: UserImage!
     @IBOutlet weak var nameLabel: UILabel!
     
@@ -22,9 +21,6 @@ class UserView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        settingsIcon.font = UIFont.ioniconOfSize(20)
-        settingsIcon.text = String.ioniconWithCode("ion-ios-gear")
-
         user = UserService.us.currentUser
         configureView()
     }

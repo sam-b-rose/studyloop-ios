@@ -125,10 +125,11 @@ class LoginVC: UIViewController {
             "email": authData.providerData["email"] as! String,
             "gender": gender,
             "profileImageURL": authData.providerData["profileImageURL"] as! String,
-            "createdAt": kFirebaseServerValueTimestamp as Dictionary<String, String>,
-            "updatedAt": kFirebaseServerValueTimestamp as Dictionary<String, String>
+            "createdAt": kFirebaseServerValueTimestamp,
+            "updatedAt": kFirebaseServerValueTimestamp
         ]
         
+        print("New User: ", user)
         UserService.us.createFirebaseUser(authData.uid, user: user)
         
         // Set User Defaults just incase
@@ -218,6 +219,7 @@ class LoginVC: UIViewController {
                                                 NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
                                                 // Create User in Firebase Database
                                                 self.createUser(authData, completion: { (result) -> Void in
+                                                    print(authData.uid)
                                                     self.performSegueWithIdentifier("unwindToInit", sender: self)
                                                 })
                                             })
@@ -242,6 +244,7 @@ class LoginVC: UIViewController {
                                 self.performSegueWithIdentifier("unwindToInit", sender: self)
                             } else {
                                 self.createUser(authData, completion: { (result) -> Void in
+                                    print(authData.uid)
                                     self.performSegueWithIdentifier("unwindToInit", sender: self)
                                 })
                             }

@@ -115,8 +115,6 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    // TODO: Fix Segues
-    
     func checkUserData(completion: (result: Bool) -> Void) {
         if UserService.us.currentUser.universityId == nil {
             // Go to select University

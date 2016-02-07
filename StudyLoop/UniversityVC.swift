@@ -75,13 +75,8 @@ class UniversityVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             error, ref in
             if error == nil {
                 print("Set the univeristy to \(key)")
-                
-                if self.previousVC == "LoginVC" {
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                } else if self.previousVC == "AppSettingsVC" {
-                    self.navigationController?.popViewControllerAnimated(true)
-                }
-                
+                NotificationService.noti.success("University has been set.")
+                self.navigationController?.popViewControllerAnimated(true)
             } else {
                 print("Error setting university")
             }
