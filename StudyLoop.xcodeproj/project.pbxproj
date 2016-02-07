@@ -358,13 +358,13 @@
 				6FAF96951C38AACA00B6860F /* CourseVC.swift */,
 				6FF1E18A1C45B0C100E0A00B /* CourseSettingsVC.swift */,
 				6F91EF171C2E31E500BDD395 /* DrawerVC.swift */,
+				6FE6BCA81C661EE60067B838 /* InitialVC.swift */,
 				6FE8106E1C0AA35300B1ABA8 /* LoginVC.swift */,
 				6F26B0981C468AEF00F2CF41 /* LoopSettingsVC.swift */,
 				6FAC846C1C48851700C9861E /* MembersVC.swift */,
 				6FAC84681C47447B00C9861E /* MessageVC.swift */,
 				6F90FEF71C2B3CCF001920C4 /* UniversityVC.swift */,
 				6FDB7C761C59BCD400CDACD4 /* JSQMessageVC.swift */,
-				6FE6BCA81C661EE60067B838 /* InitialVC.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";

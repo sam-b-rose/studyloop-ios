@@ -37,17 +37,25 @@ class InitialVC: UIViewController {
                         UserService.us.updateProfilePicture(authData.providerData["profileImageURL"])
                         UserService.us.updateIsTempPass(authData.providerData["isTemporaryPassword"])
                         print("User is Authentic", authData.uid)
-                        self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                        self.setRootViewController(VIEW_CONTROLLER_DRAWER)
                     } else {
                         print("User not Authentic")
-                        self.performSegueWithIdentifier(SEGUE_LOGGED_OUT, sender: nil)
+                        self.setRootViewController(VIEW_CONTROLLER_LOGIN)
                     }
                 })
             } else {
                 print("User not Authentic")
-                self.performSegueWithIdentifier(SEGUE_LOGGED_OUT, sender: nil)
+                self.setRootViewController(VIEW_CONTROLLER_LOGIN)
             }
         })
+    }
+    
+    func setRootViewController(viewControllerName: String) -> Void {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let targetViewController = storyboard.instantiateViewControllerWithIdentifier(viewControllerName)
+        let application = UIApplication.sharedApplication()
+        let window = application.delegate?.window
+        window??.rootViewController = targetViewController
     }
 
     func saveDeviceId(userId: String) {
@@ -62,7 +70,7 @@ class InitialVC: UIViewController {
         }
     }
     
-    @IBAction func unwindToInit(segue: UIStoryboardSegue) {}
+    @IBAction func unwindToInit(segue: UIStoryboardSegue) { }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if authHandle != nil {
