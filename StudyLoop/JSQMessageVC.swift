@@ -14,6 +14,10 @@ import JSQMessagesViewController
 import JTSImageViewController
 import AHKActionSheet
 
+let PAGE_SIZE = 25
+let ADDTYPE_APPEND = "APPEND"
+let ADDTYPE_PREPEND = "PREPEND"
+
 class MessagesViewController: JSQMessagesViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var loop: Loop!
@@ -40,7 +44,6 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
     var usersRef: Firebase!
     
     let attributes = [NSFontAttributeName: UIFont.ioniconOfSize(26)] as Dictionary!
-    
     
     
     /* Firebase / Gettin Data */
@@ -72,52 +75,106 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
     }
     
     func getUsers() {
-        usersRef = DataService.ds.REF_LOOPS.childByAppendingPath(loop.uid).childByAppendingPath("userIds")
-        
         usersRef.observeEventType(FEventType.Value, withBlock: { (snapshot) -> Void in
             if let users = snapshot.value as? Dictionary<String, AnyObject> {
                 self.createUserMaps(users, completion: { (result) -> Void in
-                    self.getMessages()
+                    self.initializeMessageListenerWithCapacity(UInt(PAGE_SIZE))
                 })
             }
         })
     }
     
-    func getMessages() {
-        messagesRef = DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid)
-        messagesQueueRef = DataService.ds.REF_QUEUES
-        
-        // TODO: Currently limitied to last 25 messages
-        self.messagesRef.queryLimitedToLast(25).observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) in
-            if let messageDict = snapshot.value as? Dictionary<String, AnyObject> {
-                let message: SLMessage!
-                
-                let text = messageDict["textValue"] as! String
-                let senderId = messageDict["createdById"] as! String
-                let senderDisplayName = self.userNameMap[senderId] != nil ? self.userNameMap[senderId]! : "Anonymous"
-                
-                var date = NSDate()
-                let avatarUrl = self.userImageMap[senderId]
-                
-                if let createdAt = messageDict["createdAt"] as? Double {
-                    date = NSDate(timeIntervalSince1970: createdAt)
-                }
-                
-                if let attachment = messageDict["attachment"] as? Dictionary<String, AnyObject>,
-                    let path = attachment["path"] as? String {
-                        let attachmentUrl = path
-                        let photoMedia = JSQPhotoMediaItem(image: nil)
-                        photoMedia.appliesMediaViewMaskAsOutgoing = (senderId == self.senderId)
-                        message = SLMessage(senderId: senderId, senderDisplayName: senderDisplayName, date: date, media: photoMedia, attachmentUrl: attachmentUrl, avatarUrl: avatarUrl)
-                        self.messages.append(message)
-                } else {
-                    message = SLMessage(senderId: senderId, senderDisplayName: senderDisplayName, date: date, text: text, avatarUrl: avatarUrl)
-                    self.messages.append(message)
-                }
-                
-                self.finishReceivingMessage()
-            }
+    func initializeMessageListenerWithCapacity(numberOfMessages: UInt) {
+        let query = self.messagesRef.queryLimitedToLast(numberOfMessages)
+        query.observeEventType(.ChildAdded, withBlock: { (snapshot) in
+            self.handleSnapshot(snapshot, ofType: .ChildAdded, withMessageHandlerBlock: { (message) -> Void in
+                // After each message is constructed, do this
+                self.insertMessage(message, withHandlerType: ADDTYPE_APPEND)
+                super.finishReceivingMessage()
+            })
         })
+    }
+    
+    func getAllMessages() {
+        self.messages = []
+        self.messagesRef.observeSingleEventOfType(.Value, withBlock: { (snapshot) -> Void in
+            self.handleSnapshot(snapshot, ofType: .Value, withMessageHandlerBlock: { (message) -> Void in
+                // After each message is constructed, do this
+                self.insertMessage(message, withHandlerType: ADDTYPE_PREPEND)
+            })
+            // If we have them all, don't let user opt to load
+            super.showLoadEarlierMessagesHeader = false
+            print("Snapshot handled")
+        })
+    }
+    
+    func handleSnapshot(snapshot: FDataSnapshot, ofType type: FEventType, withMessageHandlerBlock handler: (SLMessage!) -> Void ) -> Void {
+        var message: SLMessage!
+        /* Blanket Code to handle message snapshots */
+        switch type {
+        case .ChildAdded:
+            if let messageDict = snapshot.value as? Dictionary<String, AnyObject> {
+                message = constructMessage(messageDict)
+                handler(message)
+            }
+        case .Value:
+            if let allMessages = snapshot.value as? [String: AnyObject]{
+                for (_, messageDict) in allMessages {
+                    message = constructMessage(messageDict as! [String : AnyObject])
+                    handler(message)
+                }
+                
+                // Sort, because reading them in Key/Value from a Dict messes up order
+                self.messages.sortInPlace {$0.date < $1.date}
+                
+                // Scroll to the end
+                self.reloadMessagesViewAtSamePosition()
+            }
+        default:
+            // We can add more cases in later
+            break
+        }
+    }
+    
+    func insertMessage(message: SLMessage!, withHandlerType handle: String!) -> Void {
+        if handle == ADDTYPE_APPEND {
+            messages.append(message)
+        } else {
+            messages.insert(message, atIndex: 0)
+        }
+        
+        if self.messages.count >= Int(PAGE_SIZE) {
+            self.showLoadEarlierMessagesHeader = true
+        } else {
+            self.showLoadEarlierMessagesHeader = false
+        }
+    }
+    
+    func constructMessage(messageDict: [String: AnyObject]) -> SLMessage! {
+        let message: SLMessage!
+        
+        let text = messageDict["textValue"] as! String
+        let senderId = messageDict["createdById"] as! String
+        let senderDisplayName = self.userNameMap[senderId] != nil ? self.userNameMap[senderId]! : "Anonymous"
+        
+        var date: NSDate?
+        let avatarUrl = self.userImageMap[senderId]
+        
+        if let createdAt = messageDict["createdAt"] as? Double {
+            date = NSDate(timeIntervalSince1970: createdAt)
+        }
+        
+        if let attachment = messageDict["attachment"] as? Dictionary<String, AnyObject>,
+            let path = attachment["path"] as? String {
+                let attachmentUrl = path
+                let photoMedia = JSQPhotoMediaItem(image: nil)
+                photoMedia.appliesMediaViewMaskAsOutgoing = (senderId == self.senderId)
+                message = SLMessage(senderId: senderId, senderDisplayName: senderDisplayName, date: date, media: photoMedia, attachmentUrl: attachmentUrl, avatarUrl: avatarUrl)
+        } else {
+            message = SLMessage(senderId: senderId, senderDisplayName: senderDisplayName, date: date, text: text, avatarUrl: avatarUrl)
+        }
+        
+        return message
     }
     
     func createUserMaps(users: Dictionary<String, AnyObject>, completion: (result: Bool)-> Void) {
@@ -163,7 +220,7 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
         
         let nameLength = name.characters.count
         let initials : String? = name.substringToIndex(senderId!.startIndex.advancedBy(min(3, nameLength)))
-        let userImage = JSQMessagesAvatarImageFactory.avatarImageWithUserInitials(initials, backgroundColor: color, textColor: SL_CORAL, font: UIFont.systemFontOfSize(CGFloat(13)), diameter: diameter)
+        let userImage = JSQMessagesAvatarImageFactory.avatarImageWithUserInitials(initials, backgroundColor: color, textColor: SL_CORAL, font: UIFont.systemFontOfSize(CGFloat(14)), diameter: diameter)
         
         avatars[name] = userImage
     }
@@ -175,10 +232,17 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
     override func viewDidLoad() {
         super.viewDidLoad()
         automaticallyScrollsToMostRecentMessage = true
-        collectionView!.collectionViewLayout.messageBubbleFont = UIFont.init(name: "Noto Sans", size: 17)
+        collectionView!.collectionViewLayout.messageBubbleFont = UIFont.init(name: "Noto Sans", size: 14)
+        
+//        let headerView = JSQMessagesLoadEarlierHeaderView()
+//        headerView.delegate = self
         
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
+        
+        usersRef = DataService.ds.REF_LOOPS.childByAppendingPath(loop.uid).childByAppendingPath("userIds")
+        messagesRef = DataService.ds.REF_LOOP_MESSAGES.childByAppendingPath(loop.uid)
+        messagesQueueRef = DataService.ds.REF_QUEUES
         
         // Navbar Stuff
         let more = UIBarButtonItem(title: String.ioniconWithName(.More), style: .Plain, target: self, action: Selector("goToLoopSettings"))
@@ -210,8 +274,6 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
             NotificationService.noti.removeNotification(notification.uid)
         }
     }
-    
-    
     
     // MARK: - Image Picker
     
@@ -367,8 +429,6 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
         }
     }
     
-    
-    
     // MARK:  - Collection View Stuff
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
@@ -395,7 +455,7 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
                             MessagesViewController.imageCache.setObject(image, forKey: message.attachmentUrl!)
                             
                             self.messages[indexPath.item] = mediaMessage
-                            self.collectionView?.reloadData()
+                            self.reloadMessagesView()
                         }
                 })
             }
@@ -405,12 +465,7 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
         let message = messages[indexPath.item]
-        
-        if message.senderId == senderId {
-            return self.outgoingBubbleImage
-        }
-        
-        return self.incomingBubbleImage
+        return message.senderId == senderId ? self.outgoingBubbleImage : self.incomingBubbleImage
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
@@ -490,8 +545,24 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
         }
     }
     
+    override func collectionView(collectionView: JSQMessagesCollectionView!, header headerView: JSQMessagesLoadEarlierHeaderView!, didTapLoadEarlierMessagesButton sender: UIButton!) {
+        
+        getAllMessages()
+    }
     
+    func reloadMessagesView() {
+        // Reload the message controller - more elegant, preference really
+        self.collectionView?.reloadData()
+    }
     
+    func reloadMessagesViewAtSamePosition() {
+        let oldContentSize = self.collectionView?.contentSize.height
+        self.collectionView!.collectionViewLayout.invalidateLayoutWithContext(JSQMessagesCollectionViewFlowLayoutInvalidationContext())
+        self.collectionView?.layoutIfNeeded()
+        let newContentSize = self.collectionView?.contentSize.height
+        let dy = newContentSize! - oldContentSize!
+        self.collectionView?.contentOffset.y = dy - 32 // (tested size of header)
+    }
     
     /* Segue Prep */
     
