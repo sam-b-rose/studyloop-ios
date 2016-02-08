@@ -146,7 +146,6 @@ class LoginVC: UIViewController {
     @IBAction func fbBtnPressed(sender: MaterialButton!) {
         let facebookLogin = FBSDKLoginManager()
         facebookLogin.logInWithReadPermissions(["email"], fromViewController: self, handler: { (facebookResutl: FBSDKLoginManagerLoginResult!, facebookError: NSError!) -> Void in
-            
             if facebookError != nil {
                 print("Facebook login failed. Error: \(facebookError)")
             } else {
@@ -186,6 +185,7 @@ class LoginVC: UIViewController {
         if isForgotPassword {
             // reset password
             if let email = emailField.text where email != "" {
+                if email.hasSuffix(".edu") {
                 DataService.ds.REF_BASE.resetPasswordForUser(email, withCompletionBlock: {
                     error in
                     if error == nil {
@@ -194,64 +194,68 @@ class LoginVC: UIViewController {
                         self.passwordField.text = ""
                     }
                 })
+                } else {
+                    NotificationService.noti.showAlert("Email must be a .edu address", msg: "You must be student with a .edu email address to use StudyLoop.", uiView: self)
+                }
             } else {
                 NotificationService.noti.showAlert("Email Required", msg: "You must provide the email associated with your StudyLoop account in order to reset your password.", uiView: self)
             }
         } else {
             // attemptlogin
             if let email = emailField.text where email != "", let pwd = passwordField.text where pwd != "" {
-                
-                DataService.ds.REF_BASE.authUser(email, password: pwd, withCompletionBlock: {
-                    error, authData in
-                    if error != nil {
-                        if error.code == STATUS_ACCOUNT_NONEXSIT {
-                            
-                            if self.isRegistering {
-                                if self.nameField.text != "" {
-                                    // Create User in Firebase Auth
-                                    DataService.ds.REF_BASE.createUser(email, password: pwd, withValueCompletionBlock: { error, result in
-                                        if error != nil {
-                                            NotificationService.noti.showAlert("Could not create account", msg: "Problem creating a new account.", uiView: self)
-                                        } else {
-                                            DataService.ds.REF_BASE.authUser(email, password: pwd, withCompletionBlock: {
-                                                error, authData in
-                                                print("Creating new user with email / password")
-                                                NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
-                                                // Create User in Firebase Database
-                                                self.createUser(authData, completion: { (result) -> Void in
-                                                    print(authData.uid)
-                                                    self.performSegueWithIdentifier("unwindToInit", sender: self)
+                if email.hasSuffix(".edu") {
+                    DataService.ds.REF_BASE.authUser(email, password: pwd, withCompletionBlock: {
+                        error, authData in
+                        if error != nil {
+                            if error.code == STATUS_ACCOUNT_NONEXSIT {
+                                if self.isRegistering {
+                                    if self.nameField.text != "" {
+                                        // Create User in Firebase Auth
+                                        DataService.ds.REF_BASE.createUser(email, password: pwd, withValueCompletionBlock: { error, result in
+                                            if error != nil {
+                                                NotificationService.noti.showAlert("Could not create account", msg: "Problem creating a new account.", uiView: self)
+                                            } else {
+                                                DataService.ds.REF_BASE.authUser(email, password: pwd, withCompletionBlock: {
+                                                    error, authData in
+                                                    print("Creating new user with email / password")
+                                                    NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
+                                                    // Create User in Firebase Database
+                                                    self.createUser(authData, completion: { (result) -> Void in
+                                                        print(authData.uid)
+                                                        self.performSegueWithIdentifier("unwindToInit", sender: self)
+                                                    })
                                                 })
-                                            })
-                                        }
-                                    })
+                                            }
+                                        })
+                                    } else {
+                                        NotificationService.noti.showAlert("Could not register new user", msg: "Please include your full name.", uiView: self)
+                                    }
                                 } else {
-                                    NotificationService.noti.showAlert("Could not register new user", msg: "Please include your full name.", uiView: self)
+                                    NotificationService.noti.showAlert("User does not exist.", msg: "Please register before logging in.", uiView: self)
                                 }
+                                
                             } else {
-                                NotificationService.noti.showAlert("User does not exist.", msg: "Please register before logging in.", uiView: self)
+                                NotificationService.noti.showAlert("Could not login", msg: "Please check your username and password.", uiView: self)
                             }
-                            
                         } else {
-                            NotificationService.noti.showAlert("Could not login", msg: "Please check your username and password.", uiView: self)
-                        }
-                    } else {
-                        print("Logged in with Email!!")
-                        NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
-                        UserService.us.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: {
-                            snapshot in
-                            if snapshot == nil {
-                                self.performSegueWithIdentifier("unwindToInit", sender: self)
-                            } else {
-                                self.createUser(authData, completion: { (result) -> Void in
-                                    print(authData.uid)
+                            print("Logged in with Email!!")
+                            NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
+                            UserService.us.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: {
+                                snapshot in
+                                if snapshot != nil {
                                     self.performSegueWithIdentifier("unwindToInit", sender: self)
-                                })
-                            }
-                        })
-                    }
-                })
-                
+                                } else {
+                                    self.createUser(authData, completion: { (result) -> Void in
+                                        print(authData.uid)
+                                        self.performSegueWithIdentifier("unwindToInit", sender: self)
+                                    })
+                                }
+                            })
+                        }
+                    })
+                } else {
+                    NotificationService.noti.showAlert("Email must be a .edu address", msg: "You must be student with a .edu email address to use StudyLoop.", uiView: self)
+                }
             } else {
                 NotificationService.noti.showAlert("Email and Password Required", msg: "You must enter an email and a password.", uiView: self)
             }

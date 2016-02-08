@@ -16,6 +16,10 @@ let URL_BASE = "https://studyloop-stage.firebaseio.com"  // Dev
 // let URL_BASE = "https://studyloop-prod.firebaseio.com" // Production
 let kFirebaseServerValueTimestamp = [".sv":"timestamp"]
 
+// Verification URLs
+let URL_VERIFY_EMAIL = "https://studyloop-stage.firebaseapp.com/#/auth/verify/email/request/"
+// let URL_VERIFY_EMAIL = "https://app.getstudyloop.com/#/auth/verify/email/request/"
+
 // Images
 let IMAGE_BASE = "https://s3.amazonaws.com/sl-attachments/"
 
@@ -38,6 +42,7 @@ let VIEW_CONTROLLER_ADD_COURSE = "AddCourseViewController"
 let VIEW_CONTROLLER_ADD_LOOP = "AddLoopViewController"
 let VIEW_CONTROLLER_APP_SETTINGS = "AppSettingsViewController"
 let VIEW_CONTROLLER_CHANGE_PASSWORD = "ChangePasswordViewController"
+let VIEW_CONTROLLER_VERIFY_EMAIL = "VerifyEmailViewController"
 let VIEW_CONTROLLER_COURSE = "CourseVC"
 let VIEW_CONTROLLER_COURSE_SETTINGS = "CourseSettingsViewController"
 let VIEW_CONTROLLER_DRAWER = "DrawerViewController"
@@ -59,6 +64,7 @@ let SEGUE_LOGGED_OUT = "loggedOut"
 let SEGUE_FORGOT_PASSWORD = "forgotPassword"
 let SEGUE_SETTINGS = "appSettings"
 let SEGUE_UNWIND_TO_LOGIN = "unwindToLogin"
+let SEGUE_VERIFY_EMAIL = "verifyEmail"
 let SEGUE_CHANGE_PWD = "changePassword"
 let SEGUE_COURSE_SETTINGS = "courseSettings"
 let SEGUE_LOOP_SETTINGS = "loopSettings"

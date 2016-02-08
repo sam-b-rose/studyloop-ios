@@ -15,6 +15,7 @@ class UserService {
     private var _currentUser: User!
     private var _REF_USERS = Firebase(url: "\(URL_BASE)/users")
     private var _REF_USER_SETTINGS = Firebase(url: "\(URL_BASE)/user-settings")
+    private var _REF_USER_VERIFICATION = Firebase(url: "\(URL_BASE)/user-verification")
     
     var currentUser: User {
         return _currentUser
@@ -26,6 +27,10 @@ class UserService {
     
     var REF_USER_SETTINGS: Firebase {
         return _REF_USER_SETTINGS
+    }
+
+    var REF_USER_VERIFICATION: Firebase {
+        return _REF_USER_VERIFICATION
     }
     
     var REF_USER_CURRENT: Firebase {
@@ -70,5 +75,20 @@ class UserService {
     
     func updateIsTempPass(isTemporaryPassword: AnyObject?) {
         _currentUser.isTemporaryPassword = isTemporaryPassword as? Int
+    }
+    
+    func isUserVerified(completion: (result: Bool) -> Void) {
+        let uid = NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) as! String
+        REF_USER_VERIFICATION.childByAppendingPath(uid).observeSingleEventOfType(.Value, withBlock: {
+            snapshot in
+            if let validationDict = snapshot.value as? Dictionary<String, AnyObject> {
+                if let emailVerified = validationDict["emailVerified"] as? Bool {
+                    print("isVerified", emailVerified)
+                    return completion(result: emailVerified)
+                }
+            }
+            print("User not verified")
+            return completion(result: false)
+        })
     }
 }
