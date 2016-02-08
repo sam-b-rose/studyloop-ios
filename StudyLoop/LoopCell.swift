@@ -34,9 +34,14 @@ class LoopCell: UITableViewCell {
     
     func configureCell(loop: Loop) {
         loopLabel.text = loop.subject
-        lastLabel.text = loop.lastMessage
         newMessageIndicator.hidden = true
         backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0)
+        
+        if loop.lastMessage == "" {
+            lastLabel.text = "No messages 😢 Say something! 📣"
+        } else {
+            lastLabel.text = loop.lastMessage
+        }
         
         if loop.updatedAt != nil {
             let date = TimeUtils.tu.dayStringFromTime(loop.updatedAt!)
@@ -53,9 +58,5 @@ class LoopCell: UITableViewCell {
                 self.backgroundColor = SL_LIGHT
             }
         }
-
-        border.backgroundColor = SL_GRAY.colorWithAlphaComponent(0.3).CGColor
-        border.frame = CGRect(x: 25, y: 0, width: layer.frame.width - 25, height: 0.5)
-        layer.addSublayer(border)
     }
 }

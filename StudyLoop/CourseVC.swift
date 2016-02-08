@@ -19,6 +19,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var noCourseLbl: UILabel!
     
     var loops = [Loop]()
+    var ref: Firebase!
     var selectedLoop: Loop! = nil
     var handle: UInt!
     let attributes = [NSFontAttributeName: UIFont.ioniconOfSize(26)] as Dictionary!
@@ -28,12 +29,10 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.separatorStyle = .None
-        // tableView.registerClass(LoopCell.self, forCellReuseIdentifier: "LoopCell")
         
         // Set Add Loop Icon
-        addLoopBtn.titleLabel?.font = UIFont.ioniconOfSize(38)
-        addLoopBtn.setTitle(String.ioniconWithName(.Plus), forState: .Normal)
+        addLoopBtn.titleLabel?.font = UIFont.ioniconOfSize(30)
+        addLoopBtn.setTitle(String.ioniconWithName(.AndroidAdd), forState: .Normal)
         
         // Set navigation menu title and icons
         settingBtn.setTitleTextAttributes(attributes, forState: .Normal)
@@ -44,7 +43,11 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Table
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 64.0
-        tableView.separatorStyle = .None
+        print("View Did Load")
+        
+        checkUserData { (result) -> Void in
+            print(result)
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -55,7 +58,12 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             settingBtn.title = String.ioniconWithName(.More)
             ActivityService.act.setLastCourse(courseId)
             
+            if let courseTitle = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE_TITLE) as? String {
+                navigationItem.title = courseTitle
+            }
+            
             // Get Loops in Course
+            print("View Will Appear")
             handle = DataService.ds.REF_LOOPS
                 .queryOrderedByChild("courseId")
                 .queryEqualToValue(courseId)
@@ -100,6 +108,26 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    func checkUserData(completion: (result: Bool) -> Void) {
+        if UserService.us.currentUser.universityId == nil {
+            // Go to select University
+            print("select university")
+            self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+        } else {
+            if let tempPassword = UserService.us.currentUser.isTemporaryPassword where tempPassword == 1 {
+                // change password
+                print("change password")
+                self.performSegueWithIdentifier(SEGUE_CHANGE_PWD, sender: nil)
+            } else {
+                // Get last course
+                ActivityService.act.getLastCourse({ (courseId) -> Void in
+                    NSUserDefaults.standardUserDefaults().setValue(courseId, forKey: KEY_COURSE)
+                    completion(result: true)
+                })
+            }
+        }
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         
@@ -107,15 +135,9 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         Event.register(NOTIFICATION) {
             self.tableView.reloadData()
         }
-        
-        if let courseTitle = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE_TITLE) as? String {
-            navigationItem.title = courseTitle
-        } else {
-            navigationItem.title = "Select a Course"
-        }
     }
     
-    override func viewWillDisappear(animated: Bool) {        
+    override func viewWillDisappear(animated: Bool) {
         // Remove Notifications
         if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String {
             let courseNotifications = NotificationService.noti.notifications.filter { $0.courseId == courseId && $0.type == LOOP_CREATED }
@@ -126,12 +148,13 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     override func viewDidDisappear(animated: Bool) {
-        
         //Remove Firebase observer handler
         if handle != nil {
             DataService.ds.REF_LOOPS.removeObserverWithHandle(handle)
         }
     }
+    
+    // MARK: - Table View Funcs
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
@@ -157,7 +180,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             selectedLoop = loops[indexPath.row]
             
             if selectedLoop.hasCurrentUser == true {
-                self.performSegueWithIdentifier(SEGUE_LOOP, sender: nil)
+                self.performSegueWithIdentifier(SEGUE_MESSAGES, sender: nil)
             } else {
                 joinLoop()
             }
@@ -167,6 +190,10 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
+    
+    
+    
+    // MARK: - Loop Logic
     
     func joinLoop() {
         let alert = UIAlertController(title: "Join Loop", message: "Do you want to join \(selectedLoop.subject)?", preferredStyle: .Alert)
@@ -185,9 +212,12 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func addUserToLoop() {
         let currentUser = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
         DataService.ds.REF_LOOPS.childByAppendingPath(selectedLoop.uid).childByAppendingPath("userIds").childByAppendingPath(currentUser).setValue(true)
-        DataService.ds.REF_USER_CURRENT.childByAppendingPath("loopIds").childByAppendingPath(selectedLoop.uid).setValue(true)
-        self.performSegueWithIdentifier(SEGUE_LOOP, sender: nil)
+        UserService.us.REF_USER_CURRENT.childByAppendingPath("loopIds").childByAppendingPath(selectedLoop.uid).setValue(true)
+        self.performSegueWithIdentifier(SEGUE_MESSAGES, sender: nil)
     }
+    
+    
+    // MARK: - Button Actions
     
     @IBAction func didTapSettingsButton(sender: AnyObject) {
         if NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) != nil {
@@ -205,10 +235,21 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    
+    
+    // MARK: - Segue Prep
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if(segue.identifier == SEGUE_LOOP) {
             let loopVC = segue.destinationViewController as! LoopVC
             loopVC.loop = selectedLoop
+        }
+        
+        if(segue.identifier == SEGUE_MESSAGES) {
+            let messagesVC = segue.destinationViewController as! MessagesViewController
+            messagesVC.loop = selectedLoop
+            messagesVC.senderId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as! String
+            messagesVC.senderDisplayName = UserService.us.currentUser.name
         }
     }
 }

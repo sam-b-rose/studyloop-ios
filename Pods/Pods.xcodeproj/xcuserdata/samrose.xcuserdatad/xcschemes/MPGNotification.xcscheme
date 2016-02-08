@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'B2096C54475A5C5BBE6AA8B5'
+               BlueprintIdentifier = '83F92221E863684C0C4A2427'
                BlueprintName = 'MPGNotification'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'MPGNotification.framework'>

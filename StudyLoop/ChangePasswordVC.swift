@@ -15,7 +15,6 @@ class ChangePasswordVC: UITableViewController {
     @IBOutlet weak var newPwdFieldConfirm: UITextField!
     
     var previousVC: String!
-    var userEmail: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,15 +41,16 @@ class ChangePasswordVC: UITableViewController {
             let newPwd = newPwdField.text where newPwd != "",
             let newPwdConf = newPwdFieldConfirm.text where newPwdConf != "" {
                 if newPwd == newPwdConf {
+                    let userEmail = UserService.us.currentUser.email
                     DataService.ds.REF_BASE.changePasswordForUser(userEmail, fromOld: oldPwd, toNew: newPwd) {
                         error in
                         if error == nil {
                             NotificationService.noti.success("Password has been changed.")
-                            DataService.ds.REF_BASE.authUser(self.userEmail, password: newPwd, withCompletionBlock: { error, authData in
+                            DataService.ds.REF_BASE.authUser(userEmail, password: newPwd, withCompletionBlock: { error, authData in
                                 // user authed again to update isTemporaryPassword
-                                if self.previousVC == "LoginVC" {
+                                if self.previousVC == VIEW_CONTROLLER_LOGIN {
                                     self.dismissViewControllerAnimated(true, completion: nil)
-                                } else if self.previousVC == "AppSettingsVC" {
+                                } else if self.previousVC == VIEW_CONTROLLER_APP_SETTINGS {
                                     self.navigationController?.popViewControllerAnimated(true)
                                 }
                             })

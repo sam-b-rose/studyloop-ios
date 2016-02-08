@@ -21,6 +21,7 @@ class Notification {
     private var _subject: String?
     private var _textValue: String?
     private var _universityId: String?
+    private var _hasBeenDisplayed: Bool!
     
     var uid: String {
         return _uid
@@ -58,9 +59,19 @@ class Notification {
         return _universityId
     }
     
+    var hasBeenDisplayed: Bool! {
+        get {
+            return _hasBeenDisplayed
+        }
+        set(hasDisplayed) {
+            _hasBeenDisplayed = hasDisplayed
+        }
+    }
+    
     init(key: String, dictionary: Dictionary<String, AnyObject>) {
         self._uid = key
         self._type = dictionary["type"] as! String
+        self._hasBeenDisplayed = false
         
         if let data = dictionary["data"] as? Dictionary<String, AnyObject> {
             self._courseId = data["courseId"] as! String

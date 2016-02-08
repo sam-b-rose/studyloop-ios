@@ -19,6 +19,7 @@ class User {
     private var _profileImageURL: String?
     private var _courseIds: Dictionary<String, Int>?
     private var _universityId: String?
+    private var _isTemporaryPassword: Int?
     private var _userRef: Firebase!
     
     var email: String {
@@ -57,6 +58,15 @@ class User {
         return _universityId
     }
     
+    var isTemporaryPassword: Int? {
+        get {
+            return _isTemporaryPassword
+        }
+        set(isTemp) {
+            _isTemporaryPassword = isTemp
+        }
+    }
+    
     init(uid: String, dictionary: Dictionary<String, AnyObject?>) {
         self._id = uid
         self._email = dictionary["email"] as? String
@@ -88,12 +98,12 @@ class User {
     }
     
     func setUniversity(universityId: String) {
-        DataService.ds.REF_USER_CURRENT.childByAppendingPath("universityId").setValue(universityId)
+        UserService.us.REF_USER_CURRENT.childByAppendingPath("universityId").setValue(universityId)
         _universityId = universityId
     }
     
     func addCourse(courseId: String) {
-        DataService.ds.REF_USER_CURRENT.childByAppendingPath("courseIds").childByAppendingPath(courseId).setValue(true)
+        UserService.us.REF_USER_CURRENT.childByAppendingPath("courseIds").childByAppendingPath(courseId).setValue(true)
         _courseIds![courseId] = 1
     }
 }

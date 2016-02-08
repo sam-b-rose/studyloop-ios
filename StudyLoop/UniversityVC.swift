@@ -15,6 +15,7 @@ class UniversityVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     var universities = [University]()
     var previousVC: String?
+    var universitiesRef: Firebase!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,12 +29,16 @@ class UniversityVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             topItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         }
         
-        DataService.ds.REF_UNIVERSITIES.observeSingleEventOfType(.Value, withBlock: { snapshot in
+        // Setup Firebase Refs
+        universitiesRef = DataService.ds.REF_UNIVERSITIES
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        universitiesRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
             self.universities = []
             if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
                 for snap in snapshots {
                     if let universitiesDict = snap.value as? Dictionary<String, AnyObject> {
-                        // Create University Object
                         let university = University(universityKey: snap.key, dictionary: universitiesDict)
                         self.universities.append(university)
                     }
@@ -70,13 +75,8 @@ class UniversityVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             error, ref in
             if error == nil {
                 print("Set the univeristy to \(key)")
-                
-                if self.previousVC == "LoginVC" {
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                } else if self.previousVC == "AppSettingsVC" {
-                    self.navigationController?.popViewControllerAnimated(true)
-                }
-                
+                NotificationService.noti.success("University has been set.")
+                self.navigationController?.popViewControllerAnimated(true)
             } else {
                 print("Error setting university")
             }
@@ -86,10 +86,5 @@ class UniversityVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         DataService.ds.REF_UNIVERSITIES.childByAppendingPath(key).childByAppendingPath("userIds").childByAppendingPath(userId).setValue(true)
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 }

@@ -9,12 +9,13 @@
 import UIKit
 
 class DrawerCell: UITableViewCell {
-
+    
     @IBOutlet weak var itemLabel: UILabel!
     @IBOutlet weak var menuIcon: UILabel!
     
     var item: MenuItem!
-    let border = CALayer()
+    let selectedBorder = CALayer()
+    //let notificationBorder = CALayer()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -22,12 +23,21 @@ class DrawerCell: UITableViewCell {
     
     func configureCell(item: MenuItem) {
         self.item = item
+        self.selectionStyle = .None
         itemLabel.text = item.title
         
         // Icon Defaults
         menuIcon.hidden = true
-        menuIcon.textColor = SL_BLACK
-        menuIcon.font = UIFont.ioniconOfSize(17)
+        menuIcon.textColor = SL_WHITE
+        menuIcon.font = UIFont.ioniconOfSize(20)
+        
+        selectedBorder.backgroundColor = SL_GREEN.CGColor
+        selectedBorder.frame = CGRect(x: 0, y: 0, width: 5, height: layer.frame.height)
+        layer.addSublayer(selectedBorder)
+        
+        //notificationBorder.backgroundColor = SL_RED.CGColor
+        //notificationBorder.frame = CGRect(x: layer.frame.width, y: 0, width: 5, height: layer.frame.height)
+        //layer.addSublayer(notificationBorder)
         
         if item.title == "Add Course" {
             menuIcon.hidden = false
@@ -44,8 +54,12 @@ class DrawerCell: UITableViewCell {
             }
         }
         
-        border.backgroundColor = SL_GRAY.colorWithAlphaComponent(0.3).CGColor
-        border.frame = CGRect(x: 15, y: 0, width: layer.frame.width - 15, height: 0.5)
-        layer.addSublayer(border)
+        if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String where item.courseId != "" && courseId == item.courseId {
+            selectedBorder.hidden = false
+            self.backgroundColor = UIColor(red:0.09, green:0.1, blue:0.11, alpha:1)
+        } else {
+            selectedBorder.hidden = true
+            self.backgroundColor = SL_BLACK
+        }
     }
 }

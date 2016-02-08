@@ -22,9 +22,6 @@ class LoginVC: UIViewController {
     @IBOutlet weak var registerBtn: UIButton!
     @IBOutlet weak var forgotBtn: UIButton!
     
-    var handle: UInt?
-    var userEmail: String?
-    
     // States
     var isRegistering = false
     var isForgotPassword = false
@@ -41,37 +38,16 @@ class LoginVC: UIViewController {
         tap.cancelsTouchesInView = false
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(true)
-        
-        handle = DataService.ds.REF_BASE.observeAuthEventWithBlock({ authData in
-            if authData != nil {
-                // user authenticated
-                print("From LoginVC")
-                NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
-                self.saveDeviceId(authData.uid)
-                self.checkUserData(authData)
-            } else {
-                // No user is signed in
-                print("No User is signed in")
-                NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UID)
-            }
-        })
-    }
-    
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(true)
         
         // Clear Login info
         self.resetLoginScreen()
-        
-        print("Removing Auth Observer")
-        DataService.ds.REF_BASE.removeAuthEventObserverWithHandle(handle!)
     }
     
     
     
-    // VIEW HELPERS
+    // MARK: - View State Helpers
     
     func loginState() {
         titleLbl.text = "Login"
@@ -128,16 +104,6 @@ class LoginVC: UIViewController {
         view.endEditing(true)
     }
     
-    
-    
-    // DATA LOGIC
-    
-    func updateProfilePicture(authData: FAuthData) {
-        if let imageUrl = authData.providerData["profileImageURL"] as? String {
-            UserService.us.REF_USER_CURRENT.childByAppendingPath("profileImageURL").setValue(imageUrl)
-        }
-    }
-    
     func createUser(authData: FAuthData, completion: (result: String) -> Void) {
         let name: String!
         var gender = ""
@@ -159,108 +125,55 @@ class LoginVC: UIViewController {
             "email": authData.providerData["email"] as! String,
             "gender": gender,
             "profileImageURL": authData.providerData["profileImageURL"] as! String,
-            "createdAt": kFirebaseServerValueTimestamp as Dictionary<String, String>,
-            "updatedAt": kFirebaseServerValueTimestamp as Dictionary<String, String>
+            "createdAt": kFirebaseServerValueTimestamp,
+            "updatedAt": kFirebaseServerValueTimestamp
         ]
         
-        DataService.ds.createFirebaseUser(authData.uid, user: user)
+        print("New User: ", user)
+        UserService.us.createFirebaseUser(authData.uid, user: user)
         
         // Set User Defaults just incase
         NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
         NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
         NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
-        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UNIVESITY)
         completion(result: "Finished creating user")
     }
     
-    func checkUserData(authData: FAuthData) {
-        // check for if user exists and if they have a university selected
-        DataService.ds.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
-                
-                // Update profile pic from authData
-                self.updateProfilePicture(authData)
-                
-                let currentUser = User(uid: snapshot.key, dictionary: userDict)
-                if currentUser.universityId == nil {
-                    self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
-                } else {
-                    NSUserDefaults.standardUserDefaults().setValue(currentUser.universityId, forKey: KEY_UNIVESITY)
-                    if let tempPassword = authData.providerData["isTemporaryPassword"] as? Int where tempPassword == 1 {
-                        // change password
-                        self.userEmail = userDict["email"] as? String
-                        self.performSegueWithIdentifier(SEGUE_CHANGE_PWD, sender: nil)
-                    } else {
-                        // Get last course
-                        ActivityService.act.getLastCourse({ (courseId) -> Void in
-                            NSUserDefaults.standardUserDefaults().setValue(courseId, forKey: KEY_COURSE)
-                            NotificationService.noti.getNotifications()
-                            self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
-                        })
-                    }
-                }
-            } else {
-                print("No user in database")
-                self.createUser(authData, completion: {
-                    result in
-                    print(result)
-                    self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
-                })
-            }
-        })
-        
-    }
-    
-    func saveDeviceId(userId: String) {
-        if let deviceId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_DEVICE_ID) as? String {
-            print("DEVICE ID: ", deviceId)
-            
-            let device = [
-                "createdAt": kFirebaseServerValueTimestamp,
-                "updatedAt": kFirebaseServerValueTimestamp,
-                "userId": userId,
-                "vendor": "ios",
-                "vendorId": deviceId
-            ]
-            
-            DataService.ds.REF_QUEUES
-                .childByAppendingPath("user-devices")
-                .childByAppendingPath("tasks")
-                .childByAutoId()
-                .setValue(device, withCompletionBlock: {
-                    error, ref in
-                    if error != nil {
-                        print(error)
-                    }
-                })
-        }
-    }
     
     
-    
-    
-    // BUTTON ACTIONS
+    // MARK: - Button Actions
     
     @IBAction func fbBtnPressed(sender: MaterialButton!) {
         let facebookLogin = FBSDKLoginManager()
-        
         facebookLogin.logInWithReadPermissions(["email"], fromViewController: self, handler: { (facebookResutl: FBSDKLoginManagerLoginResult!, facebookError: NSError!) -> Void in
-            
             if facebookError != nil {
-                print("Facebook login failed. Error \(facebookError)")
+                print("Facebook login failed. Error: \(facebookError)")
             } else {
                 if let accessToken = FBSDKAccessToken.currentAccessToken().tokenString {
-                    //print("Successfully logined in with facebook. \(accessToken)")
                     DataService.ds.REF_BASE.authWithOAuthProvider("facebook", token: accessToken, withCompletionBlock: {
                         error, authData in
                         if error != nil {
-                            print("login failed. \(error)")
+                            print("Firebase login via Facebook failed. Error: \(error)")
+                            NotificationService.noti.showAlert("Problem with Facebook Login", msg: "We couldn't log you in with Facebook. Try again or re-register with Facebook.", uiView: self)
                         } else {
-                            print("Logged in!")
+                            print("Logged in with Facebook!")
+                            NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
+                            UserService.us.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: {
+                                snapshot in
+                                if snapshot != nil {
+                                    print("user already exsits, moving on")
+                                    self.dismissViewControllerAnimated(true, completion: nil)
+                                } else {
+                                    self.createUser(authData, completion: { (result) -> Void in
+                                        print(result)
+                                        self.dismissViewControllerAnimated(true, completion: nil)
+                                    })
+                                }
+                            })
                         }
                     })
                 } else {
-                      print("Login failed. Bad accessToken")
+                    print("Login failed. Bad accessToken")
                 }
             }
         })
@@ -272,6 +185,7 @@ class LoginVC: UIViewController {
         if isForgotPassword {
             // reset password
             if let email = emailField.text where email != "" {
+                if email.hasSuffix(".edu") {
                 DataService.ds.REF_BASE.resetPasswordForUser(email, withCompletionBlock: {
                     error in
                     if error == nil {
@@ -280,46 +194,68 @@ class LoginVC: UIViewController {
                         self.passwordField.text = ""
                     }
                 })
+                } else {
+                    NotificationService.noti.showAlert("Email must be a .edu address", msg: "You must be student with a .edu email address to use StudyLoop.", uiView: self)
+                }
             } else {
                 NotificationService.noti.showAlert("Email Required", msg: "You must provide the email associated with your StudyLoop account in order to reset your password.", uiView: self)
             }
         } else {
             // attemptlogin
             if let email = emailField.text where email != "", let pwd = passwordField.text where pwd != "" {
-                
-                DataService.ds.REF_BASE.authUser(email, password: pwd, withCompletionBlock: { error, authData in
-                    if error != nil {
-                        print(error)
-                        print(error.code)
-                        
-                        if error.code == STATUS_ACCOUNT_NONEXSIT {
-                            
-                            if self.isRegistering {
-                                if self.nameField.text != "" {
-                                    DataService.ds.REF_BASE.createUser(email, password: pwd, withValueCompletionBlock: { error, result in
-                                        if error != nil {
-                                            NotificationService.noti.showAlert("Could not create account", msg: "Problem creating accound. Try something else", uiView: self)
-                                        } else {
-                                            DataService.ds.REF_BASE.authUser(email, password: pwd, withCompletionBlock: {
-                                                error, authData in
-                                                print("Authed new user with email / password")
-                                            })
-                                        }
-                                        
-                                    })
+                if email.hasSuffix(".edu") {
+                    DataService.ds.REF_BASE.authUser(email, password: pwd, withCompletionBlock: {
+                        error, authData in
+                        if error != nil {
+                            if error.code == STATUS_ACCOUNT_NONEXSIT {
+                                if self.isRegistering {
+                                    if self.nameField.text != "" {
+                                        // Create User in Firebase Auth
+                                        DataService.ds.REF_BASE.createUser(email, password: pwd, withValueCompletionBlock: { error, result in
+                                            if error != nil {
+                                                NotificationService.noti.showAlert("Could not create account", msg: "Problem creating a new account.", uiView: self)
+                                            } else {
+                                                DataService.ds.REF_BASE.authUser(email, password: pwd, withCompletionBlock: {
+                                                    error, authData in
+                                                    print("Creating new user with email / password")
+                                                    NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
+                                                    // Create User in Firebase Database
+                                                    self.createUser(authData, completion: { (result) -> Void in
+                                                        print(authData.uid)
+                                                        self.performSegueWithIdentifier("unwindToInit", sender: self)
+                                                    })
+                                                })
+                                            }
+                                        })
+                                    } else {
+                                        NotificationService.noti.showAlert("Could not register new user", msg: "Please include your full name.", uiView: self)
+                                    }
                                 } else {
-                                    NotificationService.noti.showAlert("Could not register new user", msg: "Please include your full name.", uiView: self)
+                                    NotificationService.noti.showAlert("User does not exist.", msg: "Please register before logging in.", uiView: self)
                                 }
+                                
                             } else {
-                                NotificationService.noti.showAlert("User does not exist.", msg: "Please register before logging in.", uiView: self)
+                                NotificationService.noti.showAlert("Could not login", msg: "Please check your username and password.", uiView: self)
                             }
-                            
                         } else {
-                            NotificationService.noti.showAlert("Could not login", msg: "Please check your username and password.", uiView: self)
+                            print("Logged in with Email!!")
+                            NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
+                            UserService.us.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: {
+                                snapshot in
+                                if snapshot != nil {
+                                    self.performSegueWithIdentifier("unwindToInit", sender: self)
+                                } else {
+                                    self.createUser(authData, completion: { (result) -> Void in
+                                        print(authData.uid)
+                                        self.performSegueWithIdentifier("unwindToInit", sender: self)
+                                    })
+                                }
+                            })
                         }
-                    }
-                })
-                
+                    })
+                } else {
+                    NotificationService.noti.showAlert("Email must be a .edu address", msg: "You must be student with a .edu email address to use StudyLoop.", uiView: self)
+                }
             } else {
                 NotificationService.noti.showAlert("Email and Password Required", msg: "You must enter an email and a password.", uiView: self)
             }
@@ -327,7 +263,6 @@ class LoginVC: UIViewController {
     }
     
     @IBAction func didTapFogotBtn(sender: AnyObject) {
-        //performSegueWithIdentifier(SEGUE_FORGOT_PASSWORD, sender: nil)
         isForgotPassword = !isForgotPassword
         
         if isForgotPassword == true {
@@ -344,21 +279,6 @@ class LoginVC: UIViewController {
             registerState()
         } else {
             loginState()
-        }
-    }
-    
-    
-    
-    // Prep for Segue
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == SEGUE_SELECT_UNIVERSITY {
-            let universityVC = segue.destinationViewController as? UniversityVC
-            universityVC!.previousVC = "LoginVC"
-        } else if segue.identifier == SEGUE_CHANGE_PWD {
-            let changePasswordVC = segue.destinationViewController as? ChangePasswordVC
-            changePasswordVC!.userEmail = userEmail
-            changePasswordVC!.previousVC = "LoginVC"
         }
     }
 }

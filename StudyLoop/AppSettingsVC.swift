@@ -60,6 +60,13 @@ class AppSettingsVC: UITableViewController {
         request?.cancel()
     }
     
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 0.1
+        }
+        return UITableViewAutomaticDimension
+    }
+    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
@@ -88,8 +95,6 @@ class AppSettingsVC: UITableViewController {
     }
     
     func resetUserDefaults() {
-        // NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UID)
-        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UNIVESITY)
         NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE)
         NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
     }
@@ -104,9 +109,7 @@ class AppSettingsVC: UITableViewController {
         NotificationService.noti.removeNotificationObserver()
         DataService.ds.REF_BASE.unauth()
         resetUserDefaults()
-        if let drawerController = navigationController?.parentViewController as? KYDrawerController {
-            drawerController.dismissViewControllerAnimated(true, completion: nil)
-        }
+        self.performSegueWithIdentifier(SEGUE_UNWIND_TO_INIT, sender: nil)
     }
     
     func showDeleteConfirmation() {
@@ -131,9 +134,7 @@ class AppSettingsVC: UITableViewController {
                         if error == nil {
                             DataService.ds.REF_BASE.unauth()
                             self.resetUserDefaults()
-                            if let drawerController = self.navigationController?.parentViewController as? KYDrawerController {
-                                drawerController.dismissViewControllerAnimated(true, completion: nil)
-                            }
+                            self.performSegueWithIdentifier(SEGUE_UNWIND_TO_INIT, sender: nil)
                         }
                     }
                 } else {
@@ -169,14 +170,17 @@ class AppSettingsVC: UITableViewController {
         }
     }
     
+    
+    
+    // MARK: - Segue Prep
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == SEGUE_SELECT_UNIVERSITY {
             let universityVC = segue.destinationViewController as? UniversityVC
-            universityVC!.previousVC = "AppSettingsVC"
+            universityVC!.previousVC = VIEW_CONTROLLER_APP_SETTINGS
         } else if segue.identifier == SEGUE_CHANGE_PWD {
             let changePasswordVC = segue.destinationViewController as? ChangePasswordVC
-            changePasswordVC!.userEmail = currentUser?.email
-            changePasswordVC!.previousVC = "AppSettingsVC"
+            changePasswordVC!.previousVC = VIEW_CONTROLLER_APP_SETTINGS
         }
     }
 }

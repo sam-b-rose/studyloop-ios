@@ -84,18 +84,26 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "Pods-StudyLoop/AHKActionSheet.framework"
   install_framework "Pods-StudyLoop/Alamofire.framework"
   install_framework "Pods-StudyLoop/Firebase.framework"
   install_framework "Pods-StudyLoop/FuzzySearch.framework"
+  install_framework "Pods-StudyLoop/JSQMessagesViewController.framework"
+  install_framework "Pods-StudyLoop/JSQSystemSoundPlayer.framework"
+  install_framework "Pods-StudyLoop/JTSImageViewController.framework"
   install_framework "Pods-StudyLoop/KYDrawerController.framework"
   install_framework "Pods-StudyLoop/MPGNotification.framework"
   install_framework "Pods-StudyLoop/SlackTextViewController.framework"
   install_framework "Pods-StudyLoop/SnapKit.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "Pods-StudyLoop/AHKActionSheet.framework"
   install_framework "Pods-StudyLoop/Alamofire.framework"
   install_framework "Pods-StudyLoop/Firebase.framework"
   install_framework "Pods-StudyLoop/FuzzySearch.framework"
+  install_framework "Pods-StudyLoop/JSQMessagesViewController.framework"
+  install_framework "Pods-StudyLoop/JSQSystemSoundPlayer.framework"
+  install_framework "Pods-StudyLoop/JTSImageViewController.framework"
   install_framework "Pods-StudyLoop/KYDrawerController.framework"
   install_framework "Pods-StudyLoop/MPGNotification.framework"
   install_framework "Pods-StudyLoop/SlackTextViewController.framework"

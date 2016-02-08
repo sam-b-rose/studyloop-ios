@@ -13,8 +13,6 @@ class UniversityCell: UITableViewCell {
     
     @IBOutlet weak var universityName: UILabel!
     
-    let border = CALayer()
-    
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -27,9 +25,5 @@ class UniversityCell: UITableViewCell {
     
     func configureCell(university: University) {
         self.universityName.text = university.name
-        
-        border.backgroundColor = SL_GRAY.colorWithAlphaComponent(0.3).CGColor
-        border.frame = CGRect(x: 15, y: 0, width: layer.frame.width - 15, height: 0.5)
-        layer.addSublayer(border)
     }
 }

@@ -6,6 +6,8 @@
 //  Copyright © 2016 StudyLoop. All rights reserved.
 //
 
+
+/*----------------- OLD MESSAGE VC -----------------*/
 import UIKit
 import Firebase
 import SlackTextViewController
@@ -162,7 +164,7 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
         for user in loop.userIds {
             dispatch_group_enter(userGroup)
             if userImageMap[user] == nil {
-                DataService.ds.REF_USERS.childByAppendingPath(user).observeSingleEventOfType(.Value, withBlock: {
+                UserService.us.REF_USERS.childByAppendingPath(user).observeSingleEventOfType(.Value, withBlock: {
                     snapshot in
                     if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
                         self.userImageMap[user] = userDict["profileImageURL"] as? String
@@ -180,7 +182,7 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
     
     
     
-    // isTyping indicator helpers 
+    // MARK: - isTyping indicator helpers
     
     override func textView(textView: SLKTextView!, shouldChangeTextInRange range: NSRange, replacementText text: String!) -> Bool {
         // Watch user text input to update isTyping indicator
@@ -392,8 +394,6 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
             }
     }
     
-    
-    
     // Segue Prep
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -401,16 +401,16 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
             let loopSettingsVC = segue.destinationViewController as! LoopSettingsVC
             loopSettingsVC.loopId = self.loop.uid
             loopSettingsVC.userIds = self.loop.userIds
-        } else if(segue.identifier == SEGUE_PREVIEW_IMAGE) {
-            let previewImageVC = segue.destinationViewController as! PreviewImageVC
-            previewImageVC.delegate = self
-            previewImageVC.modalPresentationStyle = .OverCurrentContext
-            previewImageVC.image = self.imageToSend
-        } else if segue.identifier == SEGUE_VIEW_IMAGE {
-            let previewImageVC = segue.destinationViewController as! PreviewImageVC
-            previewImageVC.delegate = self
-            previewImageVC.modalPresentationStyle = .OverCurrentContext
-            previewImageVC.image = LoopVC.imageCache.objectForKey(viewImage) as? UIImage
+//        } else if(segue.identifier == SEGUE_PREVIEW_IMAGE) {
+//            let previewImageVC = segue.destinationViewController as! PreviewImageVC
+//            previewImageVC.delegate = self
+//            previewImageVC.modalPresentationStyle = .OverCurrentContext
+//            previewImageVC.image = self.imageToSend
+//        } else if segue.identifier == SEGUE_VIEW_IMAGE {
+//            let previewImageVC = segue.destinationViewController as! PreviewImageVC
+//            previewImageVC.delegate = self
+//            previewImageVC.modalPresentationStyle = .OverCurrentContext
+//            previewImageVC.image = LoopVC.imageCache.objectForKey(viewImage) as? UIImage
         }
     }
 }

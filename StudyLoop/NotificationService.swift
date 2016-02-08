@@ -58,9 +58,10 @@ class NotificationService: Evented {
     
     func getNotifications() {
         _notifications.removeAll()
+        print("watching notifications")
         addedHandle = REF_NOTIFICATIONS_USER.observeEventType(.ChildAdded, withBlock: {
             snapshot in
-            
+            print(snapshot)
             if let notiDict = snapshot.value as? Dictionary<String, AnyObject> {
                 // Create new Notification object
                 let notification = Notification(key: snapshot.key, dictionary: notiDict)
@@ -91,6 +92,7 @@ class NotificationService: Evented {
     }
     
     func removeNotificationObserver() {
+        print("removing notification observer")
         if addedHandle != nil {
             REF_NOTIFICATIONS_USER.removeAuthEventObserverWithHandle(addedHandle!)
         }
@@ -101,7 +103,7 @@ class NotificationService: Evented {
     }
     
     
-    // MPG Notification objects
+    // MARK: MPG Notification objects
     
     func newNotification(notification: Notification) {
         var title = "New notification"
@@ -122,7 +124,10 @@ class NotificationService: Evented {
                         if let message = notification.textValue where message != "" {
                             body = message
                         }
-                        self.showNotification(title, body: body, notificationId: notification.uid)
+                        print(notification.hasBeenDisplayed)
+                        if notification.hasBeenDisplayed == false {
+                            self.showNotification(title, body: body, notification: notification)
+                        }
                         break
                     case LOOP_CREATED:
                         CourseService.cs.REF_COURSES.childByAppendingPath(notification.courseId).observeSingleEventOfType(.Value, withBlock: {
@@ -133,7 +138,10 @@ class NotificationService: Evented {
                             }
                             
                             body = "New loop - \(subject)"
-                            self.showNotification(title, body: body, notificationId: notification.uid)
+                            print(notification)
+                            if notification.hasBeenDisplayed == false {
+                                self.showNotification(title, body: body, notification: notification)
+                            }
                         })
                         break
                     default:
@@ -143,7 +151,9 @@ class NotificationService: Evented {
         }
     }
     
-    func showNotification(title: String, body: String, notificationId: String) {
+    // MARK: - MPGNotification Show / Hide
+    
+    func showNotification(title: String, body: String, notification: Notification) {
         let owl = UIImage(named: "owl-light-square")
         let mpgNotification = MPGNotification(title: title, subtitle: body, backgroundColor: SL_BLACK, iconImage: owl)
         mpgNotification.titleColor = SL_WHITE
@@ -153,8 +163,9 @@ class NotificationService: Evented {
         mpgNotification.showWithButtonHandler { (mpgNotification, buttonIndex) -> Void in
             if buttonIndex == mpgNotification.secondButton.tag {
                 print("remove the notification")
-                self.removeNotification(notificationId)
+                self.removeNotification(notification.uid)
             }
+            notification.hasBeenDisplayed = false
         }
     }
     
@@ -162,24 +173,21 @@ class NotificationService: Evented {
         let notification = MPGNotification(title: "Success!", subtitle: message, backgroundColor: SL_BLACK, iconImage: nil)
         notification.titleColor = SL_WHITE
         notification.subtitleColor = SL_WHITE
-        notification.swipeToDismissEnabled = false
-        notification.duration = 3
+        notification.duration = 4
         notification.show()
     }
     
     func error() {
         let notification = MPGNotification(title: "Error!", subtitle: "There was a problem :(", backgroundColor: SL_RED, iconImage: nil)
-        notification.titleColor = SL_WHITE
-        notification.subtitleColor = SL_WHITE
-        notification.swipeToDismissEnabled = false
-        notification.duration = 3
+        notification.titleColor = SL_BLACK
+        notification.subtitleColor = SL_BLACK
+        notification.duration = 4
         notification.show()
     }
     
     
     
-    
-    // Generic UIAlert
+    // MARK: Generic UIAlert
     
     func showAlert(title: String, msg: String, uiView: UIViewController) {
         let alert = UIAlertController(title: title, message: msg, preferredStyle: .Alert)

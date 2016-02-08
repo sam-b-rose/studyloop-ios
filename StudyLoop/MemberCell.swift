@@ -17,7 +17,6 @@ class MemberCell: UITableViewCell {
     @IBOutlet weak var userAvatar: UIImageView!
     
     var request: Request?
-    let border = CALayer()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -34,10 +33,12 @@ class MemberCell: UITableViewCell {
     
     func configureCell(var userName: String?, profileImageURL: String?) {
         self.selectionStyle = .None
+        initialsLabel.hidden = false
         
         if userName != nil {
             nameLabel.text = userName
         } else {
+            // TODO: Change to prevent initial loading glitch
             nameLabel.text = "Removed User"
             userName = "Removed User"
         }
@@ -75,10 +76,6 @@ class MemberCell: UITableViewCell {
             initialsLabel.hidden = false
             userAvatar.image = nil
         }
-        
-        border.backgroundColor = SL_GRAY.colorWithAlphaComponent(0.3).CGColor
-        border.frame = CGRect(x: 25, y: 0, width: layer.frame.width - 25, height: 0.5)
-        layer.addSublayer(border)
     }
     
     func getFirstLetter(str: String) -> String {

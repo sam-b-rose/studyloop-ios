@@ -16,29 +16,13 @@ class UserView: UIView {
     @IBOutlet weak var nameLabel: UILabel!
     
     var user: User!
-    let border = CALayer()
     var request: Request?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        let tap = UITapGestureRecognizer(target: self, action: "viewTapped:")
-        tap.numberOfTapsRequired = 1
-        self.addGestureRecognizer(tap)
-        self.userInteractionEnabled = true
-        
-        // add border
-        border.backgroundColor = UIColor.lightGrayColor().CGColor
-        border.frame = CGRect(x: 0, y: self.layer.frame.height, width: self.layer.frame.width, height: 0.5)
-        //layer.addSublayer(border)
-        
-        DataService.ds.REF_USER_CURRENT.observeSingleEventOfType(.Value, withBlock: {
-            snapshot in
-            if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
-                self.user = User(uid: snapshot.key, dictionary: userDict)
-                self.configureView()
-            }
-        })
+        user = UserService.us.currentUser
+        configureView()
     }
     
     override func drawRect(rect: CGRect) {
@@ -61,11 +45,4 @@ class UserView: UIView {
             })
         }
     }
-     
-    func viewTapped(sender: UITapGestureRecognizer) {
-        // go to profile
-        print("view tapped: go to profile")
-    }
-    
-    
 }

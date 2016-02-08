@@ -20,7 +20,6 @@ class DataService {
     private var _REF_MAJORS = Firebase(url: "\(URL_BASE)/majors")
     private var _REF_DEVICE_IDS = Firebase(url: "\(URL_BASE)/device-ids")
     private var _REF_UNIVERSITIES = Firebase(url: "\(URL_BASE)/universities")
-    private var _REF_USERS = Firebase(url: "\(URL_BASE)/users")
     
     var REF_BASE: Firebase {
         return _REF_BASE
@@ -48,19 +47,5 @@ class DataService {
     
     var REF_DEVICE_IDS: Firebase {
         return _REF_DEVICE_IDS
-    }
-    
-    var REF_USERS: Firebase {
-        return _REF_USERS
-    }
-    
-    var REF_USER_CURRENT: Firebase {
-        let uid = NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) as! String
-        let user = Firebase(url: "\(URL_BASE)").childByAppendingPath("users").childByAppendingPath(uid)
-        return user!
-    }
-    
-    func createFirebaseUser(uid: String, user: Dictionary<String, AnyObject>) {
-        REF_USERS.childByAppendingPath(uid).setValue(user)
     }
 }
