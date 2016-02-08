@@ -23,8 +23,6 @@ class InitialVC: UIViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
-        print("view did appear")
-        
         // Check if user is already authenticated
         authHandle = authRef.observeAuthEventWithBlock({
             authData in
@@ -42,6 +40,7 @@ class InitialVC: UIViewController {
                                 self.setRootViewController(VIEW_CONTROLLER_DRAWER_CONTROLLER)
                             } else {
                                 print("Needs to verify email")
+                                print(UserService.us.currentUser)
                                 self.setRootViewController(VIEW_CONTROLLER_VERIFY_EMAIL)
                             }
                         })

@@ -23,7 +23,7 @@ class VerifyEmailVC: UITableViewController {
     
     override func viewWillAppear(animated: Bool) {
         if UserService.us.currentUser.email.hasSuffix(".edu") {
-            verifyEmailField.text = UserService.us.currentUser.email
+//            verifyEmailField.text = UserService.us.currentUser.email
         }
     }
     

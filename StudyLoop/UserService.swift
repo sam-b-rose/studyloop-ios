@@ -57,8 +57,11 @@ class UserService {
     func watchCurrentUser(completion: (result: Bool) -> Void) {
         REF_USER_CURRENT.observeEventType(.Value, withBlock: {
             snapshot in
+            
+            print(snapshot)
             if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
                 self._currentUser = User(uid: snapshot.key, dictionary: userDict)
+                print(self._currentUser.email)
                 completion(result: true)
             } else {
                 print("error getting user data")

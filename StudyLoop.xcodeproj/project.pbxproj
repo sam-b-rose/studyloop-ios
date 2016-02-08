@@ -327,8 +327,8 @@
 				6F90FEF91C2C2D77001920C4 /* University.swift */,
 				6F19BE2F1C1A6AA1004DC7A5 /* User.swift */,
 				6F03B08A1C578F2F0055BC0B /* Notification.swift */,
-				6F96319C1C138EC000D1DA88 /* Message.swift */,
 				6FE614141C64419B009E0A23 /* SLMessage.swift */,
+				6F96319C1C138EC000D1DA88 /* Message.swift */,
 				6FE6BCAD1C66669C0067B838 /* FadeSegue.swift */,
 			);
 			name = Model;
@@ -361,7 +361,6 @@
 				6FF1E18A1C45B0C100E0A00B /* CourseSettingsVC.swift */,
 				6F91EF171C2E31E500BDD395 /* DrawerVC.swift */,
 				6FE6BCA81C661EE60067B838 /* InitialVC.swift */,
-				6FDB7C761C59BCD400CDACD4 /* JSQMessageVC.swift */,
 				6FE8106E1C0AA35300B1ABA8 /* LoginVC.swift */,
 				6F26B0981C468AEF00F2CF41 /* LoopSettingsVC.swift */,
 				6FAC846C1C48851700C9861E /* MembersVC.swift */,

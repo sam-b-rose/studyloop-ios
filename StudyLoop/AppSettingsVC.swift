@@ -109,7 +109,7 @@ class AppSettingsVC: UITableViewController {
         NotificationService.noti.removeNotificationObserver()
         DataService.ds.REF_BASE.unauth()
         resetUserDefaults()
-        self.performSegueWithIdentifier("unwindToInit", sender: nil)
+        self.performSegueWithIdentifier(SEGUE_UNWIND_TO_INIT, sender: nil)
     }
     
     func showDeleteConfirmation() {
@@ -134,9 +134,7 @@ class AppSettingsVC: UITableViewController {
                         if error == nil {
                             DataService.ds.REF_BASE.unauth()
                             self.resetUserDefaults()
-                            if let drawerController = self.navigationController?.parentViewController as? KYDrawerController {
-                                drawerController.dismissViewControllerAnimated(true, completion: nil)
-                            }
+                            self.performSegueWithIdentifier(SEGUE_UNWIND_TO_INIT, sender: nil)
                         }
                     }
                 } else {

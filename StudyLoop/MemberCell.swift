@@ -33,6 +33,7 @@ class MemberCell: UITableViewCell {
     
     func configureCell(var userName: String?, profileImageURL: String?) {
         self.selectionStyle = .None
+        initialsLabel.hidden = false
         
         if userName != nil {
             nameLabel.text = userName

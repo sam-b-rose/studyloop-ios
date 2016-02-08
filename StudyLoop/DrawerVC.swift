@@ -29,7 +29,7 @@ class DrawerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.dataSource = self
         
         // Set Logo
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 210 , height: 70))
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 210 , height: 64))
         imageView.contentMode = .ScaleAspectFit
         let image = UIImage(named: "studyloop-logo.png")
         imageView.image = image
