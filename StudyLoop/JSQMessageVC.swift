@@ -85,50 +85,43 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
     }
     
     func initializeMessageListenerWithCapacity(numberOfMessages: UInt) {
-        let query = self.messagesRef.queryLimitedToLast(numberOfMessages)
+        // Get the last PAGE_SIZE items and begin listener
+        let query = self.messagesRef.queryLimitedToLast(UInt(PAGE_SIZE))
         query.observeEventType(.ChildAdded, withBlock: { (snapshot) in
-            self.handleSnapshot(snapshot, ofType: .ChildAdded, withMessageHandlerBlock: { (message) -> Void in
-                // After each message is constructed, do this
-                self.insertMessage(message, withHandlerType: ADDTYPE_APPEND)
-                super.finishReceivingMessage()
-            })
+            self.handleSnapshot(snapshot, ofType: .ChildAdded)
+            super.finishReceivingMessage()
         })
     }
     
     func getAllMessages() {
         self.messages = []
         self.messagesRef.observeSingleEventOfType(.Value, withBlock: { (snapshot) -> Void in
-            self.handleSnapshot(snapshot, ofType: .Value, withMessageHandlerBlock: { (message) -> Void in
-                // After each message is constructed, do this
-                self.insertMessage(message, withHandlerType: ADDTYPE_PREPEND)
-            })
+            self.handleSnapshot(snapshot, ofType: .Value)
+            self.reloadMessagesViewAtSamePosition()
             // If we have them all, don't let user opt to load
             super.showLoadEarlierMessagesHeader = false
             print("Snapshot handled")
         })
     }
     
-    func handleSnapshot(snapshot: FDataSnapshot, ofType type: FEventType, withMessageHandlerBlock handler: (SLMessage!) -> Void ) -> Void {
+    func handleSnapshot(snapshot: FDataSnapshot, ofType type: FEventType) -> Void {
         var message: SLMessage!
         /* Blanket Code to handle message snapshots */
         switch type {
         case .ChildAdded:
             if let messageDict = snapshot.value as? Dictionary<String, AnyObject> {
                 message = constructMessage(messageDict)
-                handler(message)
+                self.insertMessage(message, withHandlerType: ADDTYPE_APPEND)
             }
         case .Value:
             if let allMessages = snapshot.value as? [String: AnyObject]{
                 for (_, messageDict) in allMessages {
                     message = constructMessage(messageDict as! [String : AnyObject])
-                    handler(message)
+                    self.insertMessage(message, withHandlerType: ADDTYPE_PREPEND)
                 }
                 
                 // Sort, because reading them in Key/Value from a Dict messes up order
                 self.messages.sortInPlace {$0.date < $1.date}
-                
-                // Scroll to the end
-                self.reloadMessagesViewAtSamePosition()
             }
         default:
             // We can add more cases in later
@@ -232,7 +225,7 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
     override func viewDidLoad() {
         super.viewDidLoad()
         automaticallyScrollsToMostRecentMessage = true
-        collectionView!.collectionViewLayout.messageBubbleFont = UIFont.init(name: "Noto Sans", size: 14)
+        collectionView!.collectionViewLayout.messageBubbleFont = UIFont(name: "Noto Sans", size: 14)
         
 //        let headerView = JSQMessagesLoadEarlierHeaderView()
 //        headerView.delegate = self
@@ -267,7 +260,7 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        
+        // TODO: This will halt updates when settings or picture is brought up.
         // Remove Notifications
         let loopNotifications = NotificationService.noti.notifications.filter { $0.loopId == loop.uid }
         for notification in loopNotifications {
@@ -455,7 +448,6 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
                             MessagesViewController.imageCache.setObject(image, forKey: message.attachmentUrl!)
                             
                             self.messages[indexPath.item] = mediaMessage
-                            self.reloadMessagesView()
                         }
                 })
             }
@@ -550,9 +542,16 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
         getAllMessages()
     }
     
-    func reloadMessagesView() {
-        // Reload the message controller - more elegant, preference really
+    func reloadMessagesViewToBottom() {
+        // Currently unused
         self.collectionView?.reloadData()
+        self.collectionView!.collectionViewLayout.invalidateLayoutWithContext(JSQMessagesCollectionViewFlowLayoutInvalidationContext())
+        self.collectionView?.layoutIfNeeded()
+        
+        let newContentSize: CGFloat = (self.collectionView?.contentSize.height)!
+        let boundSize: CGFloat = (self.collectionView?.bounds.height)!
+        let newPos = newContentSize - boundSize
+        self.collectionView?.contentOffset.y = newPos > 0 ? newPos + 48 : 0
     }
     
     func reloadMessagesViewAtSamePosition() {
