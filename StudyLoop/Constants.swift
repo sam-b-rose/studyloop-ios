@@ -18,7 +18,7 @@ let kFirebaseServerValueTimestamp = [".sv":"timestamp"]
 
 // Verification URLs
 let URL_VERIFY_EMAIL = "https://studyloop-stage.firebaseapp.com/#/auth/verify/email/request/"
-// let URL_VERIFY_EMAIL = "https://app.getstudyloop.com/#/auth/verify/email/request/"
+//let URL_VERIFY_EMAIL = "https://app.getstudyloop.com/#/auth/verify/email/request/"
 
 // Images
 let IMAGE_BASE = "https://s3.amazonaws.com/sl-attachments/"

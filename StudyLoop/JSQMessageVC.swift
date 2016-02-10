@@ -55,7 +55,7 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
         activityRef.observeEventType(.ChildChanged, withBlock: {
             snapshot in
             
-            print("SNAP: ", snapshot)
+            // print("SNAP: ", snapshot)
             if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
                 self.checkIfTyping(snapshot.key, user: userDict)
             }

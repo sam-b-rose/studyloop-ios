@@ -31,19 +31,27 @@ class InitialVC: UIViewController {
                 self.saveDeviceId(authData.uid)
                 UserService.us.watchCurrentUser({ (result) -> Void in
                     if result == true {
-                        UserService.us.isUserVerified({ (result) -> Void in
-                            if result == true {
-                                NotificationService.noti.getNotifications()
-                                UserService.us.updateProfilePicture(authData.providerData["profileImageURL"])
-                                UserService.us.updateIsTempPass(authData.providerData["isTemporaryPassword"])
-                                print("User is Authentic", authData.uid)
-                                self.setRootViewController(VIEW_CONTROLLER_DRAWER_CONTROLLER)
-                            } else {
-                                print("Needs to verify email")
-                                print(UserService.us.currentUser)
-                                self.setRootViewController(VIEW_CONTROLLER_VERIFY_EMAIL)
-                            }
-                        })
+                        
+                        // TODO: Change back to use email verification after 1.1 Release
+                        NotificationService.noti.getNotifications()
+                        UserService.us.updateProfilePicture(authData.providerData["profileImageURL"])
+                        UserService.us.updateIsTempPass(authData.providerData["isTemporaryPassword"])
+                        print("User is Authentic", authData.uid)
+                        self.setRootViewController(VIEW_CONTROLLER_DRAWER_CONTROLLER)
+                        
+//                        UserService.us.isUserVerified({ (result) -> Void in
+//                            if result == true {
+//                                NotificationService.noti.getNotifications()
+//                                UserService.us.updateProfilePicture(authData.providerData["profileImageURL"])
+//                                UserService.us.updateIsTempPass(authData.providerData["isTemporaryPassword"])
+//                                print("User is Authentic", authData.uid)
+//                                self.setRootViewController(VIEW_CONTROLLER_DRAWER_CONTROLLER)
+//                            } else {
+//                                print("Needs to verify email")
+//                                print(UserService.us.currentUser)
+//                                self.setRootViewController(VIEW_CONTROLLER_VERIFY_EMAIL)
+//                            }
+//                        })
                     } else {
                         print("User not Authentic")
                         self.setRootViewController(VIEW_CONTROLLER_LOGIN)
