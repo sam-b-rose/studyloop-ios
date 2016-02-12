@@ -32,7 +32,7 @@ class AppSettingsVC: UITableViewController {
         UserService.us.REF_USER_CURRENT.observeEventType(.Value, withBlock: {
             snapshot in
             if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
-                self.currentUser = User(uid: snapshot.key, dictionary: userDict)
+                self.currentUser = User(uid: snapshot.key, withUserDictionary: userDict)
                 self.nameTextField.text = self.currentUser?.name
                 self.emailTextField.text = self.currentUser?.email
                 self.profileImage.getImage(self.currentUser!)

@@ -92,9 +92,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                         }
                     }
                     
-                    self.loops.sortInPlace {
-                        return $0.createdAt > $1.createdAt
-                    }
+                    self.loops.sortInPlace { return $0.createdAt > $1.createdAt }
                     
                     self.tableView.reloadData()
                 })

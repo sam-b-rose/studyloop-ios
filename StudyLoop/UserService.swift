@@ -12,11 +12,13 @@ import Firebase
 class UserService {
     static let us = UserService()
     
+    // MARK: Private Properties
     private var _currentUser: User!
     private var _REF_USERS = Firebase(url: "\(URL_BASE)/users")
     private var _REF_USER_SETTINGS = Firebase(url: "\(URL_BASE)/user-settings")
     private var _REF_USER_VERIFICATION = Firebase(url: "\(URL_BASE)/user-verification")
     
+    // MARK: Public Definitions
     var currentUser: User {
         return _currentUser
     }
@@ -35,10 +37,18 @@ class UserService {
     
     var REF_USER_CURRENT: Firebase {
         let uid = NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) as! String
-        let user = Firebase(url: "\(URL_BASE)").childByAppendingPath("users").childByAppendingPath(uid)
+        let user = REF_USERS.childByAppendingPath(uid)
         return user!
     }
     
+    var REF_USER_SETTINGS_CURRENT: Firebase {
+        let uid = NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) as! String
+        let userSettings = REF_USER_SETTINGS.childByAppendingPath(uid)
+        return userSettings!
+    }
+    
+    
+    // MARK: Methods
     func createFirebaseUser(uid: String, user: Dictionary<String, AnyObject>) {
         REF_USERS.childByAppendingPath(uid).setValue(user)
     }
@@ -54,18 +64,45 @@ class UserService {
         REF_USER_SETTINGS.childByAppendingPath(uid).childByAppendingPath("mutedLoops").childByAppendingPath(loopId).setValue(isMuted)
     }
     
-    func watchCurrentUser(completion: (result: Bool) -> Void) {
-        REF_USER_CURRENT.observeEventType(.Value, withBlock: {
+    func getMuteLoop(loopId: String, completion: (muted: Bool) -> Void) {
+        let uid = NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) as! String
+        let handle = self.REF_USER_SETTINGS
+            .childByAppendingPath(uid)
+            .childByAppendingPath("mutedLoops")
+        
+        handle.observeSingleEventOfType(.Value, withBlock: {
             snapshot in
             
+        })
+    }
+    
+    func watchCurrentUser(completion: (result: Bool) -> Void) {
+        // Monitor User Changes
+        REF_USER_CURRENT.observeEventType(.Value, withBlock: {
+            snapshot in
             print(snapshot)
             if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
-                self._currentUser = User(uid: snapshot.key, dictionary: userDict)
+                if self._currentUser == nil {
+                    self._currentUser = User(uid: snapshot.key, withUserDictionary: userDict)
+                } else {
+                    self._currentUser.completeWithUserDictionary(userDict)
+                }
                 print(self._currentUser.email)
                 completion(result: true)
             } else {
                 print("error getting user data")
                 completion(result: false)
+            }
+        })
+        
+        // Monitor User Settings Changes
+        REF_USER_SETTINGS_CURRENT.observeEventType(.Value, withBlock: { (snapshot) -> Void in
+            if let userSettingsDict = snapshot.value as? Dictionary<String, AnyObject> {
+                if self._currentUser == nil {
+                    self._currentUser = User(uid: snapshot.key, withSettingsDictionary: userSettingsDict)
+                } else {
+                    self._currentUser.completeWithSettingsDictionary(userSettingsDict)
+                }
             }
         })
     }
