@@ -19,6 +19,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var noCourseLbl: UILabel!
     
     var loops = [Loop]()
+    var snapCache: [FDataSnapshot]?
     var ref: Firebase!
     var selectedLoop: Loop! = nil
     var handle: UInt!
@@ -51,6 +52,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         // Load last viewed course or selected course
         if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String {
             noCourseLbl.hidden = true
@@ -75,21 +77,8 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     
                     // Add new set of loops
                     if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
-                        for snap in snapshots {
-                            if let loopDict = snap.value as? Dictionary<String, AnyObject> {
-                                
-                                // Create Loop Object
-                                let loop = Loop(uid: snap.key, loopDict: loopDict)
-                                
-                                // Check if user is in loop
-                                let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
-                                let userIndex = loop.userIds.indexOf((userId)!)
-                                if userIndex != nil {
-                                    loop.hasCurrentUser = true
-                                }
-                                self.loops.append(loop)
-                            }
-                        }
+                        self.snapCache = snapshots
+                        self.refreshLoopObjects(snapshots)
                     }
                     
                     self.loops.sortInPlace { return $0.createdAt > $1.createdAt }
@@ -104,6 +93,36 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             settingBtn.title = ""
             NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_COURSE_TITLE)
         }
+    }
+    
+    func refreshLoopObjects(snapshots: [FDataSnapshot]?) {
+        // Guard against nil
+        guard snapshots != nil else {
+            return
+        }
+        
+        // Clear current loops
+        self.loops.removeAll()
+        
+        // Reconstruct loops, updating UserSettings through Loop() construction
+        for snap in snapshots! {
+            if let loopDict = snap.value as? Dictionary<String, AnyObject> {
+                
+                // Create Loop Object
+                let loop = Loop(uid: snap.key, loopDict: loopDict)
+                
+                // Check if user is in loop
+                let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
+                let userIndex = loop.userIds.indexOf((userId)!)
+                if userIndex != nil {
+                    loop.hasCurrentUser = true
+                }
+                self.loops.append(loop)
+            }
+        }
+        
+        // Reorder loops
+        self.loops.sortInPlace { return $0.createdAt > $1.createdAt }
     }
     
     func checkUserData(completion: (result: Bool) -> Void) {
@@ -131,6 +150,12 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         // Watch for notifications
         Event.register(NOTIFICATION) {
+            self.tableView.reloadData()
+        }
+        
+        // Watch for mute
+        Event.register(REFRESH_LOOPS) {
+            self.refreshLoopObjects(self.snapCache)
             self.tableView.reloadData()
         }
     }

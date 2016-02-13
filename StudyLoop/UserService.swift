@@ -104,6 +104,8 @@ class UserService {
                     self._currentUser.completeWithSettingsDictionary(userSettingsDict)
                 }
             }
+            
+            Event.emit(REFRESH_LOOPS)
         })
     }
     

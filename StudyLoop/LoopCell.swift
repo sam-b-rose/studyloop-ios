@@ -52,7 +52,7 @@ class LoopCell: UITableViewCell {
         }
         
         if loop.muted == true {
-            self.mutedIndicator.text = "🔇"
+            self.mutedIndicator.text = String.ioniconWithName(.AndroidVolumeOff)
         } else {
             self.mutedIndicator.text = ""
         }
