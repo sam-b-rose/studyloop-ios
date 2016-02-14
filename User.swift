@@ -21,6 +21,8 @@ class User {
     private var _universityId: String?
     private var _isTemporaryPassword: Int?
     private var _userRef: Firebase!
+    private var _mutedCourseIds: [String]?
+    private var _mutedLoopIds: [String]?
     
     var email: String {
         return _email
@@ -67,15 +69,41 @@ class User {
         }
     }
     
-    init(uid: String, dictionary: Dictionary<String, AnyObject?>) {
+    var mutedCourseIds: [String] {
+        get {
+            return _mutedCourseIds!
+        }
+        set(ids) {
+            _mutedCourseIds = ids
+        }
+    }
+    
+    var mutedLoopIds: [String] {
+        get {
+            return _mutedLoopIds!
+        }
+        set(ids) {
+            _mutedLoopIds = ids
+        }
+    }
+    
+    init(uid: String) {
         self._id = uid
-        self._email = dictionary["email"] as? String
-        self._provider = dictionary["provider"] as? String
         
         // Update when saving to Firebase
         self._createdAt = nil
         self._updatedAt = nil
-
+    }
+    
+    convenience init(uid: String, withUserDictionary dictionary: Dictionary<String, AnyObject?>) {
+        self.init(uid: uid)
+        self.completeWithUserDictionary(dictionary)
+    }
+    
+    func completeWithUserDictionary(dictionary: Dictionary<String, AnyObject?>) {
+        self._email = dictionary["email"] as? String
+        self._provider = dictionary["provider"] as? String
+        
         if dictionary["name"] != nil {
             self._name = dictionary["name"] as? String
         }
@@ -95,6 +123,32 @@ class User {
         } else {
             self._courseIds = Dictionary<String, Int>()
         }
+    }
+    
+    convenience init(uid: String, withSettingsDictionary dictionary: Dictionary<String, AnyObject?>) {
+        self.init(uid: uid)
+        self.completeWithUserDictionary(dictionary)
+    }
+    
+    func completeWithSettingsDictionary(dictionary: Dictionary<String, AnyObject?>) {
+        if dictionary["mutedCourses"] != nil {
+            let courses = dictionary["mutedCourses"] as! Dictionary<String, Bool>
+            self._mutedCourseIds = convertSettingsDictToArray(courses)
+        }
+        
+        if dictionary["mutedLoops"] != nil {
+            let loops = dictionary["mutedLoops"] as! Dictionary<String, Bool>
+            self._mutedLoopIds = convertSettingsDictToArray(loops)
+        }
+    }
+    
+    func convertSettingsDictToArray(source: Dictionary<String, Bool>) -> [String] {
+        var rv = [String]()
+        for (key, value) in source {
+            if value != false { rv.append(key) }
+        }
+        
+        return rv
     }
     
     func setUniversity(universityId: String) {

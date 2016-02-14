@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="atZ-zP-YY1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15A279b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="atZ-zP-YY1">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -58,6 +58,9 @@
             <string>NotoSans</string>
             <string>NotoSans</string>
             <string>NotoSans</string>
+        </mutableArray>
+        <mutableArray key="ionicons.ttf">
+            <string>Ionicons</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -398,7 +401,7 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="559" height="24"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Loop Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jX0-Oo-ljH">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="532" height="24"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="537" height="24"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="24" id="NXG-N4-0UX"/>
                                                                     </constraints>
@@ -407,7 +410,7 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Date" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r29-0P-2rZ">
-                                                                    <rect key="frame" x="537" y="0.0" width="23" height="24"/>
+                                                                    <rect key="frame" x="542" y="0.0" width="23" height="24"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="24" id="dL2-Zn-EFi"/>
                                                                     </constraints>
@@ -424,13 +427,19 @@
                                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="5Pc-UC-pOY">
                                                             <rect key="frame" x="0.0" y="34" width="559" height="24"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First Name: Last Message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dst-mN-0Vc">
-                                                                    <rect key="frame" x="0.0" y="2" width="559" height="20"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="First Name: Last Message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dst-mN-0Vc">
+                                                                    <rect key="frame" x="0.0" y="2" width="475" height="20"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="20" id="3pc-ll-jnj"/>
                                                                     </constraints>
                                                                     <fontDescription key="fontDescription" name="NotoSans" family="Noto Sans" pointSize="12"/>
                                                                     <color key="textColor" red="0.3921568627" green="0.42352941179999998" blue="0.4941176471" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="MutedIcon" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nex-VK-HVz">
+                                                                    <rect key="frame" x="485" y="4" width="80" height="17"/>
+                                                                    <fontDescription key="fontDescription" name="Ionicons" family="Ionicons" pointSize="17"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                             </subviews>
@@ -466,6 +475,7 @@
                                             <outlet property="dateLabel" destination="r29-0P-2rZ" id="Nzq-9J-V38"/>
                                             <outlet property="lastLabel" destination="Dst-mN-0Vc" id="moZ-qU-RPV"/>
                                             <outlet property="loopLabel" destination="jX0-Oo-ljH" id="k7F-vh-iiF"/>
+                                            <outlet property="mutedIndicator" destination="Nex-VK-HVz" id="V47-ca-6Sk"/>
                                             <outlet property="newMessageIndicator" destination="1vF-f2-aL6" id="box-aR-N50"/>
                                         </connections>
                                     </tableViewCell>
@@ -1716,7 +1726,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Notifications" id="4Eo-Ux-LJV">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="iSa-Pr-z9h">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="iSa-Pr-z9h">
                                         <rect key="frame" x="0.0" y="185.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iSa-Pr-z9h" id="ute-jw-rYx">
@@ -1725,9 +1735,6 @@
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="jsJ-Ow-xoe">
                                                     <rect key="frame" x="533" y="6" width="51" height="31"/>
-                                                    <connections>
-                                                        <action selector="notificationDidChange:" destination="Qte-EA-2uA" eventType="valueChanged" id="SYP-PG-Daw"/>
-                                                    </connections>
                                                 </switch>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mute loop" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T6m-Qa-ro0">
                                                     <rect key="frame" x="18" y="11" width="507" height="23"/>
@@ -1764,6 +1771,7 @@
                         </connections>
                     </tableView>
                     <connections>
+                        <outlet property="muteLoopSwitch" destination="jsJ-Ow-xoe" id="3mS-ND-jiB"/>
                         <segue destination="BcZ-Oz-vJr" kind="show" identifier="members" id="i9C-Id-CYX"/>
                     </connections>
                 </tableViewController>

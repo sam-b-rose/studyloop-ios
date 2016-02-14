@@ -11,8 +11,9 @@ import MPGNotification
 
 class LoopSettingsVC: UITableViewController {
     
-    var loopId: String!
+    var loop: Loop!
     var userIds: [String]?
+    @IBOutlet weak var muteLoopSwitch: UISwitch!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,17 +22,23 @@ class LoopSettingsVC: UITableViewController {
         if let topItem = self.navigationController?.navigationBar.topItem {
             topItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         }
+        
+        // Set up listener for mute switch
+        muteLoopSwitch.addTarget(self, action: Selector("muteToggled:"), forControlEvents: .ValueChanged)
+        
+        // Set up UI for mute switch
+        muteLoopSwitch.on = loop.muted
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        
-        if indexPath.row == 0 {
+        switch(indexPath.section, indexPath.row) {
+        case (0, 0):
             performSegueWithIdentifier(SEGUE_MEMBERS, sender: nil)
-        }
-        
-        if indexPath.row == 1 {
-            leaveLoop()
+        case (0, 1):
+            self.leaveLoop()
+        default:
+            break
         }
     }
     
@@ -71,7 +78,7 @@ class LoopSettingsVC: UITableViewController {
         print("leave loop")
         if let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String {
             DataService.ds.REF_LOOPS
-                .childByAppendingPath(loopId)
+                .childByAppendingPath(loop.uid)
                 .childByAppendingPath("userIds")
                 .childByAppendingPath(userId)
                 .removeValueWithCompletionBlock({
@@ -79,7 +86,7 @@ class LoopSettingsVC: UITableViewController {
                     if error == nil {
                         UserService.us.REF_USER_CURRENT
                             .childByAppendingPath("loopIds")
-                            .childByAppendingPath(self.loopId)
+                            .childByAppendingPath(self.loop.uid)
                             .removeValueWithCompletionBlock({
                                 error, ref in
                                 if error == nil {
@@ -111,7 +118,9 @@ class LoopSettingsVC: UITableViewController {
         }
     }
     
-    @IBAction func notificationDidChange(sender: UISwitch) {
-        UserService.us.setMuteLoop(loopId, isMuted: sender.on)
+    func muteToggled(sender: UISwitch) {
+        UserService.us.setMuteLoop(loop.uid, isMuted: sender.on)
+        self.loop.muted = !self.loop.muted
+        print("Mute Toggle State: \(sender.on)")
     }
 }

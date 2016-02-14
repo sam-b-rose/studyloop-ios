@@ -12,11 +12,13 @@ import MPGNotification
 class CourseSettingsVC: UITableViewController {
     
     var userIds = [String]()
+    var courseId: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String {
+            self.courseId = courseId
             DataService.ds.REF_COURSES.childByAppendingPath(courseId).childByAppendingPath("userIds").observeEventType(.Value, withBlock: {
                 snapshot in
                 if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
@@ -116,7 +118,7 @@ class CourseSettingsVC: UITableViewController {
     
     
     @IBAction func notificationValueChanged(sender: UISwitch) {
-        UserService.us.setMuteCourse(sender.on)
+        UserService.us.setMuteCourse(self.courseId, isMuted: sender.on)
         print(sender.on)
     }
     

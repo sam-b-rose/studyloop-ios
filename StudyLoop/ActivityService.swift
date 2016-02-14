@@ -44,9 +44,6 @@ class ActivityService {
         return REF_ACTIVITY_LOOP.childByAppendingPath(loopId).childByAppendingPath(userId)
     }
     
-    
-  
-    
     // User Activity helper functions
     
     func setUserActivity(loopId: String, userId: String, key: String, value: AnyObject) {
@@ -55,9 +52,6 @@ class ActivityService {
             .childByAppendingPath(key)
             .setValue(value)
     }
-    
-    
-    
     
     // User's Last Loop and Last Course
     
@@ -102,9 +96,6 @@ class ActivityService {
             }
         })
     }
-    
-    
-    
     
     // Activity Indicator
     

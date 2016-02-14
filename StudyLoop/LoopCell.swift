@@ -14,6 +14,7 @@ class LoopCell: UITableViewCell {
     @IBOutlet weak var lastLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var newMessageIndicator: UILabel!
+    @IBOutlet weak var mutedIndicator: UILabel!
 
     let border = CALayer()
     var university: University!
@@ -48,6 +49,12 @@ class LoopCell: UITableViewCell {
             dateLabel.text = date
         } else {
             dateLabel.text = ""
+        }
+        
+        if loop.muted == true {
+            self.mutedIndicator.text = String.ioniconWithName(.AndroidVolumeOff)
+        } else {
+            self.mutedIndicator.text = ""
         }
         
         let loopNotifications = NotificationService.noti.notifications.filter { $0.loopId == loop.uid }
