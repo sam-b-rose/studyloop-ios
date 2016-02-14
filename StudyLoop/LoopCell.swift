@@ -22,7 +22,7 @@ class LoopCell: UITableViewCell {
         super.awakeFromNib()
         
         newMessageIndicator.textColor = SL_RED
-        newMessageIndicator.font = UIFont.ioniconOfSize(17)
+        newMessageIndicator.font = UIFont.ioniconOfSize(14)
         newMessageIndicator.text = String.ioniconWithName(.Record)
     }
     
