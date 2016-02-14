@@ -572,7 +572,7 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if(segue.identifier == SEGUE_LOOP_SETTINGS) {
             let loopSettingsVC = segue.destinationViewController as! LoopSettingsVC
-            loopSettingsVC.loopId = self.loop.uid
+            loopSettingsVC.loop = self.loop
             loopSettingsVC.userIds = self.loop.userIds
         }
     }

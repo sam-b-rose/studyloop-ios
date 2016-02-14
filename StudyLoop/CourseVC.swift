@@ -214,7 +214,34 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return false //true
+    }
     
+    /* -- Was going to have this to swipe-to-mute a channel
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        self.selectedLoop = loops[indexPath.row]
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as! LoopCell
+        
+        let label = self.selectedLoop.muted == false ? "Mute" : "Unmute"
+        let muteAction = UITableViewRowAction(style: .Default, title: label) { (action, indexPath) -> Void in
+            let muted = self.loops[indexPath.row].muted!
+            self.loops[indexPath.row].muted = !muted
+            
+            cell.mutedIndicator.text = muted ? String.ioniconWithName(.AndroidVolumeOff) : ""
+            UserService.us.setMuteCourse(self.selectedLoop.uid, isMuted: muted)
+            
+            self.tableView.editing = false
+        }
+        muteAction.backgroundColor = SL_GREEN
+        
+        return [muteAction]
+    }
+    */
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+    }
     
     // MARK: - Loop Logic
     

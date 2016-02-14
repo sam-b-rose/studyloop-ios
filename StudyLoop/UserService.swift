@@ -53,9 +53,9 @@ class UserService {
         REF_USERS.childByAppendingPath(uid).setValue(user)
     }
     
-    func setMuteCourse(isMuted: Bool) {
+    func setMuteCourse(courseId: String, isMuted: Bool) {
         let uid = NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) as! String
-        let courseId = NSUserDefaults.standardUserDefaults().valueForKey(KEY_COURSE) as! String
+//        let courseId = NSUserDefaults.standardUserDefaults().valueForKey(KEY_COURSE) as! String
         REF_USER_SETTINGS.childByAppendingPath(uid).childByAppendingPath("mutedCourses").childByAppendingPath(courseId).setValue(isMuted)
     }
     
