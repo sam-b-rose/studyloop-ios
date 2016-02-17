@@ -123,26 +123,6 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.loops.sortInPlace { return $0.createdAt > $1.createdAt }
     }
     
-    func checkUserData(completion: (result: Bool) -> Void) {
-        if UserService.us.currentUser.universityId == nil {
-            // Go to select University
-            print("select university")
-            self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
-        } else {
-            if let tempPassword = UserService.us.currentUser.isTemporaryPassword where tempPassword == 1 {
-                // change password
-                print("change password")
-                self.performSegueWithIdentifier(SEGUE_CHANGE_PWD, sender: nil)
-            } else {
-                // Get last course
-                ActivityService.act.getLastCourse({ (courseId) -> Void in
-                    NSUserDefaults.standardUserDefaults().setValue(courseId, forKey: KEY_COURSE)
-                    completion(result: true)
-                })
-            }
-        }
-    }
-    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         

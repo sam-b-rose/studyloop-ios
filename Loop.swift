@@ -116,8 +116,10 @@ class Loop {
         }
         
         // Check for muted
-        let mutedLoops = UserService.us.currentUser.mutedLoopIds
-        let isMuted = mutedLoops.indexOf(uid) == nil ? false : true
-        self._muted = isMuted
+        if let mutedLoops = UserService.us.currentUser.mutedLoopIds where mutedLoops.count > 0 {
+            let isMuted = mutedLoops.indexOf(uid) == nil ? false : true
+            self._muted = isMuted
+        }
+        
     }
 }

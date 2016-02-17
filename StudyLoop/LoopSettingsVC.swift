@@ -27,7 +27,9 @@ class LoopSettingsVC: UITableViewController {
         muteLoopSwitch.addTarget(self, action: Selector("muteToggled:"), forControlEvents: .ValueChanged)
         
         // Set up UI for mute switch
-        muteLoopSwitch.on = loop.muted
+        if let muted = loop.muted {
+            muteLoopSwitch.on = muted
+        }
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

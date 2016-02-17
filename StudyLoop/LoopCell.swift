@@ -51,7 +51,7 @@ class LoopCell: UITableViewCell {
             dateLabel.text = ""
         }
         
-        if loop.muted == true {
+        if let muted = loop.muted where muted == true {
             self.mutedIndicator.text = String.ioniconWithName(.AndroidVolumeOff)
         } else {
             self.mutedIndicator.text = ""

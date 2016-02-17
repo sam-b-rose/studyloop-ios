@@ -69,18 +69,18 @@ class User {
         }
     }
     
-    var mutedCourseIds: [String] {
+    var mutedCourseIds: [String]? {
         get {
-            return _mutedCourseIds!
+            return _mutedCourseIds
         }
         set(ids) {
             _mutedCourseIds = ids
         }
     }
     
-    var mutedLoopIds: [String] {
+    var mutedLoopIds: [String]? {
         get {
-            return _mutedLoopIds!
+            return _mutedLoopIds
         }
         set(ids) {
             _mutedLoopIds = ids
