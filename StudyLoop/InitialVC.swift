@@ -54,12 +54,12 @@ class InitialVC: UIViewController {
 //                        })
                     } else {
                         print("User not Authentic")
-                        self.setRootViewController(VIEW_CONTROLLER_LOGIN)
+                        self.setRootViewController(PAGE_CONTROLLER_USER_ONBOARD)
                     }
                 })
             } else {
                 print("User not Authentic")
-                self.setRootViewController(VIEW_CONTROLLER_LOGIN)
+                self.setRootViewController(PAGE_CONTROLLER_USER_ONBOARD)
             }
         })
     }

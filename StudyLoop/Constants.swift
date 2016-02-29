@@ -48,16 +48,21 @@ let VIEW_CONTROLLER_COURSE = "CourseVC"
 let VIEW_CONTROLLER_COURSE_SETTINGS = "CourseSettingsViewController"
 let VIEW_CONTROLLER_DRAWER = "DrawerViewController"
 let VIEW_CONTROLLER_DRAWER_CONTROLLER = "DrawerControllerViewController"
+let VIEW_CONTROLLER_HOME = "HomeViewController"
 let VIEW_CONTROLLER_INITIAL = "InitialViewController"
 let VIEW_CONTROLLER_LOGIN = "LoginViewController"
 let VIEW_CONTROLLER_LOOP_SETTINGS = "LoopSettingsViewController"
 let VIEW_CONTROLLER_MEMBERS = "MembersViewController"
 let VIEW_CONTROLLER_MESSAGES = "MessagesViewController"
 let VIEW_CONTROLLER_UNIVERSITY = "UniversityViewController"
+let VIEW_CONTROLLER_OVERLAY = "UIOverlayController"
 
 // Navigation Controllers
 let NAVIGATION_CONTROLLER_DRAWER = "DrawerNavigation"
 let NAVIGATION_CONTROLLER_MAIN = "MainNavigation"
+
+// Page View Controllers
+let PAGE_CONTROLLER_USER_ONBOARD = "UserOnboardingPageViewController"
 
 // Segues
 let SEGUE_LOGGED_IN = "loggedIn"
@@ -90,3 +95,6 @@ let SL_WHITE = UIColor(red:0.94, green:0.94, blue:0.95, alpha:1)
 let SL_CORAL = UIColor(red:0.2, green:0.42, blue:0.4, alpha:1)
 let SL_GREEN = UIColor(red:0, green:0.87, blue:0.74, alpha:1)
 let SL_RED = UIColor(red:1, green:0.44, blue:0.42, alpha:1)
+
+// Times
+let DEFAULT_TRANSITION_TIME: CFTimeInterval = 0.35
