@@ -11,6 +11,7 @@
 		3531EE9D1C80FFCB00C087CC /* UIOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531EE9C1C80FFCB00C087CC /* UIOverlayViewController.swift */; };
 		3531EE9F1C82282A00C087CC /* ChooseUniversityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531EE9E1C82282A00C087CC /* ChooseUniversityViewController.swift */; };
 		3531EEA11C822B0200C087CC /* ViewUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3531EEA01C822B0200C087CC /* ViewUtil.swift */; };
+		35484C601C84ECDD00AB91FB /* OnboardingGenericViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35484C5F1C84ECDD00AB91FB /* OnboardingGenericViewController.swift */; };
 		35BDBCCD1C779CD4007FF261 /* ColorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BDBCCC1C779CD4007FF261 /* ColorUtil.swift */; };
 		35BDBCD11C77A8B5007FF261 /* UserOnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BDBCD01C77A8B5007FF261 /* UserOnboardingPageViewController.swift */; };
 		35EC629A1C7781AA00B6DEB0 /* minkao.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 35EC62991C7781AA00B6DEB0 /* minkao.mp4 */; };
@@ -106,6 +107,7 @@
 		3531EE9C1C80FFCB00C087CC /* UIOverlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIOverlayViewController.swift; sourceTree = "<group>"; };
 		3531EE9E1C82282A00C087CC /* ChooseUniversityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseUniversityViewController.swift; sourceTree = "<group>"; };
 		3531EEA01C822B0200C087CC /* ViewUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewUtil.swift; sourceTree = "<group>"; };
+		35484C5F1C84ECDD00AB91FB /* OnboardingGenericViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OnboardingGenericViewController.swift; path = StudyLoop/OnboardingGenericViewController.swift; sourceTree = "<group>"; };
 		35BDBCCC1C779CD4007FF261 /* ColorUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorUtil.swift; sourceTree = "<group>"; };
 		35BDBCD01C77A8B5007FF261 /* UserOnboardingPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserOnboardingPageViewController.swift; sourceTree = "<group>"; };
 		35EC62991C7781AA00B6DEB0 /* minkao.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = minkao.mp4; sourceTree = "<group>"; };
@@ -220,6 +222,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		35484C611C84F1B600AB91FB /* SubclassedVC's */ = {
+			isa = PBXGroup;
+			children = (
+				35484C5F1C84ECDD00AB91FB /* OnboardingGenericViewController.swift */,
+			);
+			name = "SubclassedVC's";
+			sourceTree = "<group>";
+		};
 		35EC629D1C7782C300B6DEB0 /* UserOnboarding */ = {
 			isa = PBXGroup;
 			children = (
@@ -344,6 +354,7 @@
 		6FE810A51C0B1E3B00B1ABA8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				35484C611C84F1B600AB91FB /* SubclassedVC's */,
 				6FD49A4B1C34EC5A0052C6EC /* Course.swift */,
 				6FAF96991C38BA8400B6860F /* Loop.swift */,
 				6FABA9341C32B8370094067D /* MenuItem.swift */,
@@ -665,6 +676,7 @@
 				6F7BC4831C3423990014BD18 /* AddCourseVC.swift in Sources */,
 				6FAF96981C38B85000B6860F /* LoopCell.swift in Sources */,
 				6F2227001C50F40E00D028BD /* Pubsub.swift in Sources */,
+				35484C601C84ECDD00AB91FB /* OnboardingGenericViewController.swift in Sources */,
 				6FAC846D1C48851700C9861E /* MembersVC.swift in Sources */,
 				6FDB4BE61C4056680064B50D /* LoopMessageCell.swift in Sources */,
 				6F6BD57F1C3CB0FA005DB6A3 /* AddLoopVC.swift in Sources */,
@@ -852,7 +864,7 @@
 					"$(PROJECT_DIR)/Rollbar.framework",
 					"$(PROJECT_DIR)/Rollbar.framework/Versions/A",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.getstudyloop.StudyLoop;
+				PRODUCT_BUNDLE_IDENTIFIER = com.schrismartin.StudyLoop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "StudyLoop/StudyLoop-Bridging-Header.h";
@@ -886,7 +898,7 @@
 					"$(PROJECT_DIR)/Rollbar.framework/Versions/A",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.getstudyloop.StudyLoop;
+				PRODUCT_BUNDLE_IDENTIFIER = com.schrismartin.StudyLoop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "StudyLoop/StudyLoop-Bridging-Header.h";

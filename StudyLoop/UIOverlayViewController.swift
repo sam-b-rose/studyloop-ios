@@ -12,7 +12,8 @@ class UIOverlayViewController: UIViewController {
     
     // MARK: - Constants
     private let BACK_WIDTH: CGFloat = 121
-    private let ILABEL_YPOSITION: CGFloat = 40
+    private let ILABEL_YPOSITION: CGFloat = 34
+    private let DEFAULT_TRANSITION_DELTA: CGFloat = 30
     
     // MARK: UI Elements
     @IBOutlet weak var getStartedButton: UIButton!
@@ -173,7 +174,7 @@ class UIOverlayViewController: UIViewController {
         case 1:
             let text = "Converse with your classmates about upcoming assignments and exams, with topics in their own sections, called “loops”."
             if self.textFieldIsEditing == false {
-                self.animateLabel(informationLabel, withHelperLabel: effectLabel, toText: text, inDirection: direction, withTransitionDelta: 30, withDuration: DEFAULT_TRANSITION_TIME)
+                self.animateLabel(informationLabel, withHelperLabel: effectLabel, toText: text, inDirection: direction, withTransitionDelta: DEFAULT_TRANSITION_DELTA, withDuration: DEFAULT_TRANSITION_TIME)
             }
             
             UIView.animateWithDuration(DEFAULT_TRANSITION_TIME, animations: { () -> Void in
@@ -185,9 +186,21 @@ class UIOverlayViewController: UIViewController {
             })
         case 2:
             let text = "StudyLoop automatically matches you with other people in your classes. Enter your University below to get started."
-//            self.animateLabel(informationLabel, toText: text, withDuration: DEFAULT_TRANSITION_TIME)
             if self.textFieldIsEditing == false {
-                self.animateLabel(informationLabel, withHelperLabel: effectLabel, toText: text, inDirection: direction, withTransitionDelta: 30, withDuration: DEFAULT_TRANSITION_TIME)
+                self.animateLabel(informationLabel, withHelperLabel: effectLabel, toText: text, inDirection: direction, withTransitionDelta: DEFAULT_TRANSITION_DELTA, withDuration: DEFAULT_TRANSITION_TIME)
+            }
+            
+            UIView.animateWithDuration(DEFAULT_TRANSITION_TIME, animations: { () -> Void in
+                self.pageControl.alpha = 1
+                self.getStartedButton.setTitle("Next", forState: .Normal)
+                self.backButtonWidthConstraint.constant = self.BACK_WIDTH
+                self.logInButtonYPositionConstraint.constant = -self.logInButton.bounds.height
+                self.view.layoutIfNeeded()
+            })
+        case 3:
+            let text = "Enter your course numbers and we’ll link you to all students currently taking that course in your university."
+            if self.textFieldIsEditing == false {
+                self.animateLabel(informationLabel, withHelperLabel: effectLabel, toText: text, inDirection: direction, withTransitionDelta: DEFAULT_TRANSITION_DELTA, withDuration: DEFAULT_TRANSITION_TIME)
             }
             
             UIView.animateWithDuration(DEFAULT_TRANSITION_TIME, animations: { () -> Void in
@@ -216,6 +229,7 @@ class UIOverlayViewController: UIViewController {
             
             mainLabel.alpha = 0
             mainLabel.frame.origin.y += delta // Offset
+            self.view.layoutIfNeeded()
             }) { (success) -> Void in
                 // Reset Main Label
                 mainLabel.alpha = 1
@@ -224,6 +238,7 @@ class UIOverlayViewController: UIViewController {
                 
                 // Reset Helper Label
                 helperLabel.alpha = 0
+                self.view.layoutIfNeeded()
         }
     }
     

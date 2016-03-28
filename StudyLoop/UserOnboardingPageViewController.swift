@@ -25,6 +25,9 @@ protocol UserOnboardingDelegate {
      Signifies the current index of the PageViewController
      */
     var pageIndex: Int! { get set }
+    
+    var university: University! { get set }
+    var courses: [Course]! { get set }
 }
 
 class UserOnboardingPageViewController: UIPageViewController, UserOnboardingDelegate {
@@ -33,11 +36,13 @@ class UserOnboardingPageViewController: UIPageViewController, UserOnboardingDele
     var currentViewController: UIViewController!
     var overlayViewController: UIOverlayViewController!
     var blurView: UIVisualEffectView!
-    var pageIndex: Int! = 0 {
+    var pageIndex: Int! = 0
+    var university: University! {
         didSet {
-            print(pageIndex)
+            print(university.name) // Debug
         }
     }
+    var courses: [Course]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,10 +129,18 @@ class UserOnboardingPageViewController: UIPageViewController, UserOnboardingDele
     }
     
     private(set) lazy var orderedViewControllers: [UIViewController] = {
-        return [self.newViewController(VIEW_CONTROLLER_HOME),
-                self.newViewController("OneViewController"),
-                self.newViewController("TwoViewController")]
+        return [self.newOnboardingViewController(VIEW_CONTROLLER_HOME),
+                self.newOnboardingViewController("OneViewController"),
+                self.newOnboardingViewController("TwoViewController"),
+                self.newOnboardingViewController("ThreeViewController")]
     }()
+    
+    private func newOnboardingViewController(vc: String) -> OnboardingGenericViewController {
+        let viewController = UIStoryboard(name: "Main", bundle: nil) .
+            instantiateViewControllerWithIdentifier(vc) as! OnboardingGenericViewController
+        viewController.delegate = self
+        return viewController
+    }
     
     private func newViewController(vc: String) -> UIViewController {
         return UIStoryboard(name: "Main", bundle: nil) .
