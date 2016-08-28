@@ -399,7 +399,7 @@ class LoopVC: SLKTextViewController, UIImagePickerControllerDelegate, UINavigati
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if(segue.identifier == SEGUE_LOOP_SETTINGS) {
             let loopSettingsVC = segue.destinationViewController as! LoopSettingsVC
-            loopSettingsVC.loopId = self.loop.uid
+            loopSettingsVC.loop = self.loop
             loopSettingsVC.userIds = self.loop.userIds
 //        } else if(segue.identifier == SEGUE_PREVIEW_IMAGE) {
 //            let previewImageVC = segue.destinationViewController as! PreviewImageVC

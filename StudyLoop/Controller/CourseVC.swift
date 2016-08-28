@@ -19,6 +19,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var noCourseLbl: UILabel!
     
     var loops = [Loop]()
+    var snapCache: [FDataSnapshot]?
     var ref: Firebase!
     var selectedLoop: Loop! = nil
     var handle: UInt!
@@ -43,7 +44,6 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Table
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 64.0
-        print("View Did Load")
         
         checkUserData { (result) -> Void in
             print(result)
@@ -51,6 +51,7 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         // Load last viewed course or selected course
         if let courseId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_COURSE) as? String {
             noCourseLbl.hidden = true
@@ -63,7 +64,6 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             }
             
             // Get Loops in Course
-            print("View Will Appear")
             handle = DataService.ds.REF_LOOPS
                 .queryOrderedByChild("courseId")
                 .queryEqualToValue(courseId)
@@ -75,26 +75,11 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     
                     // Add new set of loops
                     if let snapshots = snapshot.children.allObjects as? [FDataSnapshot] {
-                        for snap in snapshots {
-                            if let loopDict = snap.value as? Dictionary<String, AnyObject> {
-                                
-                                // Create Loop Object
-                                let loop = Loop(uid: snap.key, loopDict: loopDict)
-                                
-                                // Check if user is in loop
-                                let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
-                                let userIndex = loop.userIds.indexOf((userId)!)
-                                if userIndex != nil {
-                                    loop.hasCurrentUser = true
-                                }
-                                self.loops.append(loop)
-                            }
-                        }
+                        self.snapCache = snapshots
+                        self.refreshLoopObjects(snapshots)
                     }
                     
-                    self.loops.sortInPlace {
-                        return $0.createdAt > $1.createdAt
-                    }
+                    self.loops.sortInPlace { return $0.createdAt > $1.createdAt }
                     
                     self.tableView.reloadData()
                 })
@@ -108,24 +93,34 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func checkUserData(completion: (result: Bool) -> Void) {
-        if UserService.us.currentUser.universityId == nil {
-            // Go to select University
-            print("select university")
-            self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
-        } else {
-            if let tempPassword = UserService.us.currentUser.isTemporaryPassword where tempPassword == 1 {
-                // change password
-                print("change password")
-                self.performSegueWithIdentifier(SEGUE_CHANGE_PWD, sender: nil)
-            } else {
-                // Get last course
-                ActivityService.act.getLastCourse({ (courseId) -> Void in
-                    NSUserDefaults.standardUserDefaults().setValue(courseId, forKey: KEY_COURSE)
-                    completion(result: true)
-                })
+    func refreshLoopObjects(snapshots: [FDataSnapshot]?) {
+        // Guard against nil
+        guard snapshots != nil else {
+            return
+        }
+        
+        // Clear current loops
+        self.loops.removeAll()
+        
+        // Reconstruct loops, updating UserSettings through Loop() construction
+        for snap in snapshots! {
+            if let loopDict = snap.value as? Dictionary<String, AnyObject> {
+                
+                // Create Loop Object
+                let loop = Loop(uid: snap.key, loopDict: loopDict)
+                
+                // Check if user is in loop
+                let userId = NSUserDefaults.standardUserDefaults().objectForKey(KEY_UID) as? String
+                let userIndex = loop.userIds.indexOf((userId)!)
+                if userIndex != nil {
+                    loop.hasCurrentUser = true
+                }
+                self.loops.append(loop)
             }
         }
+        
+        // Reorder loops
+        self.loops.sortInPlace { return $0.createdAt > $1.createdAt }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -133,6 +128,12 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         // Watch for notifications
         Event.register(NOTIFICATION) {
+            self.tableView.reloadData()
+        }
+        
+        // Watch for mute
+        Event.register(REFRESH_LOOPS) {
+            self.refreshLoopObjects(self.snapCache)
             self.tableView.reloadData()
         }
     }
@@ -151,6 +152,27 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         //Remove Firebase observer handler
         if handle != nil {
             DataService.ds.REF_LOOPS.removeObserverWithHandle(handle)
+        }
+    }
+    
+    
+    func checkUserData(completion: (result: Bool) -> Void) {
+        if UserService.us.currentUser.universityId == nil {
+            // Go to select University
+            print("select university")
+            self.performSegueWithIdentifier(SEGUE_SELECT_UNIVERSITY, sender: nil)
+        } else {
+            if let tempPassword = UserService.us.currentUser.isTemporaryPassword where tempPassword == 1 {
+                // change password
+                print("change password")
+                self.performSegueWithIdentifier(SEGUE_CHANGE_PWD, sender: nil)
+            } else {
+                // Get last course
+                ActivityService.act.getLastCourse({ (courseId) -> Void in
+                    NSUserDefaults.standardUserDefaults().setValue(courseId, forKey: KEY_COURSE)
+                    completion(result: true)
+                })
+            }
         }
     }
     
@@ -191,7 +213,34 @@ class CourseVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return false //true
+    }
     
+    /* -- Was going to have this to swipe-to-mute a channel
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        self.selectedLoop = loops[indexPath.row]
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as! LoopCell
+        
+        let label = self.selectedLoop.muted == false ? "Mute" : "Unmute"
+        let muteAction = UITableViewRowAction(style: .Default, title: label) { (action, indexPath) -> Void in
+            let muted = self.loops[indexPath.row].muted!
+            self.loops[indexPath.row].muted = !muted
+            
+            cell.mutedIndicator.text = muted ? String.ioniconWithName(.AndroidVolumeOff) : ""
+            UserService.us.setMuteCourse(self.selectedLoop.uid, isMuted: muted)
+            
+            self.tableView.editing = false
+        }
+        muteAction.backgroundColor = SL_GREEN
+        
+        return [muteAction]
+    }
+    */
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+    }
     
     // MARK: - Loop Logic
     

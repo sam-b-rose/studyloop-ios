@@ -32,6 +32,7 @@ let KEY_LOOP = "loop"
 
 // Events
 let NOTIFICATION = "notification"
+let REFRESH_LOOPS = "REFRESH_LOOPS"
 
 // Notification Types
 let LOOP_MESSAGE_RECEIVED = "LOOP_MESSAGE_RECEIVED"

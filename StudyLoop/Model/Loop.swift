@@ -18,6 +18,7 @@ class Loop {
     private var _updatedAt: Double?
     private var _hasCurrentUser: Bool!
     private var _userIds: [String]!
+    private var _muted: Bool!
     
     var uid: String {
         return _uid
@@ -70,6 +71,15 @@ class Loop {
         return _userIds
     }
     
+    var muted: Bool! {
+        get {
+            return _muted
+        }
+        set {
+            _muted = newValue
+        }
+    }
+    
     init(uid: String, loopDict: Dictionary<String, AnyObject>) {
         self._uid = uid
         self._courseId = loopDict["courseId"] as? String
@@ -104,5 +114,12 @@ class Loop {
                 self._userIds.append(user)
             }
         }
+        
+        // Check for muted
+        if let mutedLoops = UserService.us.currentUser.mutedLoopIds where mutedLoops.count > 0 {
+            let isMuted = mutedLoops.indexOf(uid) == nil ? false : true
+            self._muted = isMuted
+        }
+        
     }
 }
