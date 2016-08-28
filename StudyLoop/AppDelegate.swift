@@ -21,13 +21,6 @@
         // Set status bar to light theme
         UIApplication.sharedApplication().statusBarStyle = .LightContent
         
-        // Rollbar config
-        let config: RollbarConfiguration = RollbarConfiguration()
-        config.crashLevel = "critical"
-        config.environment = "development"
-        // config.environment = "production"
-        Rollbar.initWithAccessToken("14a234b43f574448a233c89e33cb9803", configuration: config)
-        
         // Register for push
         let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
         UIApplication.sharedApplication().registerUserNotificationSettings(settings)

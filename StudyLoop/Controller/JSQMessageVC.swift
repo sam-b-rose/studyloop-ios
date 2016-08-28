@@ -225,7 +225,7 @@ class MessagesViewController: JSQMessagesViewController, UIImagePickerController
     override func viewDidLoad() {
         super.viewDidLoad()
         automaticallyScrollsToMostRecentMessage = true
-        collectionView!.collectionViewLayout.messageBubbleFont = UIFont(name: "Noto Sans", size: 14)
+//        collectionView!.collectionViewLayout.messageBubbleFont = UIFont(name: "Noto Sans", size: 16)
         
 //        let headerView = JSQMessagesLoadEarlierHeaderView()
 //        headerView.delegate = self

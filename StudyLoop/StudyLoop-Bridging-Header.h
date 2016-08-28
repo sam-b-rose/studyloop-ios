@@ -7,6 +7,5 @@
 #define ContextJar_Bridging_Header_h
 
 #import <SystemConfiguration/SystemConfiguration.h>
-#import <Rollbar/Rollbar.h>
 
 #endif /* ContextJar_Bridging_Header_h */
