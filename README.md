@@ -1,3 +1,4 @@
+
 # StudyLoop - iOS App
 Productive messaging for college students and their classmates
 
@@ -7,9 +8,11 @@ Productive messaging for college students and their classmates
 > iOS App developed and designed by __Sam Rose__ and [Chris Martin](https://github.com/schrismartin)
 
 ## Our Story
-Alex and I started this app as part of a larger buniess plan geared towards helping students better collaborate in a convient group message like platform but with groups already formed based on your current classes for the semester.
+Alex and I started the StudyLoop app as part of a larger business plan geared towards helping students better collaborate in a convenient group message platform. The major difference is groups are automatically formed based on your current classes for the semester.
 
-We have decided to discontinue our work on StudyLoop but are happy we made it from idea discovery to shipping an app on the App Store as well as aquiring __over 200__ users within a month of release. It has been an incredible learning experience in the world of software development and entrepranureship. Many thanks to those at [KEC](http://knoxec.com/) and those involved in the [CodeWorks](http://knoxec.com/what-we-do/programs/codeworks/) program for pushing us to deploying a MVP.
+We have decided to discontinue our work on StudyLoop but are happy we made it from idea validation to shipping an app on the App Store. We where able to acquire over 200 users within a month of release. Creating StudyLoop has been an incredible learning experience in software development and entrepreneurship. Many thanks to those at [KEC](http://knoxec.com/) and those involved in the [CodeWorks](http://knoxec.com/what-we-do/programs/codeworks/) program for pushing us to deploying a MVP.
+
+This is only the iOS portion of StudyLoop. Alex created the React web app with a Node server for data processing. We utilized Firebase to handle real-time data storage and synchronization.
 
 ## About
 [www.getstudyloop.com](http://www.getstudyloop.com/)<br/>
@@ -22,7 +25,7 @@ Message your way to an A.
 ### The Problem
 - Collaboration makes studying more fun and productive for college students
 - College students use group messaging apps to collaborate
-- No exisiting app gives students a way to reach _all_ of their classmates
+- No existing app gives students a way to reach _all_ of their classmates
 - Students end up with disorganized conversations across multiple apps with only a small circle of classmates
 
 ### The Solution
@@ -44,25 +47,41 @@ StudyLoop is a group messaging app for your college classes. Instantly get help 
 - Send photo attachments, emojis, and links.
 
 
-## GIF Demos ¯\\\_(ツ)_/¯
+## Demos ¯\\\_(ツ)_/¯
 
 #### Facebook Login
-<img src="https://cloud.githubusercontent.com/assets/11774595/18037247/67d3c458-6d4d-11e6-868c-6f90ca6610cb.gif" alt="Demo 1" style="width: 300px;"/>
+<img src="https://cloud.githubusercontent.com/assets/11774595/18037247/67d3c458-6d4d-11e6-868c-6f90ca6610cb.gif" alt="Demo 1" width="300" />
+
+<br/>
+
+---
+
+<br/>
 
 
 #### Viewing a Loop
-<img src="https://cloud.githubusercontent.com/assets/11774595/18037248/67d4e766-6d4d-11e6-9d5b-8677f5009981.gif" alt="Demo 2" style="width: 300px;"/>
+<img src="https://cloud.githubusercontent.com/assets/11774595/18037248/67d4e766-6d4d-11e6-9d5b-8677f5009981.gif" alt="Demo 2" width="300"/>
 
+<br/>
+
+---
+
+<br/>
 
 #### Viewing Classmates
-<img src="https://cloud.githubusercontent.com/assets/11774595/18037246/67d39f6e-6d4d-11e6-9d1b-32c884bc709b.gif" alt="Demo 3" style="width: 300px;"/>
+<img src="https://cloud.githubusercontent.com/assets/11774595/18037246/67d39f6e-6d4d-11e6-9d1b-32c884bc709b.gif" alt="Demo 3" width="300"/>
 
+<br/>
 
+---
+
+<br/>
 
 #### Changing Courses and Viewing Profile
-<img src="https://cloud.githubusercontent.com/assets/11774595/18037245/67d39d98-6d4d-11e6-94c7-8cd3ba8441fd.gif" alt="Demo 4" style="width: 300px;"/>
+<img src="https://cloud.githubusercontent.com/assets/11774595/18037245/67d39d98-6d4d-11e6-94c7-8cd3ba8441fd.gif" alt="Demo 4" width="300"/>
 
-### Third-Party Libraries
+
+## Third-Party Libraries
 A big "thank you" to all the contributors and and maintainers of the Open Source projects that made our project possible!
 - [Alamofire](https://github.com/Alamofire/Alamofire)
 - [JSQMessageViewController](https://github.com/jessesquires/JSQMessagesViewController)
