@@ -2,7 +2,7 @@
 # StudyLoop - iOS App
 Productive messaging for college students and their classmates
 
-![StudyLoop](http://static1.squarespace.com/static/5667871140667a43818a7b2a/t/56ba1a20c6fc08d8603c02b3/1455036961157/download.png?format=750w)
+<img src="https://github.com/samrose3/studyloop-ios/blob/master/StudyLoop/Assets.xcassets/logo-dark.imageset/logo-dark.png?raw=true" width="400" alt="StudyLoop" />
 
 > Founded by [Alex Klibisz](https://github.com/alexklibisz) and __Sam Rose__<br/>
 > iOS App developed and designed by __Sam Rose__ and [Chris Martin](https://github.com/schrismartin)
